@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TheWay - Trouvez votre voie professionnelle</title>
+  <link rel="icon" href="../assets/images/icon.png" type="image/png">
+  <style>
+    :root {
+      --dark: #05070a;
+      --surface-dark: #090c11;
+      --ink: #141821;
+      --muted: #687180;
+      --line: #e2e7ee;
+      --soft: #f5f7fa;
+      --gold: #d99b21;
+      --gold-light: #f3c44c;
+      --green: #22a45a;
+      --blue: #2878c9;
+      --white: #ffffff;
+      --shadow: 0 24px 70px rgba(18, 25, 38, 0.14);
+      --shadow-soft: 0 16px 45px rgba(18, 25, 38, 0.08);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 320px;
+      background: #f7f8fb;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(217, 155, 33, 0.4);
+      outline-offset: 3px;
+    }
+
+    .page {
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .container {
+      width: min(calc(100% - 56px), 1180px);
+      margin-inline: auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5, 7, 10, 0.88);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 82px;
+      gap: 32px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      color: var(--white);
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 210px;
+    }
+
+    .brand-logo img {
+      width: 44px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(217, 155, 33, 0.2));
+    }
+
+    .brand-text {
+      display: grid;
+      gap: 1px;
+      line-height: 1;
+    }
+
+    .brand-name {
+      color: #f7f8fb;
+      font-size: 20px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .brand-name span {
+      color: var(--gold);
+    }
+
+    .brand-subtitle {
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 10px 0;
+      transition: color 180ms ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 180ms ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
+      color: #fff;
+    }
+
+    .login-btn,
+    .primary-btn,
+    .search-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      border: 0;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    }
+
+    .login-btn,
+    .search-btn {
+      min-width: 108px;
+      padding: 0 25px;
+      background: #080b10;
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    }
+
+    .primary-btn {
+      min-width: 164px;
+      padding: 0 28px;
+      background: linear-gradient(135deg, #d9981f, #f2c34a);
+      color: #111318;
+      box-shadow: 0 18px 44px rgba(217, 155, 33, 0.28);
+    }
+
+    .login-btn:hover,
+    .primary-btn:hover,
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 38px rgba(4, 7, 12, 0.22);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      flex: 0 0 44px;
+      position: relative;
+      z-index: 3;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: var(--radius);
+      background: #080b10;
+      color: var(--white);
+      cursor: pointer;
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: 5px auto;
+      background: currentColor;
+      font-size: 0;
+      line-height: 0;
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 560px;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.34) 38%, rgba(0, 0, 0, 0.04) 66%),
+        url("../assets/images/main-background.png") center center / cover no-repeat,
+        #020304;
+      color: var(--white);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 120px;
+      background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.3));
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(360px, 520px) 1fr;
+      align-items: center;
+      min-height: 560px;
+      gap: 38px;
+      padding: 58px 0 52px;
+    }
+
+    .hero-copy {
+      max-width: 520px;
+      padding-top: 8px;
+    }
+
+    .hero h1 {
+      max-width: 600px;
+      margin-bottom: 24px;
+      color: var(--white);
+      font-size: clamp(2.6rem, 4.5vw, 4.25rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .hero p {
+      max-width: 520px;
+      margin-bottom: 34px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.62;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 420px;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      isolation: isolate;
+    }
+
+    .desk {
+      position: absolute;
+      right: -60px;
+      bottom: 0;
+      z-index: -1;
+      width: 112%;
+      height: 86px;
+      background:
+        linear-gradient(100deg, rgba(20, 15, 12, 0.24), rgba(255, 255, 255, 0.08) 44%, rgba(18, 11, 8, 0.45)),
+        repeating-linear-gradient(90deg, #5f4a3d 0 84px, #4b372d 84px 168px);
+      transform: perspective(500px) rotateX(34deg);
+      transform-origin: bottom;
+      box-shadow: 0 -16px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .laptop {
+      position: relative;
+      width: min(100%, 590px);
+      margin-right: 40px;
+    }
+
+    .laptop-screen {
+      position: relative;
+      width: 88%;
+      aspect-ratio: 16 / 10;
+      margin-inline: auto;
+      border: 4px solid #9ba1aa;
+      border-bottom: 0;
+      border-radius: 18px 18px 2px 2px;
+      background: #eceff4;
+      box-shadow: 0 26px 64px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    .laptop-screen::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border-radius: 7px;
+      background: #f7f8fb;
+    }
+
+    .laptop-base {
+      position: relative;
+      width: 100%;
+      height: 32px;
+      margin-top: -1px;
+      background: linear-gradient(#aeb3ba, #6c727b 55%, #3f444b);
+      clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 18px 28px rgba(0, 0, 0, 0.5);
+    }
+
+    .laptop-base::after {
+      content: "";
+      position: absolute;
+      top: 4px;
+      left: 42%;
+      width: 16%;
+      height: 8px;
+      border-radius: 0 0 10px 10px;
+      background: rgba(255, 255, 255, 0.36);
+    }
+
+    .dashboard-preview {
+      position: absolute;
+      inset: 10px;
+      display: grid;
+      grid-template-columns: 98px 1fr;
+      background: #f4f6f9;
+      border-radius: 7px;
+      overflow: hidden;
+      color: var(--ink);
+    }
+
+    .preview-sidebar {
+      padding: 18px 14px;
+      background: #0b1118;
+      color: var(--white);
+    }
+
+    .preview-logo {
+      margin-bottom: 38px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .preview-logo span {
+      color: var(--gold);
+    }
+
+    .preview-menu {
+      display: grid;
+      gap: 14px;
+    }
+
+    .preview-menu i {
+      display: block;
+      width: 64px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      font-size: 0;
+      line-height: 0;
+    }
+
+    .preview-content {
+      padding: 26px 25px;
+    }
+
+    .preview-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 18px;
+    }
+
+    .preview-title strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    .preview-title small {
+      color: #8b929e;
+      font-size: 10px;
+    }
+
+    .preview-avatar {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c48c53, #2d445e);
+      box-shadow: -28px 0 0 -5px #fff, -28px 0 0 -3px #ced4dc;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .mini-card,
+    .offer-card,
+    .map-card {
+      border-radius: 7px;
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(18, 25, 38, 0.08);
+    }
+
+    .mini-card {
+      min-height: 60px;
+      padding: 10px;
+    }
+
+    .mini-card small {
+      display: block;
+      margin-bottom: 7px;
+      color: #9298a3;
+      font-size: 7px;
+      font-weight: 800;
+    }
+
+    .mini-card strong {
+      font-size: 16px;
+    }
+
+    .preview-panels {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 14px;
+    }
+
+    .offer-card,
+    .map-card {
+      min-height: 130px;
+      padding: 14px;
+    }
+
+    .panel-title {
+      display: block;
+      margin-bottom: 13px;
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .mini-offer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 9px;
+    }
+
+    .mini-offer:last-child {
+      border-bottom: 0;
+    }
+
+    .mini-offer span {
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .map-card {
+      position: relative;
+      background:
+        linear-gradient(34deg, transparent 48%, #d7e0e8 49%, #d7e0e8 51%, transparent 52%),
+        linear-gradient(140deg, transparent 45%, #e0e6ed 46%, #e0e6ed 48%, transparent 49%),
+        #eef4ee;
+      overflow: hidden;
+    }
+
+    .pin {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 4px solid #1780bf;
+      border-radius: 50% 50% 50% 0;
+      background: #fff;
+      font-size: 0;
+      line-height: 0;
+      transform: rotate(-45deg);
+    }
+
+    .pin::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 50%;
+      background: #1780bf;
+    }
+
+    .pin.one { left: 34%; top: 35%; }
+    .pin.two { right: 16%; top: 18%; }
+    .pin.three { right: 9%; bottom: 18%; }
+
+    .plant {
+      position: absolute;
+      right: -34px;
+      bottom: 54px;
+      width: 116px;
+      height: 194px;
+    }
+
+    .leaf {
+      position: absolute;
+      bottom: 72px;
+      left: 50%;
+      width: 22px;
+      height: 102px;
+      border-radius: 100% 0;
+      background: linear-gradient(120deg, #72a82d, #1f6f31);
+      font-size: 0;
+      line-height: 0;
+      transform-origin: bottom center;
+      box-shadow: inset -6px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .leaf:nth-child(1) { transform: rotate(-38deg); height: 132px; }
+    .leaf:nth-child(2) { transform: rotate(-18deg); height: 154px; }
+    .leaf:nth-child(3) { transform: rotate(8deg); height: 145px; }
+    .leaf:nth-child(4) { transform: rotate(30deg); height: 126px; }
+    .leaf:nth-child(5) { transform: rotate(50deg); height: 102px; }
+
+    .pot {
+      position: absolute;
+      right: 6px;
+      bottom: 0;
+      width: 78px;
+      height: 78px;
+      border-radius: 8px 8px 16px 16px;
+      background: linear-gradient(90deg, #181b1d, #3b3d3e 50%, #17191a);
+      font-size: 0;
+      line-height: 0;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .features {
+      padding: 84px 0 64px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 32px;
+    }
+
+    .more-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: #111318;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 10px 4px;
+      transition: color 180ms ease, transform 180ms ease;
+    }
+
+    .more-link svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .more-link:hover,
+    .more-link:focus-visible {
+      color: var(--gold);
+      transform: translateX(2px);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .feature-card {
+      min-height: 236px;
+      padding: 28px;
+      border: 1px solid rgba(226, 231, 238, 0.9);
+      border-radius: var(--radius);
+      background: #f7f8fa;
+      box-shadow: var(--shadow-soft);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(217, 155, 33, 0.26);
+      box-shadow: 0 24px 60px rgba(18, 25, 38, 0.12);
+    }
+
+    .feature-card:nth-child(1) {
+      background: linear-gradient(135deg, rgba(236, 194, 88, 0.2), rgba(255, 255, 255, 0.8));
+    }
+
+    .feature-card:nth-child(2) {
+      background: linear-gradient(135deg, rgba(236, 239, 244, 0.98), rgba(255, 255, 255, 0.82));
+    }
+
+    .feature-card:nth-child(3) {
+      background: linear-gradient(135deg, rgba(222, 243, 233, 0.9), rgba(255, 255, 255, 0.82));
+    }
+
+    .icon-box {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 26px;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--gold);
+      box-shadow: 0 12px 24px rgba(20, 28, 40, 0.08);
+    }
+
+    .feature-card:nth-child(3) .icon-box {
+      color: var(--green);
+    }
+
+    .icon-box svg {
+      width: 36px;
+      height: 36px;
+      stroke-width: 1.9;
+    }
+
+    .feature-card h2 {
+      margin-bottom: 10px;
+      color: #17191f;
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .feature-card p {
+      max-width: 315px;
+      color: #3f4652;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .mission {
+      background:
+        linear-gradient(90deg, rgba(4, 8, 14, 0.62) 0%, rgba(4, 8, 14, 0.28) 48%, rgba(4, 8, 14, 0.04) 78%),
+        url("../assets/images/about-background.png") center center / cover no-repeat,
+        #0a0f15;
+      color: var(--white);
+    }
+
+    .mission-grid {
+      display: grid;
+      grid-template-columns: minmax(330px, 480px) 1fr;
+      align-items: center;
+      min-height: 560px;
+      gap: 44px;
+      padding: 66px 0;
+    }
+
+    .mission-copy h2 {
+      max-width: 410px;
+      margin-bottom: 22px;
+      color: #f7f8fa;
+      font-size: clamp(2.2rem, 3.6vw, 3.45rem);
+      line-height: 1.14;
+      text-wrap: balance;
+    }
+
+    .mission-copy p {
+      max-width: 392px;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 500px;
+      margin-top: 38px;
+    }
+
+    .stat {
+      min-height: 126px;
+      padding: 18px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat svg {
+      display: block;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 16px;
+      color: var(--gold);
+      stroke-width: 1.8;
+    }
+
+    .stat strong {
+      display: block;
+      color: #f7f8fa;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 15px;
+    }
+
+    .phones {
+      position: relative;
+      min-height: 390px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone {
+      position: relative;
+      width: 225px;
+      height: 390px;
+      border: 4px solid #7d838c;
+      border-radius: 31px;
+      background: #f6f8fa;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+      overflow: hidden;
+    }
+
+    .phone::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      z-index: 2;
+      width: 78px;
+      height: 19px;
+      border-radius: 0 0 14px 14px;
+      background: #0a0d11;
+      transform: translateX(-50%);
+    }
+
+    .phone.front {
+      z-index: 2;
+      transform: translateX(36px);
+    }
+
+    .phone.back {
+      position: absolute;
+      z-index: 1;
+      transform: translateX(184px) rotate(1deg);
+    }
+
+    .phone-screen {
+      height: 100%;
+      padding: 38px 17px 16px;
+      color: #141820;
+    }
+
+    .phone-head {
+      margin-bottom: 14px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .phone-job {
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      min-height: 62px;
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 9px 20px rgba(18, 25, 38, 0.08);
+    }
+
+    .job-dot {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      border-radius: 6px;
+      background: #2fb168;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .phone-job strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 10px;
+    }
+
+    .phone-job small {
+      color: #808895;
+      font-size: 8px;
+    }
+
+    .phone-job span {
+      color: var(--green);
+      font-size: 9px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .phone-nav {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding-top: 9px;
+      border-top: 1px solid #e3e7ed;
+      color: #838a94;
+      font-size: 8px;
+      text-align: center;
+    }
+
+    .phone-map {
+      position: absolute;
+      inset: 38px 13px 82px;
+      border-radius: 9px;
+      background:
+        linear-gradient(40deg, transparent 49%, #d9e1e8 50%, transparent 52%),
+        linear-gradient(140deg, transparent 45%, #d9e1e8 46%, #d9e1e8 48%, transparent 49%),
+        linear-gradient(92deg, transparent 39%, #e8cc8b 40%, #e8cc8b 42%, transparent 43%),
+        #f1f4f0;
+      overflow: hidden;
+    }
+
+    .phone-map .pin {
+      width: 18px;
+      height: 18px;
+      border-color: var(--green);
+    }
+
+    .phone-map .pin::after {
+      background: var(--green);
+    }
+
+    .nearby-card {
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 20px;
+      min-height: 68px;
+      padding: 12px;
+      border-radius: 9px;
+      background: #fff;
+      color: #17191f;
+      box-shadow: 0 -8px 24px rgba(18, 25, 38, 0.14);
+    }
+
+    .nearby-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 10px;
+    }
+
+    .nearby-card small {
+      color: #808895;
+      font-size: 8px;
+    }
+
+    .nearby-card span {
+      float: right;
+      color: var(--green);
+      font-size: 9px;
+      font-weight: 900;
+    }
+
+    .jobs {
+      padding: 56px 0 64px;
+      background: #fff;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr 170px;
+      gap: 16px;
+      width: min(100%, 1040px);
+      margin: 0 auto 24px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .field {
+      position: relative;
+    }
+
+    .field svg {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      width: 24px;
+      height: 24px;
+      color: #8d96a2;
+      pointer-events: none;
+      transform: translateY(-50%);
+    }
+
+    .field input {
+      width: 100%;
+      height: 56px;
+      border: 1px solid #d7dde6;
+      border-radius: var(--radius);
+      padding: 0 20px 0 60px;
+      color: #17191f;
+      background: #fbfcfe;
+      outline: none;
+      box-shadow: none;
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(217, 155, 33, 0.15);
+    }
+
+    .job-card {
+      display: grid;
+      grid-template-columns: 100px 1fr auto 34px;
+      align-items: center;
+      gap: 26px;
+      width: min(100%, 1050px);
+      min-height: 154px;
+      margin: 0 auto;
+      padding: 24px;
+      border: 1px solid #dce2e9;
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .job-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(217, 155, 33, 0.28);
+      box-shadow: 0 22px 58px rgba(18, 25, 38, 0.13);
+    }
+
+    .company-logo {
+      display: grid;
+      place-items: center;
+      width: 100px;
+      height: 100px;
+      border-radius: var(--radius);
+      background: #020203;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .job-info h3 {
+      margin-bottom: 4px;
+      color: #1d2028;
+      font-size: 24px;
+    }
+
+    .job-info p {
+      margin-bottom: 12px;
+      color: #606774;
+      font-size: 15px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 14px;
+      border-radius: 6px;
+      background: #f0f3f7;
+      color: #434955;
+      font-size: 14px;
+    }
+
+    .match {
+      text-align: left;
+    }
+
+    .match strong {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--green);
+      font-size: 24px;
+    }
+
+    .match span {
+      color: #808792;
+      font-size: 15px;
+    }
+
+    .job-arrow {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: var(--radius);
+      background: #f5f7fa;
+      color: #707782;
+      cursor: pointer;
+      transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    .job-arrow:hover,
+    .job-arrow:focus-visible {
+      background: #111318;
+      color: #fff;
+      transform: translateX(2px);
+    }
+
+    .all-jobs {
+      display: flex;
+      justify-content: center;
+      margin-top: 26px;
+    }
+
+    .all-jobs a {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: #14171c;
+      font-weight: 800;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      transition: color 180ms ease, background 180ms ease;
+    }
+
+    .all-jobs a:hover,
+    .all-jobs a:focus-visible {
+      color: var(--gold);
+      background: #f7f8fb;
+    }
+
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 80;
+      max-width: min(360px, calc(100vw - 44px));
+      padding: 15px 18px;
+      border-radius: var(--radius);
+      background: #0a0d11;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      pointer-events: none;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      padding: 30px 0;
+      background: #080b10;
+      color: rgba(255, 255, 255, 0.68);
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 1030px) {
+      .container {
+        width: min(calc(100% - 34px), 920px);
+      }
+
+      .nav {
+        height: 78px;
+      }
+
+      .brand-logo {
+        min-width: auto;
+      }
+
+      .brand-logo img {
+        width: 40px;
+        height: 34px;
+      }
+
+      .brand-name {
+        font-size: 18px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .hero-grid,
+      .mission-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy,
+      .mission-copy {
+        max-width: 700px;
+      }
+
+      .hero-visual {
+        min-height: 390px;
+      }
+
+      .laptop {
+        margin-right: 0;
+      }
+
+      .plant {
+        right: -8px;
+      }
+
+      .feature-grid {
+        gap: 20px;
+      }
+
+      .phones {
+        min-height: 430px;
+        justify-content: flex-start;
+        padding-left: 6%;
+      }
+
+      .search-form {
+        grid-template-columns: 1fr 1fr 140px;
+      }
+    }
+
+    @media (max-width: 790px) {
+      .nav-links {
+        position: fixed;
+        inset: 78px 0 auto;
+        display: grid;
+        gap: 6px;
+        padding: 18px 24px 24px;
+        border-top: 1px solid #edf0f4;
+        background: #fff;
+        color: #151922;
+        box-shadow: 0 18px 32px rgba(18, 25, 38, 0.12);
+        transform: translateY(-130%);
+        transition: transform 180ms ease;
+      }
+
+      .nav-links .login-btn {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      body.menu-open .nav-links {
+        transform: translateY(0);
+      }
+
+      body.menu-open .mobile-menu-btn span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      body.menu-open .mobile-menu-btn span:nth-child(2) {
+        opacity: 0;
+      }
+
+      body.menu-open .mobile-menu-btn span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      .mobile-menu-btn {
+        display: grid;
+        place-items: center;
+      }
+
+      .hero {
+        min-height: auto;
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.58) 58%, rgba(0, 0, 0, 0.26) 100%),
+          url("../assets/images/main-background.png") 12% center / cover no-repeat,
+          #020304;
+      }
+
+      .hero-grid {
+        min-height: auto;
+        padding: 58px 0 44px;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .dashboard-preview {
+        grid-template-columns: 76px 1fr;
+      }
+
+      .preview-sidebar {
+        padding: 14px 10px;
+      }
+
+      .preview-content {
+        padding: 18px 16px;
+      }
+
+      .mini-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .preview-panels {
+        grid-template-columns: 1fr;
+      }
+
+      .offer-card {
+        display: none;
+      }
+
+      .plant {
+        display: none;
+      }
+
+      .features {
+        padding: 58px 0 46px;
+      }
+
+      .section-top {
+        justify-content: flex-start;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card {
+        min-height: auto;
+      }
+
+      .mission-grid {
+        min-height: 520px;
+        padding: 56px 0;
+      }
+
+      .mission {
+        background-position: center center, 22% center;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        max-width: 260px;
+      }
+
+      .phones {
+        min-height: 380px;
+        justify-content: center;
+        padding-left: 0;
+        transform: scale(0.88);
+        transform-origin: center;
+      }
+
+      .phone.front {
+        transform: translateX(-48px);
+      }
+
+      .phone.back {
+        transform: translateX(76px) rotate(1deg);
+      }
+
+      .search-form {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+
+      .job-card {
+        grid-template-columns: 76px 1fr;
+        gap: 18px;
+        position: relative;
+      }
+
+      .company-logo {
+        width: 76px;
+        height: 76px;
+        font-size: 20px;
+      }
+
+      .match {
+        grid-column: 1 / -1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .match strong {
+        margin-bottom: 0;
+      }
+
+      .job-arrow {
+        position: absolute;
+        right: 21px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(calc(100% - 28px), 460px);
+      }
+
+      .brand-logo {
+        gap: 10px;
+      }
+
+      .brand-logo img {
+        width: 34px;
+        height: 30px;
+      }
+
+      .brand-name {
+        font-size: 16px;
+      }
+
+      .hero h1 {
+        font-size: 2.25rem;
+        line-height: 1.08;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-visual {
+        min-height: 270px;
+      }
+
+      .laptop-screen {
+        border-width: 3px;
+      }
+
+      .dashboard-preview {
+        grid-template-columns: 54px 1fr;
+      }
+
+      .preview-logo {
+        font-size: 8px;
+        margin-bottom: 24px;
+      }
+
+      .preview-menu i {
+        width: 36px;
+      }
+
+      .preview-content {
+        padding: 14px 12px;
+      }
+
+      .preview-title strong {
+        font-size: 13px;
+      }
+
+      .mini-card strong {
+        font-size: 12px;
+      }
+
+      .map-card {
+        min-height: 90px;
+      }
+
+      .features {
+        padding-top: 44px;
+      }
+
+      .feature-card h2 {
+        font-size: 20px;
+      }
+
+      .feature-card p {
+        font-size: 15px;
+      }
+
+      .mission-copy p {
+        font-size: 16px;
+      }
+
+      .phones {
+        min-height: 320px;
+        transform: scale(0.72);
+      }
+
+      .job-card {
+        position: relative;
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .company-logo {
+        width: 82px;
+        height: 82px;
+      }
+
+      .job-info h3 {
+        max-width: calc(100% - 38px);
+        font-size: 21px;
+      }
+
+      .match {
+        display: block;
+      }
+
+      .match strong {
+        margin-bottom: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="#top" aria-label="TheWay accueil">
+          <span class="brand-logo">
+            <img src="../assets/images/icon.png" alt="">
+            <span class="brand-text" aria-hidden="true">
+              <span class="brand-name">THE<span>WAY</span></span>
+              <span class="brand-subtitle">Data • Insights • Opportunities</span>
+            </span>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Navigation principale">
+          <a class="nav-link" href="#offers">Offres</a>
+          <a class="nav-link" href="#mission">About Us</a>
+          <a class="login-btn" href="authentification.html">Login</a>
+        </nav>
+
+        <button class="mobile-menu-btn" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+          <span>&nbsp;</span>
+          <span>&nbsp;</span>
+          <span>&nbsp;</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <h1 id="hero-title">Trouvez votre voie professionnelle</h1>
+            <p>L'IA qui analyse votre CV et vous connecte aux meilleures opportunités près de chez vous.</p>
+            <a class="primary-btn" href="#offers">Commencer</a>
+          </div>
+
+          <div class="hero-visual" aria-label="Aperçu du tableau de bord TheWay">
+            <div class="desk"></div>
+            <div class="laptop">
+              <div class="laptop-screen">
+                <div class="dashboard-preview">
+                  <aside class="preview-sidebar">
+                    <div class="preview-logo">THE<span>WAY</span></div>
+                    <div class="preview-menu" aria-hidden="true">
+                      <i>&nbsp;</i><i>&nbsp;</i><i>&nbsp;</i><i>&nbsp;</i><i>&nbsp;</i><i>&nbsp;</i>
+                    </div>
+                  </aside>
+                  <div class="preview-content">
+                    <div class="preview-top">
+                      <div class="preview-title">
+                        <strong>Bonjour, Alex 👋</strong>
+                        <small>Voici vos statistiques aujourd'hui</small>
+                      </div>
+                      <div class="preview-avatar" aria-hidden="true"></div>
+                    </div>
+
+                    <div class="mini-stats">
+                      <div class="mini-card"><small>Offres disponibles</small><strong>1,248</strong></div>
+                      <div class="mini-card"><small>Correspondance</small><strong>86%</strong></div>
+                      <div class="mini-card"><small>Candidatures</small><strong>23</strong></div>
+                      <div class="mini-card"><small>Entretiens</small><strong>5</strong></div>
+                    </div>
+
+                    <div class="preview-panels">
+                      <div class="offer-card">
+                        <span class="panel-title">Offres recommandées</span>
+                        <div class="mini-offer"><strong>Développeur Full Stack</strong><span>90%</span></div>
+                        <div class="mini-offer"><strong>Data Analyst</strong><span>82%</span></div>
+                      </div>
+                      <div class="map-card">
+                        <span class="panel-title">Offres près de vous</span>
+                        <span class="pin one">&nbsp;</span>
+                        <span class="pin two">&nbsp;</span>
+                        <span class="pin three">&nbsp;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="laptop-base"></div>
+            </div>
+
+            <div class="plant" aria-hidden="true">
+              <span class="leaf">&nbsp;</span>
+              <span class="leaf">&nbsp;</span>
+              <span class="leaf">&nbsp;</span>
+              <span class="leaf">&nbsp;</span>
+              <span class="leaf">&nbsp;</span>
+              <span class="pot">&nbsp;</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" aria-label="Fonctionnalités">
+        <div class="container">
+          <div class="section-top">
+            <a class="more-link" href="#offers">
+              voir Plus
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6 3h8l4 4v14H6V3z" stroke="currentColor" stroke-linejoin="round"/>
+                  <path d="M14 3v5h5" stroke="currentColor" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h2>Analyse de CV par IA</h2>
+              <p>Importez votre CV et obtenez une analyse complète de vos compétences.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-linecap="round"/>
+                  <path d="M4 7h16v12H4V7z" stroke="currentColor" stroke-linejoin="round"/>
+                  <path d="M4 12h16M10 12v2h4v-2" stroke="currentColor" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h2>Offres personnalisées</h2>
+              <p>Recevez des offres d'emploi adaptées à votre profil et à vos compétences.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon-box" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z" stroke="currentColor" stroke-linejoin="round"/>
+                  <circle cx="12" cy="9" r="2.4" stroke="currentColor"/>
+                </svg>
+              </div>
+              <h2>Offres près de vous</h2>
+              <p>Trouvez des opportunités d'emploi autour de votre localisation.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="mission" id="mission" aria-labelledby="mission-title">
+        <div class="container mission-grid">
+          <div class="mission-copy">
+            <h2 id="mission-title">Votre carrière, notre mission</h2>
+            <p>TheWay vous accompagne à chaque étape pour atteindre vos objectifs professionnels.</p>
+
+            <div class="stats" aria-label="Statistiques TheWay">
+              <div class="stat">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-linecap="round"/>
+                  <path d="M4 7h16v12H4V7zM4 12h16" stroke="currentColor" stroke-linejoin="round"/>
+                </svg>
+                <strong>10K+</strong>
+                <span>Offres disponibles</span>
+              </div>
+              <div class="stat">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM16 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2.5 21a5.5 5.5 0 0 1 11 0M10.5 21a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-linecap="round"/>
+                </svg>
+                <strong>5K+</strong>
+                <span>Utilisateurs actifs</span>
+              </div>
+              <div class="stat">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <strong>85%</strong>
+                <span>Taux de réussite</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="phones" aria-label="Aperçu mobile TheWay">
+            <div class="phone front">
+              <div class="phone-screen">
+                <div class="phone-head">Offres recommandées</div>
+                <div class="phone-job">
+                  <div class="job-dot">B</div>
+                  <div>
+                    <strong>UX Designer</strong>
+                    <small>Lyon, France</small>
+                  </div>
+                  <span>92%</span>
+                </div>
+                <div class="phone-job">
+                  <div class="job-dot">B</div>
+                  <div>
+                    <strong>Product Manager</strong>
+                    <small>Paris, France</small>
+                  </div>
+                  <span>88%</span>
+                </div>
+                <div class="phone-job">
+                  <div class="job-dot" style="background:#2a83c7;">D</div>
+                  <div>
+                    <strong>DevOps Engineer</strong>
+                    <small>Toulouse, France</small>
+                  </div>
+                  <span>86%</span>
+                </div>
+                <div class="phone-nav">
+                  <span>Accueil</span><span>Offres</span><span>Carte</span><span>Profil</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone back">
+              <div class="phone-screen">
+                <div class="phone-head">Offres autour de vous</div>
+                <div class="phone-map">
+                  <span class="pin one">&nbsp;</span>
+                  <span class="pin two">&nbsp;</span>
+                  <span class="pin three">&nbsp;</span>
+                  <span class="pin" style="left:48%; top:54%;">&nbsp;</span>
+                  <span class="pin" style="left:73%; top:70%;">&nbsp;</span>
+                </div>
+                <div class="nearby-card">
+                  <span>90%</span>
+                  <strong>Développeur Full Stack</strong>
+                  <small>Paris, France</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="jobs" id="offers" aria-labelledby="offers-title">
+        <div class="container">
+          <h2 id="offers-title" hidden>Recherche d'offres</h2>
+          <form class="search-form">
+            <label class="field">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M4 7h16v12H4V7zM4 12h16" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              </svg>
+              <input id="jobInput" type="search" placeholder="Métier, Compétence" aria-label="Métier ou compétence">
+            </label>
+
+            <label class="field">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <input id="cityInput" type="search" placeholder="Ville ou région" aria-label="Ville ou région">
+            </label>
+
+            <button class="search-btn" type="submit">Search</button>
+          </form>
+
+          <article class="job-card" data-title="Développeur Full Stack" data-city="Paris">
+            <div class="company-logo">ACME</div>
+            <div class="job-info">
+              <h3>Développeur Full Stack</h3>
+              <p>ACME Corporation<br>Paris, France&nbsp;&nbsp;•&nbsp;&nbsp;CDI&nbsp;&nbsp;•&nbsp;&nbsp;Télétravail partiel</p>
+              <div class="tags">
+                <span class="tag">React</span>
+                <span class="tag">Node.js</span>
+                <span class="tag">TypeScript</span>
+                <span class="tag">PostgreSQL</span>
+              </div>
+            </div>
+            <div class="match">
+              <strong>90% Match</strong>
+              <span>Publié il y a 2 jours</span>
+            </div>
+            <button class="job-arrow" type="button" aria-label="Voir l'offre Développeur Full Stack">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </article>
+
+          <div class="all-jobs">
+            <a href="opportunity.html">
+              Voir toutes les offres
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 TheWay. Tous droits reservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    const body = document.body;
+    const menuButton = document.querySelector(".mobile-menu-btn");
+    const navLinks = document.querySelectorAll(".nav-links a");
+    const searchForm = document.querySelector(".search-form");
+    const jobInput = document.querySelector("#jobInput");
+    const cityInput = document.querySelector("#cityInput");
+    const jobCard = document.querySelector(".job-card");
+    const toast = document.querySelector(".toast");
+    let toastTimer;
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 2600);
+    }
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = body.classList.toggle("menu-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        body.classList.remove("menu-open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Ouvrir le menu");
+      });
+    });
+
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const jobQuery = jobInput.value.trim().toLowerCase();
+      const cityQuery = cityInput.value.trim().toLowerCase();
+      const title = jobCard.dataset.title.toLowerCase();
+      const city = jobCard.dataset.city.toLowerCase();
+      const matchesJob = !jobQuery || title.includes(jobQuery) || "react node.js typescript postgresql".includes(jobQuery);
+      const matchesCity = !cityQuery || city.includes(cityQuery);
+
+      jobCard.style.display = matchesJob && matchesCity ? "grid" : "none";
+      showToast(matchesJob && matchesCity ? "Une offre correspond à votre recherche." : "Aucune offre affichée pour cette recherche.");
+    });
+
+    document.querySelector(".job-arrow").addEventListener("click", () => {
+      showToast("Ouverture de l'offre Développeur Full Stack.");
+    });
+  </script>
+</body>
+</html>
