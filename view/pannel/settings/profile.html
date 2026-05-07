@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheWay - Paramètres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0d1117;
+            --sidebar-hover: #161b22;
+            --sidebar-active: #1a2332;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --primary: #6366f1;
+            --green: #22c55e;
+            --red: #ef4444;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --bg-main: #f8f9fc;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo .logo-icon { width: 40px; height: 40px; }
+        .sidebar-logo .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1.5px;
+        }
+        .sidebar-logo .logo-text span { color: var(--accent); }
+
+        .sidebar-nav { padding: 16px 12px; flex: 1; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: #e2e8f0; }
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+        }
+        .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .sidebar-premium {
+            margin: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .premium-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .premium-header h4 { color: #fff; font-size: 14px; font-weight: 600; }
+        .premium-header svg { width: 20px; height: 20px; color: var(--accent); }
+        .premium-header p { color: #94a3b8; font-size: 12px; line-height: 1.6; margin-bottom: 16px; }
+        .premium-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .premium-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: #fff;
+            padding: 12px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notification-btn:hover { background: var(--bg-main); }
+        .notification-btn svg { width: 20px; height: 20px; color: var(--text-muted); }
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .user-profile:hover { background: var(--bg-main); }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info { text-align: right; }
+        .user-info .name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .user-info .location { font-size: 12px; color: var(--text-muted); }
+        .user-dropdown { width: 18px; height: 18px; color: var(--text-muted); }
+
+        /* Page Body */
+        .page-body { padding: 24px 32px; }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .cta-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4); }
+        .cta-btn svg { width: 16px; height: 16px; }
+
+        /* Tabs */
+        .tabs-container {
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 0;
+        }
+
+        .tab-item {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-item:hover { color: var(--text-dark); }
+        .tab-item.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Cards */
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        /* Profile Info Section */
+        .profile-info-header {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .profile-photo-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--border);
+        }
+
+        .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .photo-upload-btn {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .photo-upload-btn:hover { border-color: var(--accent); }
+        .photo-upload-btn svg { width: 14px; height: 14px; color: var(--text-muted); }
+
+        .profile-fields {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .form-input {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .form-select {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-family: inherit;
+            background: #fff;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 32px;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .save-btn {
+            padding: 10px 24px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .save-btn:hover {
+            background: #1a2332;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* About Section */
+        .about-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.2s ease;
+            line-height: 1.6;
+        }
+
+        .about-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+
+        /* Social Networks */
+        .social-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .social-row:last-of-type { margin-bottom: 0; }
+
+        .social-icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .social-icon-btn svg { width: 18px; height: 18px; }
+
+        .social-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: inherit;
+            background: var(--bg-main);
+        }
+
+        .social-delete {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .social-delete:hover { color: var(--red); background: #fef2f2; }
+        .social-delete svg { width: 16px; height: 16px; }
+
+        .add-link-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-top: 8px;
+        }
+
+        .add-link-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .add-link-btn svg { width: 14px; height: 14px; }
+
+        /* Right Sidebar Cards */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .sidebar-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        /* Profile Photo Card */
+        .profile-photo-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-photo-card .pp-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border);
+        }
+
+        .profile-photo-card .pp-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .profile-photo-card .pp-info { flex: 1; }
+        .profile-photo-card .pp-info .pp-size { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+
+        .pp-btn {
+            display: block;
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            background: #fff;
+            transition: all 0.2s;
+            font-family: inherit;
+            margin-bottom: 6px;
+        }
+
+        .pp-btn:hover { border-color: var(--text-dark); }
+
+        .pp-delete {
+            font-size: 12px;
+            color: var(--red);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        .pp-delete:hover { text-decoration: underline; }
+
+        /* Security Items */
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .security-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .security-item:first-child { padding-top: 0; }
+        .security-item:hover { padding-left: 4px; }
+
+        .security-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .security-icon svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+        .security-info { flex: 1; }
+        .security-info .sec-title { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .security-info .sec-desc { font-size: 12px; color: var(--text-muted); }
+
+        .sec-status {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        .sec-value {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .sec-link {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .security-arrow {
+            color: var(--text-light);
+        }
+
+        .security-arrow svg { width: 16px; height: 16px; }
+
+        /* Preferences Items */
+        .pref-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pref-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .pref-item:first-child { padding-top: 0; }
+        .pref-item:hover { padding-left: 4px; }
+
+        .pref-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pref-icon svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+        .pref-info { flex: 1; }
+        .pref-info .pref-title { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .pref-info .pref-desc { font-size: 12px; color: var(--text-muted); }
+
+        .pref-arrow {
+            color: var(--text-light);
+        }
+
+        .pref-arrow svg { width: 16px; height: 16px; }
+
+        /* Delete Account */
+        .delete-section {
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .delete-section h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .delete-section p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .delete-btn {
+            padding: 8px 16px;
+            background: #fff;
+            border: 1px solid var(--red);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--red);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .delete-btn:hover { background: #fef2f2; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 24px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast svg { width: 20px; height: 20px; color: var(--green); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 440px;
+            width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .modal p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover { border-color: var(--text-dark); }
+
+        .btn-danger {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid var(--red);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--red);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-danger:hover { background: #fef2f2; }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.4s ease forwards; opacity: 0; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; }
+            .page-body { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .page-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .tabs-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .tab-item { padding: 12px 14px; font-size: 13px; }
+            .profile-info-header { flex-direction: column; align-items: center; text-align: center; }
+            .profile-fields { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .user-info { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <path d="M8 8L20 4L32 8L36 20L20 36L4 20L8 8Z" fill="#f59e0b" opacity="0.9"/>
+                    <path d="M12 12L20 8L28 12L32 20L20 32L8 20L12 12Z" fill="#1a1a2e"/>
+                    <path d="M16 16L20 14L24 16L28 20L20 28L12 20L16 16Z" fill="#f59e0b"/>
+                </svg>
+            </div>
+            <div class="logo-text">THE<span>WAY</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>CV & Compétences</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>Matching</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Skills</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Opportunités</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Progression</a>
+            <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</a>
+        </nav>
+        <div class="sidebar-premium">
+            <div class="premium-header"><h4>Plan Premium</h4><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></div>
+            <p>Accédez à toutes les fonctionnalités avancées.</p>
+            <button class="premium-btn">Passer Premium</button>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div></div>
+            <div class="header-right">
+                <button class="notification-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="notif-badge">3</span>
+                </button>
+                <button class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Lancer une nouvelle analyse
+                </button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div class="name">Amine ELKARTITE</div>
+                        <div class="location">Taza, Maroc</div>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Amine">
+                    </div>
+                    <svg class="user-dropdown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-body">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Paramètres</h1>
+                    <p class="page-subtitle">Gérez vos informations, préférences et paramètres de compte.</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab-item active">Profil</div>
+                <div class="tab-item">Compte</div>
+                <div class="tab-item">Notifications</div>
+                <div class="tab-item">Confidentialité</div>
+                <div class="tab-item">Préférences</div>
+            </div>
+
+            <!-- Content Layout -->
+            <div class="content-layout">
+                <!-- Left Column -->
+                <div>
+                    <!-- Informations personnelles -->
+                    <div class="settings-card animate-in">
+                        <div class="card-header">
+                            <h3>Informations personnelles</h3>
+                        </div>
+                        <div class="profile-info-header">
+                            <div class="profile-photo-container">
+                                <div class="profile-photo">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" alt="Profile">
+                                </div>
+                                <button class="photo-upload-btn" title="Changer la photo">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                </button>
+                            </div>
+                            <div class="profile-fields">
+                                <div class="form-group">
+                                    <label class="form-label">Nom complet</label>
+                                    <input type="text" class="form-input" value="Amine ELKARTITE" id="fullName">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" value="aminezth022@gmail.com" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Téléphone</label>
+                                    <input type="tel" class="form-input" value="+212 712 345 678" id="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Localisation</label>
+                                    <input type="text" class="form-input" value="Taza, Maroc" id="location">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Titre professionnel</label>
+                                    <input type="text" class="form-input" value="Développeur Full Stack" id="jobTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Disponibilité</label>
+                                    <select class="form-select" id="availability">
+                                        <option> Ouvert aux opportunités</option>
+                                        <option>En poste</option>
+                                        <option>En recherche active</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="save-btn" id="saveProfileBtn" onclick="showToast('Profil mis à jour avec succès !')">Enregistrer les modifications</button>
+                    </div>
+
+                    <!-- À propos de moi -->
+                    <div class="settings-card animate-in">
+                        <div class="card-header">
+                            <h3>À propos de moi</h3>
+                        </div>
+                        <textarea class="about-textarea" id="aboutMe" maxlength="500">Développeur Full Stack avec 4+ ans d'expérience dans la conception d'applications web performantes et évolutives. Passionné par les nouvelles technologies et l'innovation.</textarea>
+                        <div class="char-count"><span id="charCount">189</span> / 500</div>
+                    </div>
+
+                    <!-- Réseaux sociaux -->
+                    <div class="settings-card animate-in">
+                        <div class="card-header">
+                            <h3>Réseaux sociaux</h3>
+                        </div>
+                        <div class="social-row">
+                            <div class="social-icon-btn">
+                                <svg viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            </div>
+                            <span style="font-size:13px;font-weight:500;color:var(--text-dark);width:80px;flex-shrink:0;">LinkedIn</span>
+                            <input type="text" class="social-input" value="linkedin.com/in/amine-elkartite">
+                            <button class="social-delete" onclick="showToast('Lien supprimé')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </div>
+                        <div class="social-row">
+                            <div class="social-icon-btn">
+                                <svg viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            </div>
+                            <span style="font-size:13px;font-weight:500;color:var(--text-dark);width:80px;flex-shrink:0;">GitHub</span>
+                            <input type="text" class="social-input" value="github.com/aminezth022">
+                            <button class="social-delete" onclick="showToast('Lien supprimé')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </div>
+                        <button class="add-link-btn" onclick="showToast('Ajout d\'un nouveau lien...')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Ajouter un lien
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="right-sidebar">
+                    <!-- Photo de profil -->
+                    <div class="sidebar-card animate-in">
+                        <h3>Photo de profil</h3>
+                        <div class="profile-photo-card">
+                            <div class="pp-photo">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=face" alt="Profile">
+                            </div>
+                            <div class="pp-info">
+                                <div class="pp-size">JPG, PNG ou GIF. Taille max 2 Mo.</div>
+                                <button class="pp-btn" onclick="showToast('Sélectionnez une photo...')">Changer la photo</button>
+                                <button class="pp-delete" onclick="showToast('Photo supprimée')">Supprimer la photo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sécurité du compte -->
+                    <div class="sidebar-card animate-in">
+                        <h3>Sécurité du compte</h3>
+                        <div class="security-item" onclick="showToast('Modification du mot de passe...')">
+                            <div class="security-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </div>
+                            <div class="security-info">
+                                <div class="sec-title">Mot de passe</div>
+                                <div class="sec-desc">Modifiez votre mot de passe</div>
+                            </div>
+                            <span class="security-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                        <div class="security-item" onclick="showToast('Gestion 2FA...')">
+                            <div class="security-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div class="security-info">
+                                <div class="sec-title">Authentification à deux facteurs</div>
+                                <div class="sec-desc">Renforcez la sécurité de votre compte</div>
+                            </div>
+                            <span class="sec-status">Activée</span>
+                            <span class="security-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                        <div class="security-item" onclick="showToast('Gestion des sessions...')">
+                            <div class="security-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            </div>
+                            <div class="security-info">
+                                <div class="sec-title">Sessions actives</div>
+                                <div class="sec-desc">Gérez vos sessions connectées</div>
+                            </div>
+                            <span class="sec-value">3 sessions</span>
+                            <span class="security-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                        <div class="security-item" onclick="showToast('Historique de connexion...')">
+                            <div class="security-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div class="security-info">
+                                <div class="sec-title">Historique de connexion</div>
+                                <div class="sec-desc">Consultez vos connexions récentes</div>
+                            </div>
+                            <span class="sec-link">Voir l'historique</span>
+                            <span class="security-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                    </div>
+
+                    <!-- Préférences de recherche -->
+                    <div class="sidebar-card animate-in">
+                        <h3>Préférences de recherche</h3>
+                        <div class="pref-item" onclick="showToast('Types de postes...')">
+                            <div class="pref-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            </div>
+                            <div class="pref-info">
+                                <div class="pref-title">Types de postes</div>
+                                <div class="pref-desc">Développement, Data, Produit...</div>
+                            </div>
+                            <span class="pref-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                        <div class="pref-item" onclick="showToast('Localisations préférées...')">
+                            <div class="pref-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div class="pref-info">
+                                <div class="pref-title">Localisations préférées</div>
+                                <div class="pref-desc">Taza, Maroc, Remote</div>
+                            </div>
+                            <span class="pref-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                        <div class="pref-item" onclick="showToast('Salaire minimum...')">
+                            <div class="pref-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </div>
+                            <div class="pref-info">
+                                <div class="pref-title">Salaire minimum souhaité</div>
+                                <div class="pref-desc">15 000 MAD / mois</div>
+                            </div>
+                            <span class="pref-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                        </div>
+                    </div>
+
+                    <!-- Supprimer mon compte -->
+                    <div class="sidebar-card animate-in">
+                        <div class="delete-section">
+                            <h4>Supprimer mon compte</h4>
+                            <p>Cette action est irréversible. Toutes vos données seront définitivement supprimées.</p>
+                            <button class="delete-btn" onclick="showModal()">Supprimer mon compte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span id="toastMessage">Action effectuée avec succès !</span>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h3>Supprimer le compte</h3>
+            <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et toutes vos données seront définitivement supprimées.</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="hideModal()">Annuler</button>
+                <button class="btn-danger" onclick="confirmDelete()">Supprimer définitivement</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+                hideModal();
+            }
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Tabs
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Character count
+        const aboutTextarea = document.getElementById('aboutMe');
+        const charCount = document.getElementById('charCount');
+
+        aboutTextarea.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal
+        function showModal() {
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+
+        function hideModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        function closeModal(event) {
+            if (event.target === event.currentTarget) {
+                hideModal();
+            }
+        }
+
+        function confirmDelete() {
+            hideModal();
+            showToast('Compte supprimé avec succès');
+        }
+
+        // Animate on scroll
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Button ripple effect
+        document.querySelectorAll('.cta-btn, .premium-btn, .save-btn, .delete-btn, .pp-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.3);
+                    width: 100px;
+                    height: 100px;
+                    left: ${e.clientX - rect.left - 50}px;
+                    top: ${e.clientY - rect.top - 50}px;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to { transform: scale(4); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Card hover effects
+        document.querySelectorAll('.settings-card, .sidebar-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+</body>
+</html>
+

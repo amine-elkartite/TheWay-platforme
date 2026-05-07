@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheWay - Paramètres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0d1117;
+            --sidebar-hover: #161b22;
+            --sidebar-active: #1a2332;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --primary: #6366f1;
+            --green: #22c55e;
+            --orange: #f97316;
+            --red: #ef4444;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --bg-main: #f8f9fc;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo .logo-icon { width: 40px; height: 40px; }
+        .sidebar-logo .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1.5px;
+        }
+        .sidebar-logo .logo-text span { color: var(--accent); }
+
+        .sidebar-nav { padding: 16px 12px; flex: 1; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: #e2e8f0; }
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+        }
+        .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .sidebar-premium {
+            margin: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .premium-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .premium-header h4 { color: #fff; font-size: 14px; font-weight: 600; }
+        .premium-header svg { width: 20px; height: 20px; color: var(--accent); }
+        .premium-header p { color: #94a3b8; font-size: 12px; line-height: 1.6; margin-bottom: 16px; }
+        .premium-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .premium-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: #fff;
+            padding: 12px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notification-btn:hover { background: var(--bg-main); }
+        .notification-btn svg { width: 20px; height: 20px; color: var(--text-muted); }
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .user-profile:hover { background: var(--bg-main); }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info { text-align: right; }
+        .user-info .name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .user-info .location { font-size: 12px; color: var(--text-muted); }
+        .user-dropdown { width: 18px; height: 18px; color: var(--text-muted); }
+
+        /* Page Body */
+        .page-body { padding: 24px 32px; }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .cta-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4); }
+        .cta-btn svg { width: 16px; height: 16px; }
+
+        /* Tabs */
+        .tabs-container {
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 0;
+        }
+
+        .tab-item {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-item:hover { color: var(--text-dark); }
+        .tab-item.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .content-grid.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        /* Cards */
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .card-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .card-header-row .arrow {
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        .card-header-row .arrow svg { width: 20px; height: 20px; }
+
+        /* Info Rows */
+        .info-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .info-row:first-child { padding-top: 0; }
+
+        .info-row .info-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            width: 160px;
+            flex-shrink: 0;
+        }
+
+        .info-row .info-value {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 500;
+            flex: 1;
+            text-align: right;
+        }
+
+        .info-row .info-action {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 16px;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .info-row .info-action:hover { color: var(--accent-hover); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active { background: #dcfce7; color: #16a34a; }
+        .status-badge.inactive { background: #f3f4f6; color: var(--text-muted); }
+
+        /* 2FA Section */
+        .twofa-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .twofa-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .twofa-row .twofa-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .twofa-row .twofa-value {
+            font-size: 13px;
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .twofa-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover { border-color: var(--text-dark); }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+
+        /* Sessions */
+        .session-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .session-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .session-item:first-child { padding-top: 0; }
+
+        .session-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .session-icon svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+        .session-info { flex: 1; }
+        .session-info .session-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-badge {
+            padding: 2px 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .session-info .session-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .session-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .session-more {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border-radius: 6px;
+        }
+
+        .session-more:hover { background: #f3f4f6; }
+        .session-more svg { width: 18px; height: 18px; }
+
+        .session-current {
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .view-sessions-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .view-sessions-link svg { width: 14px; height: 14px; }
+
+        /* Download Data */
+        .download-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 0;
+            cursor: pointer;
+        }
+
+        .download-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .download-icon svg { width: 20px; height: 20px; color: var(--text-muted); }
+
+        .download-info { flex: 1; }
+        .download-info .dl-title { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .download-info .dl-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+        .download-arrow { color: var(--text-light); }
+        .download-arrow svg { width: 16px; height: 16px; }
+
+        /* Email Form */
+        .email-form {
+            margin-top: 12px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .form-input::placeholder { color: #9ca3af; }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+        }
+
+        .form-btn {
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .form-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); }
+
+        /* Danger Zone */
+        .danger-zone {
+            margin-top: 20px;
+        }
+
+        .danger-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .danger-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #fef2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .danger-icon svg { width: 20px; height: 20px; color: var(--red); }
+
+        .danger-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .danger-header p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .danger-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .btn-danger-outline {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-danger-outline:hover { border-color: var(--text-dark); }
+
+        .btn-danger {
+            padding: 10px 20px;
+            background: #fff;
+            border: 1px solid var(--red);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--red);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-danger:hover { background: #fef2f2; }
+
+        /* Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 24px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast svg { width: 20px; height: 20px; color: var(--green); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 440px;
+            width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.4s ease forwards; opacity: 0; }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; }
+            .page-body { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .page-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .tabs-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .tab-item { padding: 12px 14px; font-size: 13px; }
+            .info-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .info-row .info-label { width: auto; }
+            .info-row .info-value { text-align: left; }
+            .info-row .info-action { margin-left: 0; margin-top: 4px; }
+            .danger-actions { flex-direction: column; }
+            .twofa-actions { flex-direction: column; }
+            .user-info { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <path d="M8 8L20 4L32 8L36 20L20 36L4 20L8 8Z" fill="#f59e0b" opacity="0.9"/>
+                    <path d="M12 12L20 8L28 12L32 20L20 32L8 20L12 12Z" fill="#1a1a2e"/>
+                    <path d="M16 16L20 14L24 16L28 20L20 28L12 20L16 16Z" fill="#f59e0b"/>
+                </svg>
+            </div>
+            <div class="logo-text">THE<span>WAY</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>CV & Compétences</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>Matching</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Skills</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Opportunités</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Progression</a>
+            <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</a>
+        </nav>
+        <div class="sidebar-premium">
+            <div class="premium-header"><h4>Plan Premium</h4><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></div>
+            <p>Accédez à toutes les fonctionnalités avancées.</p>
+            <button class="premium-btn">Passer Premium</button>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div></div>
+            <div class="header-right">
+                <button class="notification-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="notif-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div class="name">Amine ELKARTITE</div>
+                        <div class="location">Taza, Maroc</div>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Amine">
+                    </div>
+                    <svg class="user-dropdown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-body">
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Paramètres</h1>
+                    <p class="page-subtitle">Gérez vos informations, préférences et paramètres de compte.</p>
+                </div>
+                <button class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Lancer une nouvelle analyse
+                </button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab-item">Profil</div>
+                <div class="tab-item active">Compte</div>
+                <div class="tab-item">Notifications</div>
+                <div class="tab-item">Confidentialité</div>
+                <div class="tab-item">Préférences</div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Informations du compte -->
+                <div class="settings-card animate-in">
+                    <div class="card-header">
+                        <h3>Informations du compte</h3>
+                        <p>Gérez vos informations de connexion et les paramètres de votre compte.</p>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value">alex.martin@email.com</span>
+                        <span class="info-action" onclick="showToast('Modification de l\'email en cours...')">Modifier</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Mot de passe</span>
+                        <span class="info-value">•••••••••••</span>
+                        <span class="info-action" onclick="showToast('Modification du mot de passe...')">Modifier</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Téléphone</span>
+                        <span class="info-value">+33 6 12 34 56 78</span>
+                        <span class="info-action" onclick="showToast('Modification du téléphone...')">Modifier</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Date d'inscription</span>
+                        <span class="info-value">12 janvier 2024</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Statut du compte</span>
+                        <span class="info-value"><span class="status-badge active">Actif</span></span>
+                    </div>
+                </div>
+
+                <!-- Authentification à deux facteurs -->
+                <div class="settings-card animate-in">
+                    <div class="card-header-row">
+                        <div class="card-header">
+                            <h3>Authentification à deux facteurs</h3>
+                            <p>Renforcez la sécurité de votre compte avec la double authentification.</p>
+                        </div>
+                        <span class="arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                        </span>
+                    </div>
+                    <div class="twofa-row">
+                        <span class="twofa-label">Statut</span>
+                        <span class="twofa-value"><span class="status-badge active">Activée</span></span>
+                    </div>
+                    <div class="twofa-row">
+                        <span class="twofa-label">Méthode</span>
+                        <span class="twofa-value">Application d'authentification (Google Authenticator)</span>
+                    </div>
+                    <div class="twofa-row">
+                        <span class="twofa-label">Dernière utilisation</span>
+                        <span class="twofa-value">Aujourd'hui à 09:32</span>
+                    </div>
+                    <div class="twofa-actions">
+                        <button class="btn-secondary" onclick="showModal('deactivate')">Désactiver 2FA</button>
+                        <button class="btn-primary" onclick="showToast('Gestion 2FA ouverte')">Gérer 2FA</button>
+                    </div>
+                </div>
+
+                <!-- Sessions actives -->
+                <div class="settings-card animate-in">
+                    <div class="card-header">
+                        <h3>Sessions actives</h3>
+                        <p>Gérez vos sessions connectées sur vos appareils.</p>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                        <div class="session-info">
+                            <div class="session-name">
+                                Chrome sur Windows
+                                <span class="session-badge">Session actuelle</span>
+                            </div>
+                            <div class="session-meta">Lyon, France • IP : 91.134.12.45</div>
+                        </div>
+                        <span class="session-current">Actuelle</span>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        </div>
+                        <div class="session-info">
+                            <div class="session-name">Safari sur iPhone</div>
+                            <div class="session-meta">Lyon, France • IP : 91.134.12.45</div>
+                        </div>
+                        <span class="session-time">Hier à 18:45</span>
+                        <button class="session-more">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                        </button>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                        <div class="session-info">
+                            <div class="session-name">Chrome sur MacOS</div>
+                            <div class="session-meta">Paris, France • IP : 91.134.12.45</div>
+                        </div>
+                        <span class="session-time">12 mai 2024 à 14:22</span>
+                        <button class="session-more">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                        </button>
+                    </div>
+                    <button class="view-sessions-link">
+                        Voir toutes les sessions
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+
+                <!-- Right Column -->
+                <div style="display:flex;flex-direction:column;gap:20px;">
+                    <!-- Télécharger mes données -->
+                    <div class="settings-card animate-in">
+                        <div class="card-header">
+                            <h3>Télécharger mes données</h3>
+                            <p>Obtenez une copie de toutes les données de votre compte.</p>
+                        </div>
+                        <div class="download-item" onclick="showToast('Export des données en cours...')">
+                            <div class="download-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            </div>
+                            <div class="download-info">
+                                <div class="dl-title">Exporter mes données</div>
+                                <div class="dl-desc">Recevez un fichier contenant vos informations</div>
+                            </div>
+                            <span class="download-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Modifier mon email -->
+                    <div class="settings-card animate-in">
+                        <div class="card-header">
+                            <h3>Modifier mon email</h3>
+                            <p>Mettez à jour votre adresse email de connexion.</p>
+                        </div>
+                        <div class="email-form">
+                            <label class="form-label">Nouvel email</label>
+                            <input type="email" class="form-input" id="newEmail" placeholder="exemple@email.com">
+                            <button class="form-btn" onclick="handleEmailChange()">Envoyer le lien de confirmation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-card animate-in danger-zone" style="margin-top:20px;">
+                <div class="danger-header">
+                    <div class="danger-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div>
+                        <h3>Zone dangereuse</h3>
+                        <p>Ces actions sont irréversibles. Veuillez être prudent.</p>
+                    </div>
+                </div>
+                <div class="danger-actions">
+                    <button class="btn-danger-outline" onclick="showModal('deactivate')">Désactiver mon compte</button>
+                    <button class="btn-danger" onclick="showModal('delete')">Supprimer mon compte</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span id="toastMessage">Action effectuée avec succès !</span>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <h3 id="modalTitle">Confirmer l'action</h3>
+            <p id="modalMessage">Êtes-vous sûr de vouloir effectuer cette action ?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="hideModal()">Annuler</button>
+                <button class="btn-danger" id="modalConfirmBtn" onclick="confirmAction()">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+                hideModal();
+            }
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Tabs
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal
+        let currentAction = '';
+
+        function showModal(action) {
+            currentAction = action;
+            const overlay = document.getElementById('modalOverlay');
+            const title = document.getElementById('modalTitle');
+            const message = document.getElementById('modalMessage');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+
+            if (action === 'deactivate') {
+                title.textContent = 'Désactiver le compte';
+                message.textContent = 'Êtes-vous sûr de vouloir désactiver votre compte ? Vous pourrez le réactiver ultérieurement en vous reconnectant.';
+                confirmBtn.className = 'btn-secondary';
+                confirmBtn.textContent = 'Désactiver';
+                confirmBtn.onclick = () => { hideModal(); showToast('Compte désactivé avec succès'); };
+            } else if (action === 'delete') {
+                title.textContent = 'Supprimer le compte';
+                message.textContent = 'Attention ! Cette action est irréversible. Toutes vos données seront définitivement supprimées. Souhaitez-vous vraiment continuer ?';
+                confirmBtn.className = 'btn-danger';
+                confirmBtn.textContent = 'Supprimer définitivement';
+                confirmBtn.onclick = () => { hideModal(); showToast('Compte supprimé'); };
+            }
+
+            overlay.classList.add('show');
+        }
+
+        function hideModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        function closeModal(event) {
+            if (event.target === event.currentTarget) {
+                hideModal();
+            }
+        }
+
+        function confirmAction() {
+            hideModal();
+        }
+
+        // Email change handler
+        function handleEmailChange() {
+            const email = document.getElementById('newEmail').value;
+            if (email && email.includes('@')) {
+                showToast('Lien de confirmation envoyé à ' + email);
+                document.getElementById('newEmail').value = '';
+            } else {
+                showToast('Veuillez entrer un email valide');
+            }
+        }
+
+        // Animate on scroll
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Button ripple effect
+        document.querySelectorAll('.cta-btn, .premium-btn, .btn-primary, .form-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.3);
+                    width: 100px;
+                    height: 100px;
+                    left: ${e.clientX - rect.left - 50}px;
+                    top: ${e.clientY - rect.top - 50}px;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to { transform: scale(4); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Card hover effects
+        document.querySelectorAll('.settings-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Session more button
+        document.querySelectorAll('.session-more').forEach(btn => {
+            btn.addEventListener('click', function() {
+                showToast('Options de session');
+            });
+        });
+    </script>
+</body>
+</html>
+
