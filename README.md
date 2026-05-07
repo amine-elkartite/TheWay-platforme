@@ -1,7 +1,7 @@
-# <p align="center">
-  <img src="assets/images/icon.png" alt="THEWAY Logo" width="40">
- THEWAY
- </p>
+# <h1 align="center">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="40" style="vertical-align: middle;">
+  THEWAY
+</h1>
 
 <p align="center">
   <img src="assets/images/logo.png" alt="THEWAY Logo" width="420">
