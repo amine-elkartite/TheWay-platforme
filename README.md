@@ -1,6 +1,7 @@
 # <p align="center">
   <img src="assets/images/icon.png" alt="THEWAY Logo" width="40">
-</p> THEWAY
+ THEWAY
+ </p>
 
 <p align="center">
   <img src="assets/images/logo.png" alt="THEWAY Logo" width="420">
