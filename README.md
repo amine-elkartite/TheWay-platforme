@@ -1,12 +1,11 @@
-<p align="center">
-  <img src="assets/images/logo.png" alt="THEWAY Logo" width="420">
-</p>
+<h1 align="center">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="45" align="center" />
+  <span>THEWAY</span>
+</h1>
 
 <p align="center">
   Intelligent Skills Matching Platform
 </p>
-
-
 
 
 <h2 align="center">THEWAY – Intelligent Skills Matching Platform</h2>
