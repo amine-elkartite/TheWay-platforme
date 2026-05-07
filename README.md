@@ -1,4 +1,6 @@
-# THEWAY
+# <p align="center">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="420">
+</p> THEWAY
 
 <p align="center">
   <img src="assets/images/logo.png" alt="THEWAY Logo" width="420">
