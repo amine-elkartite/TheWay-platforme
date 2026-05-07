@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheWay - Paramètres</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0d1117;
+            --sidebar-hover: #161b22;
+            --sidebar-active: #1a2332;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --primary: #6366f1;
+            --green: #22c55e;
+            --orange: #f97316;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --bg-main: #f8f9fc;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo .logo-icon { width: 40px; height: 40px; }
+        .sidebar-logo .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1.5px;
+        }
+        .sidebar-logo .logo-text span { color: var(--accent); }
+
+        .sidebar-nav { padding: 16px 12px; flex: 1; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: #e2e8f0; }
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+            border-left: 3px solid var(--accent);
+        }
+        .nav-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+        .sidebar-premium {
+            margin: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .premium-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .premium-header h4 { color: #fff; font-size: 14px; font-weight: 600; }
+        .premium-header svg { width: 20px; height: 20px; color: var(--accent); }
+        .premium-header p { color: #94a3b8; font-size: 12px; line-height: 1.6; margin-bottom: 16px; }
+        .premium-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .premium-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: #fff;
+            padding: 12px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .notification-btn:hover { background: var(--bg-main); }
+        .notification-btn svg { width: 20px; height: 20px; color: var(--text-muted); }
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+        .user-profile:hover { background: var(--bg-main); }
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .user-info { text-align: right; }
+        .user-info .name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .user-info .location { font-size: 12px; color: var(--text-muted); }
+        .user-dropdown { width: 18px; height: 18px; color: var(--text-muted); }
+
+        /* Page Body */
+        .page-body { padding: 24px 32px; }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 0;
+        }
+
+        .tab-item {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab-item:hover { color: var(--text-dark); }
+        .tab-item.active {
+            color: var(--text-dark);
+            border-bottom-color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Main Settings Card */
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .settings-header-left h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .settings-header-left p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .save-btn {
+            padding: 10px 20px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .save-btn:hover {
+            background: #1a2332;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Notification Section */
+        .notif-section {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .notif-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .notif-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .notif-section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-section-icon svg { width: 20px; height: 20px; }
+        .notif-section-icon.purple-icon { background: #ede9fe; color: #7c3aed; }
+        .notif-section-icon.green-icon { background: #dcfce7; color: #16a34a; }
+        .notif-section-icon.gray-icon { background: #f3f4f6; color: #6b7280; }
+
+        .notif-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Column Headers */
+        .column-headers {
+            display: grid;
+            grid-template-columns: 1fr 70px 70px 70px;
+            gap: 12px;
+            padding: 8px 0 12px 52px;
+            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 8px;
+        }
+
+        .col-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Toggle Row */
+        .toggle-row {
+            display: grid;
+            grid-template-columns: 1fr 70px 70px 70px;
+            gap: 12px;
+            padding: 12px 0;
+            align-items: center;
+        }
+
+        .toggle-row-info {
+            padding-left: 52px;
+        }
+
+        .toggle-row-info .toggle-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .toggle-row-info .toggle-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .toggle-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 40px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #d1d5db;
+            border-radius: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-slider::before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--green);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(18px);
+        }
+
+        .toggle-switch input:focus + .toggle-slider {
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+        }
+
+        /* Right Sidebar Cards */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Notification Dropdown */
+        .notif-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 120px;
+            width: 360px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: var(--shadow-lg);
+            z-index: 60;
+            display: none;
+        }
+
+        .notif-dropdown.show { display: block; }
+
+        .notif-dropdown-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .notif-dropdown-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .notif-dropdown-header a {
+            font-size: 13px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .notif-dropdown-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .notif-dropdown-item:hover { background: #f8f9fc; }
+        .notif-dropdown-item:last-child { border-bottom: none; }
+
+        .notif-dropdown-item .notif-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .notif-dropdown-item .notif-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-dropdown-item .notif-icon svg { width: 18px; height: 18px; }
+        .notif-dropdown-item .notif-icon.purple-notif { background: #ede9fe; color: #7c3aed; }
+        .notif-dropdown-item .notif-icon.green-notif { background: #dcfce7; color: #16a34a; }
+        .notif-dropdown-item .notif-icon.orange-notif { background: #fff7ed; color: #ea580c; }
+
+        .notif-dropdown-item .notif-content { flex: 1; }
+        .notif-dropdown-item .notif-content .notif-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+        .notif-dropdown-item .notif-content .notif-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .notif-dropdown-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .view-all-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .view-all-btn svg { width: 14px; height: 14px; }
+
+        /* Sidebar Card */
+        .sidebar-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .sidebar-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .sidebar-card .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        /* Time Selectors */
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .time-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .time-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 32px;
+        }
+
+        .time-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Days Selector */
+        .days-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .days-grid {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .day-chip {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .day-chip.active {
+            background: #fff7ed;
+            color: var(--orange);
+        }
+
+        .day-chip.inactive {
+            background: #f3f4f6;
+            color: var(--text-light);
+        }
+
+        .day-chip:hover { transform: translateY(-1px); }
+
+        /* Channel Items */
+        .channel-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .channel-item:hover { background: #f8f9fc; }
+        .channel-item:last-child { margin-bottom: 0; }
+
+        .channel-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .channel-icon svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+        .channel-info { flex: 1; }
+        .channel-info .ch-name { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .channel-info .ch-detail { font-size: 12px; color: var(--text-muted); }
+
+        .channel-status {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .channel-status.active { background: #dcfce7; color: var(--green); }
+        .channel-status.inactive { background: #f3f4f6; color: var(--text-muted); }
+
+        .channel-arrow { color: var(--text-light); }
+        .channel-arrow svg { width: 16px; height: 16px; }
+
+        /* Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 14px 24px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast svg { width: 20px; height: 20px; color: var(--green); }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.4s ease forwards; opacity: 0; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-layout { grid-template-columns: 1fr; }
+            .notif-dropdown { right: 20px; width: calc(100% - 40px); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; }
+            .page-body { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .column-headers { display: none; }
+            .toggle-row { grid-template-columns: 1fr; gap: 8px; }
+            .toggle-row-info { padding-left: 0; }
+            .toggle-cell { justify-content: flex-start; gap: 12px; }
+            .toggle-cell:nth-child(2)::before { content: "Email"; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+            .toggle-cell:nth-child(3)::before { content: "Push"; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+            .toggle-cell:nth-child(4)::before { content: "SMS"; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+            .tabs-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .tab-item { padding: 12px 14px; font-size: 13px; }
+            .settings-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .save-btn { width: 100%; text-align: center; }
+            .user-info { display: none; }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <path d="M8 8L20 4L32 8L36 20L20 36L4 20L8 8Z" fill="#f59e0b" opacity="0.9"/>
+                    <path d="M12 12L20 8L28 12L32 20L20 32L8 20L12 12Z" fill="#1a1a2e"/>
+                    <path d="M16 16L20 14L24 16L28 20L20 28L12 20L16 16Z" fill="#f59e0b"/>
+                </svg>
+            </div>
+            <div class="logo-text">THE<span>WAY</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Dashboard</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>CV & Compétences</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>Matching</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Skills</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Opportunités</a>
+            <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Progression</a>
+            <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Paramètres</a>
+        </nav>
+        <div class="sidebar-premium">
+            <div class="premium-header"><h4>Plan Premium</h4><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></div>
+            <p>Accédez à toutes les fonctionnalités avancées.</p>
+            <button class="premium-btn">Passer Premium</button>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div></div>
+            <div class="header-right">
+                <button class="notification-btn" id="notifBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="notif-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div class="name">Amine ELKARTITE</div>
+                        <div class="location">Taza, Maroc</div>
+                    </div>
+                    <div class="user-avatar">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="Amine">
+                    </div>
+                    <svg class="user-dropdown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Notification Dropdown -->
+        <div class="notif-dropdown" id="notifDropdown">
+            <div class="notif-dropdown-header">
+                <h3>Notifications</h3>
+                <a>Tout marquer comme lu</a>
+            </div>
+            <div class="notif-dropdown-item">
+                <div class="notif-icon purple-notif">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div class="notif-content">
+                    <div class="notif-title">Nouvelle offre correspondante</div>
+                    <div class="notif-desc">Développeur Full Stack chez ACME<br>il y a 2 min</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+            <div class="notif-dropdown-item">
+                <div class="notif-icon green-notif">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="notif-content">
+                    <div class="notif-title">Réponse à votre candidature</div>
+                    <div class="notif-desc">Microsoft a répondu à votre candidature<br>il y a 1h</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+            <div class="notif-dropdown-item">
+                <div class="notif-icon orange-notif">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="notif-content">
+                    <div class="notif-title">Offre recommandée</div>
+                    <div class="notif-desc">Une offre pourrait vous intéresser<br>il y a 3h</div>
+                </div>
+                <div class="notif-dot"></div>
+            </div>
+            <div class="notif-dropdown-footer">
+                <button class="view-all-btn">
+                    Voir toutes les notifications
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Page Body -->
+        <div class="page-body">
+            <h1 class="page-title">Paramètres</h1>
+            <p class="page-subtitle">Gérez vos informations, préférences et paramètres de compte.</p>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab-item">Profil</div>
+                <div class="tab-item">Compte</div>
+                <div class="tab-item active">Notifications</div>
+                <div class="tab-item">Confidentialité</div>
+                <div class="tab-item">Préférences</div>
+            </div>
+
+            <!-- Content Layout -->
+            <div class="content-layout">
+                <!-- Main Settings -->
+                <div class="settings-card animate-in">
+                    <div class="settings-header">
+                        <div class="settings-header-left">
+                            <h3>Préférences de notifications</h3>
+                            <p>Choisissez comment et quand vous souhaitez être notifié.</p>
+                        </div>
+                        <button class="save-btn" id="saveBtn">Enregistrer les modifications</button>
+                    </div>
+
+                    <!-- Offres d'emploi -->
+                    <div class="notif-section">
+                        <div class="notif-section-header">
+                            <div class="notif-section-icon purple-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            </div>
+                            <div>
+                                <div class="notif-section-title">Offres d'emploi</div>
+                            </div>
+                        </div>
+
+                        <div class="column-headers">
+                            <div class="col-header"></div>
+                            <div class="col-header">Email</div>
+                            <div class="col-header">Push</div>
+                            <div class="col-header">SMS</div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Nouvelles offres correspondantes</div>
+                                <div class="toggle-desc">Recevez une notification pour les nouvelles offres qui correspondent à votre profil</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Offres recommandées</div>
+                                <div class="toggle-desc">Recevez des recommandations d'offres basées sur votre activité</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Candidatures -->
+                    <div class="notif-section">
+                        <div class="notif-section-header">
+                            <div class="notif-section-icon green-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <div>
+                                <div class="notif-section-title">Candidatures</div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Statut de candidature</div>
+                                <div class="toggle-desc">Soyez notifié lorsque le statut de vos candidatures change</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Réponses des recruteurs</div>
+                                <div class="toggle-desc">Recevez une notification quand un recruteur vous répond</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Autres -->
+                    <div class="notif-section">
+                        <div class="notif-section-header">
+                            <div class="notif-section-icon gray-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            </div>
+                            <div>
+                                <div class="notif-section-title">Autres</div>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Messages</div>
+                                <div class="toggle-desc">Soyez notifié des nouveaux messages</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-row-info">
+                                <div class="toggle-title">Actualités et conseils</div>
+                                <div class="toggle-desc">Recevez nos conseils carrière et actualités</div>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-cell">
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="right-sidebar">
+                    <!-- Notification Hours -->
+                    <div class="sidebar-card animate-in">
+                        <h3>Heures de notifications</h3>
+                        <p class="card-desc">Choisissez les horaires pendant lesquels vous souhaitez recevoir des notifications push.</p>
+
+                        <div class="time-row">
+                            <div class="time-group">
+                                <label>Heure de début</label>
+                                <select class="time-select" id="startTime">
+                                    <option>06:00</option>
+                                    <option>07:00</option>
+                                    <option selected>08:00</option>
+                                    <option>09:00</option>
+                                    <option>10:00</option>
+                                </select>
+                            </div>
+                            <div class="time-group">
+                                <label>Heure de fin</label>
+                                <select class="time-select" id="endTime">
+                                    <option>16:00</option>
+                                    <option>17:00</option>
+                                    <option>18:00</option>
+                                    <option>19:00</option>
+                                    <option selected>20:00</option>
+                                    <option>21:00</option>
+                                    <option>22:00</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="days-label">Jours de notifications</div>
+                        <div class="days-grid" id="daysGrid">
+                            <button class="day-chip active" data-day="Lun">Lun</button>
+                            <button class="day-chip active" data-day="Mar">Mar</button>
+                            <button class="day-chip active" data-day="Mer">Mer</button>
+                            <button class="day-chip active" data-day="Jeu">Jeu</button>
+                            <button class="day-chip active" data-day="Ven">Ven</button>
+                            <button class="day-chip inactive" data-day="Sam">Sam</button>
+                            <button class="day-chip inactive" data-day="Dim">Dim</button>
+                        </div>
+                    </div>
+
+                    <!-- Notification Channels -->
+                    <div class="sidebar-card animate-in">
+                        <h3>Canaux de notifications</h3>
+                        <p class="card-desc">Gérez vos canaux de communication préférés.</p>
+
+                        <div class="channel-item">
+                            <div class="channel-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </div>
+                            <div class="channel-info">
+                                <div class="ch-name">Email</div>
+                                <div class="ch-detail">alex.martin@email.com</div>
+                            </div>
+                            <span class="channel-status active">Actif</span>
+                            <span class="channel-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </span>
+                        </div>
+
+                        <div class="channel-item">
+                            <div class="channel-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            </div>
+                            <div class="channel-info">
+                                <div class="ch-name">Push</div>
+                                <div class="ch-detail">Navigateur et mobile</div>
+                            </div>
+                            <span class="channel-status active">Actif</span>
+                            <span class="channel-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </span>
+                        </div>
+
+                        <div class="channel-item">
+                            <div class="channel-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                            </div>
+                            <div class="channel-info">
+                                <div class="ch-name">SMS</div>
+                                <div class="ch-detail">+33 6 12 34 56 78</div>
+                            </div>
+                            <span class="channel-status inactive">Désactivé</span>
+                            <span class="channel-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <span>Modifications enregistrées avec succès !</span>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Tabs
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Notification dropdown
+        const notifBtn = document.getElementById('notifBtn');
+        const notifDropdown = document.getElementById('notifDropdown');
+
+        notifBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!notifDropdown.contains(e.target) && e.target !== notifBtn) {
+                notifDropdown.classList.remove('show');
+            }
+        });
+
+        // Day chips toggle
+        const daysGrid = document.getElementById('daysGrid');
+        daysGrid.addEventListener('click', function(e) {
+            const chip = e.target.closest('.day-chip');
+            if (!chip) return;
+            chip.classList.toggle('active');
+            chip.classList.toggle('inactive');
+        });
+
+        // Save button
+        const saveBtn = document.getElementById('saveBtn');
+        const toast = document.getElementById('toast');
+
+        saveBtn.addEventListener('click', function() {
+            this.textContent = 'Enregistrement...';
+            this.style.opacity = '0.7';
+
+            setTimeout(() => {
+                this.textContent = 'Enregistrer les modifications';
+                this.style.opacity = '1';
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 800);
+        });
+
+        // Toggle animations
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const row = this.closest('.toggle-row');
+                if (row) {
+                    row.style.background = '#f8f9fc';
+                    row.style.borderRadius = '8px';
+                    setTimeout(() => {
+                        row.style.background = '';
+                        row.style.borderRadius = '';
+                    }, 300);
+                }
+            });
+        });
+
+        // Channel items click
+        document.querySelectorAll('.channel-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'translateX(4px)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Button ripple effect
+        document.querySelectorAll('.save-btn, .premium-btn, .view-all-btn, .help-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.3);
+                    width: 100px;
+                    height: 100px;
+                    left: ${e.clientX - rect.left - 50}px;
+                    top: ${e.clientY - rect.top - 50}px;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to { transform: scale(4); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Card hover effects
+        document.querySelectorAll('.settings-card, .sidebar-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Animate on scroll
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+
