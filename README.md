@@ -1,6 +1,5 @@
 <h1 align="center">
-  <img src="assets/images/icon.png" alt="THEWAY Logo" width="45" align="center" />
-  <span>THEWAY</span>
+  <img src="assets/images/logo.png" alt="THEWAY Logo" width="400" align="center" />
 </h1>
 
 <p align="center">
