@@ -6,11 +6,7 @@
   Intelligent Skills Matching Platform
 </p>
 
-<br/><br/><br/><br/>
-
-<h1 align="center">
-  <img src="assets/images/logo.png" alt="THEWAY Logo" width="400" align="center" />
-</h1>
+<br/><br/>
 
 
 <p align="center">
