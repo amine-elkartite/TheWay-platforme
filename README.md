@@ -7,8 +7,12 @@
   Intelligent Skills Matching Platform
 </p>
 
+<br/><br/><br/><br/>
 
-<h2 align="center">THEWAY – Intelligent Skills Matching Platform</h2>
+<h1 align="center">
+  <img src="assets/images/logo.png" alt="THEWAY Logo" width="400" align="center" />
+</h1>
+
 
 <p align="center">
   Une plateforme intelligente qui analyse les compétences, compare les profils avec les opportunités disponibles, et aide les utilisateurs à trouver le meilleur chemin vers leur avenir professionnel.
