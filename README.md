@@ -1,5 +1,5 @@
 # <p align="center">
-  <img src="assets/images/icon.png" alt="THEWAY Logo" width="420">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="40">
 </p> THEWAY
 
 <p align="center">
