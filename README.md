@@ -1,19 +1,11 @@
-<div align="center">
+<h1 align="center">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="45" align="center" />
+  <span>THEWAY</span>
+</h1>
 
-<table>
-  <tr>
-    <td align="center" valign="middle">
-      <img src="assets/images/icon.png" alt="THEWAY Icon" width="45">
-    </td>
-    <td align="center" valign="middle">
-      <strong style="font-size: 32px;">THEWAY</strong>
-      <br>
-      <span>Intelligent Skills Matching Platform</span>
-    </td>
-  </tr>
-</table>
-
-</div>
+<p align="center">
+  Intelligent Skills Matching Platform
+</p>
 
 
 <p align="center">
