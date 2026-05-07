@@ -1,6 +1,10 @@
-# <p align="center">
-  <img src="assets/images/icon.png" alt="THEWAY Logo" width="40" style="vertical-align: middle; margin-right: 8px;">
-  <span style="vertical-align: middle; font-size: 28px; font-weight: 700;">THEWAY</span>
+# <h1 align="center">
+  <img src="assets/images/icon.png" alt="THEWAY Logo" width="45" align="center" />
+  <span>THEWAY</span>
+</h1>
+
+<p align="center">
+  Intelligent Skills Matching Platform
 </p>
 
 <p align="center">
