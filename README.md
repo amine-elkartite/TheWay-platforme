@@ -1,4 +1,4 @@
-<div align="center">
+# <div align="center">
 
 <table>
   <tr>
@@ -15,9 +15,6 @@
 
 </div>
 
-<p align="center">
-  Intelligent Skills Matching Platform
-</p>
 
 <p align="center">
   <img src="assets/images/logo.png" alt="THEWAY Logo" width="420">
