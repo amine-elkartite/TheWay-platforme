@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sidebar-bg: #0d1117;
+            --sidebar-hover: #161b22;
+            --sidebar-active: #1a2332;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --primary: #6366f1;
+            --green: #22c55e;
+            --orange: #f97316;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #9ca3af;
+            --bg-main: #f8f9fc;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            padding: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .sidebar-logo .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sidebar-logo .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1.5px;
+        }
+
+        .sidebar-logo .logo-text span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            padding: 16px 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: #e2e8f0;
+        }
+
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-premium {
+            margin: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .premium-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .premium-header h4 {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .premium-header svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .premium-header p {
+            color: #94a3b8;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .premium-btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .premium-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: #fff;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--text-dark);
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .notification-btn:hover {
+            background: var(--bg-main);
+            border-color: #d1d5db;
+        }
+
+        .notification-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        .notif-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background: var(--bg-main);
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .user-info .location {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .user-dropdown {
+            width: 18px;
+            height: 18px;
+            color: var(--text-muted);
+        }
+
+        /* Page Body */
+        .page-body {
+            padding: 24px 32px;
+        }
+
+        .welcome-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        /* Stat Cards */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .stat-icon.purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .stat-icon.green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .stat-icon.orange {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .stat-icon.blue {
+            background: #ede9fe;
+            color: #6366f1;
+        }
+
+        .stat-info h3 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+
+        .stat-info .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .stat-info .stat-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-info .stat-sub .up {
+            color: var(--green);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .stat-info .stat-sub .stat-period {
+            color: var(--text-light);
+        }
+
+        .stat-info .stat-sub .stat-period .up-green {
+            color: var(--green);
+        }
+
+        /* Search & Filters */
+        .search-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input-wrapper svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-light);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 11px 16px 11px 42px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fff;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+
+        .filter-btn {
+            padding: 11px 18px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            border-color: #d1d5db;
+            background: var(--bg-main);
+        }
+
+        .filter-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+        }
+
+        /* Opportunities Section */
+        .opportunities-section {
+            min-width: 0;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .opportunity-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .opportunity-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+            border-color: #d1d5db;
+        }
+
+        .opp-logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: 800;
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .opp-logo.aws-logo {
+            background: #fff;
+            border: 1px solid var(--border);
+        }
+
+        .opp-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .opp-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .opp-header h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .opp-header .company-name {
+            font-size: 13px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .opp-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .opp-meta span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .opp-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .opp-tag {
+            padding: 3px 10px;
+            background: var(--bg-main);
+            border-radius: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            border: 1px solid #f0f0f0;
+        }
+
+        .opp-match {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .match-circle {
+            width: 48px;
+            height: 48px;
+            position: relative;
+        }
+
+        .match-circle svg {
+            width: 48px;
+            height: 48px;
+            transform: rotate(-90deg);
+        }
+
+        .match-circle .circle-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 3;
+        }
+
+        .match-circle .circle-progress {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .match-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .match-label {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .opp-priority {
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .priority-high {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .priority-medium {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .opp-bookmark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .opp-bookmark:hover {
+            background: var(--bg-main);
+        }
+
+        .opp-bookmark svg {
+            width: 18px;
+            height: 18px;
+            color: var(--text-light);
+        }
+
+        .opp-bookmark.bookmarked svg {
+            color: var(--accent);
+            fill: var(--accent);
+        }
+
+        .see-more-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .see-more-btn:hover {
+            background: #ede9fe;
+        }
+
+        .see-more-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .sidebar-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-card-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .sidebar-card-header a {
+            font-size: 13px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .sidebar-card-header a:hover {
+            text-decoration: underline;
+        }
+
+        .company-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .company-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .company-item:first-child {
+            padding-top: 0;
+        }
+
+        .company-item:hover {
+            padding-left: 4px;
+        }
+
+        .company-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .company-logo svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .company-info {
+            flex: 1;
+        }
+
+        .company-info .comp-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .company-info .comp-opp {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .company-arrow {
+            color: var(--text-light);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Tips */
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+            cursor: pointer;
+        }
+
+        .tip-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .tip-item:first-child {
+            padding-top: 0;
+        }
+
+        .tip-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tip-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .tip-icon.purple-tip {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .tip-icon.orange-tip {
+            background: #fff7ed;
+            color: #ea580c;
+        }
+
+        .tip-icon.green-tip {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .tip-content h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .tip-content p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .tip-arrow {
+            color: var(--text-light);
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        .see-all-tips {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f3f4f6;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .see-all-tips svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Bottom Stats */
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .bottom-stat {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .bottom-stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .bottom-stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .bottom-stat-info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .bottom-stat-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .bottom-stat.ai-stat {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #ede9fe, #f0f0ff);
+            border-radius: 14px;
+            padding: 16px 20px;
+        }
+
+        .bottom-stat.ai-stat .bottom-stat-icon {
+            background: #fff;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .bottom-stat.ai-stat .bottom-stat-info h4 {
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        .bottom-stat.ai-stat .bottom-stat-info p {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Orange CTA Button */
+        .cta-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+        }
+
+        .cta-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        .animate-in:nth-child(1) { animation-delay: 0.05s; }
+        .animate-in:nth-child(2) { animation-delay: 0.1s; }
+        .animate-in:nth-child(3) { animation-delay: 0.15s; }
+        .animate-in:nth-child(4) { animation-delay: 0.2s; }
+        .animate-in:nth-child(5) { animation-delay: 0.25s; }
+
+        @keyframes countUp {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+            .right-sidebar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .stat-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .bottom-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .bottom-stat.ai-stat {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .page-body {
+                padding: 16px;
+            }
+            .top-header {
+                padding: 12px 16px;
+            }
+            .stat-cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 14px;
+            }
+            .stat-info h3 {
+                font-size: 22px;
+            }
+            .search-filters {
+                flex-direction: column;
+            }
+            .filter-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .right-sidebar {
+                grid-template-columns: 1fr;
+            }
+            .bottom-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bottom-stat.ai-stat {
+                grid-column: span 2;
+            }
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stat-cards {
+                grid-template-columns: 1fr;
+            }
+            .bottom-stats {
+                grid-template-columns: 1fr;
+            }
+            .bottom-stat.ai-stat {
+                grid-column: span 1;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 8L20 4L32 8L36 20L20 36L4 20L8 8Z" fill="#f59e0b" opacity="0.9"/>
+                    <path d="M12 12L20 8L28 12L32 20L20 32L8 20L12 12Z" fill="#1a1a2e"/>
+                    <path d="M16 16L20 14L24 16L28 20L20 28L12 20L16 16Z" fill="#f59e0b"/>
+                </svg>
+            </div>
+            <div class="logo-text">THE<span>WAY</span></div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Dashboard
+            </a>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+                CV & Compétences
+            </a>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                </svg>
+                Matching
+            </a>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                Skills
+            </a>
+            <a class="nav-item active" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                </svg>
+                Opportunités
+            </a>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                    <polyline points="12 14 18 14 12 8 6 14"/>
+                </svg>
+                Progression
+            </a>
+            <a class="nav-item" href="#">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Paramètres
+            </a>
+        </nav>
+
+        <div class="sidebar-premium">
+            <div class="premium-header">
+                <h4>Plan Premium</h4>
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+            </div>
+            <p>Accédez à toutes les fonctionnalités avancées.</p>
+            <button class="premium-btn">Voir les avantages</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                </button>
+                <h1 class="page-title">Opportunités</h1>
+            </div>
+            <div class="header-right">
+                <button class="cta-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    Lancer une nouvelle analyse
+                </button>
+                <button class="notification-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    <span class="notif-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="user-info">
+                        <div class="name">Amine ELKARTITE</div>
+                        <div class="location">Taza, Maroc</div>
+                    </div>
+                    <div class="user-avatar">AE</div>
+                    <svg class="user-dropdown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Body -->
+        <div class="page-body">
+            <p class="welcome-text">Découvrez les opportunités qui correspondent à votre profil et à vos compétences.</p>
+
+            <!-- Stat Cards -->
+            <div class="stat-cards">
+                <div class="stat-card animate-in">
+                    <div class="stat-icon purple">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>128</h3>
+                        <div class="stat-label">Opportunités trouvées</div>
+                        <div class="stat-sub">
+                            <span class="up">↑ 18%</span>
+                            <span class="stat-period">ce mois-ci</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-icon green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>76%</h3>
+                        <div class="stat-label">Correspondance moyenne</div>
+                        <div class="stat-sub">
+                            <span class="stat-period">vs mois dernier <span class="up-green">↑ 8%</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-icon orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <div class="stat-label">À fort potentiel</div>
+                        <div class="stat-sub">
+                            <span class="stat-period">priorité élevée</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-icon blue">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                            <line x1="9" y1="6" x2="15" y2="6"/>
+                            <line x1="9" y1="10" x2="15" y2="10"/>
+                            <line x1="9" y1="14" x2="12" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3>15</h3>
+                        <div class="stat-label">Entreprises intéressées</div>
+                        <div class="stat-sub">
+                            <span class="up">↑ 3</span>
+                            <span class="stat-period">ce mois-ci</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div class="search-filters">
+                <div class="search-input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Rechercher une opportunité, entreprise, poste...">
+                </div>
+                <button class="filter-btn">
+                    Tous les postes
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <button class="filter-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Localisation
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+                <button class="filter-btn">
+                    Niveau d'expérience
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Content Layout -->
+            <div class="content-layout">
+                <!-- Opportunities -->
+                <div class="opportunities-section">
+                    <h2 class="section-title">Opportunités recommandées</h2>
+
+                    <div class="opportunity-card animate-in" onclick="toggleBookmark(this)">
+                        <div class="opp-logo" style="background: #1a1a2e;">N</div>
+                        <div class="opp-details">
+                            <div class="opp-header">
+                                <h4>Développeur Frontend Senior</h4>
+                                <span class="company-name">Next.js</span>
+                            </div>
+                            <div class="opp-meta">
+                                <span>Paris, France</span>
+                                <span>•</span>
+                                <span>Hybride</span>
+                                <span>•</span>
+                                <span>CDI</span>
+                            </div>
+                            <div class="opp-tags">
+                                <span class="opp-tag">React</span>
+                                <span class="opp-tag">TypeScript</span>
+                                <span class="opp-tag">Next.js</span>
+                                <span class="opp-tag">Tailwind CSS</span>
+                            </div>
+                        </div>
+                        <div class="opp-match">
+                            <div class="match-circle">
+                                <svg viewBox="0 0 48 48">
+                                    <circle class="circle-bg" cx="24" cy="24" r="20"/>
+                                    <circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="10.05"/>
+                                </svg>
+                                <span class="match-percent">92%</span>
+                            </div>
+                            <span class="match-label">Match</span>
+                        </div>
+                        <span class="opp-priority priority-high">Très élevé</span>
+                        <button class="opp-bookmark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="opportunity-card animate-in" onclick="toggleBookmark(this)">
+                        <div class="opp-logo aws-logo">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                <path d="M6.5 18.5C6.5 18.5 8.5 16.5 12 16.5C15.5 16.5 17.5 18.5 17.5 18.5" stroke="#ff9900" stroke-width="2" stroke-linecap="round"/>
+                                <text x="12" y="14" text-anchor="middle" font-size="6" font-weight="bold" fill="#333">aws</text>
+                            </svg>
+                        </div>
+                        <div class="opp-details">
+                            <div class="opp-header">
+                                <h4>Ingénieur Cloud DevOps</h4>
+                                <span class="company-name">AWS</span>
+                            </div>
+                            <div class="opp-meta">
+                                <span>Lyon, France</span>
+                                <span>•</span>
+                                <span>Hybride</span>
+                                <span>•</span>
+                                <span>CDI</span>
+                            </div>
+                            <div class="opp-tags">
+                                <span class="opp-tag">AWS</span>
+                                <span class="opp-tag">Docker</span>
+                                <span class="opp-tag">Kubernetes</span>
+                                <span class="opp-tag">Terraform</span>
+                            </div>
+                        </div>
+                        <div class="opp-match">
+                            <div class="match-circle">
+                                <svg viewBox="0 0 48 48">
+                                    <circle class="circle-bg" cx="24" cy="24" r="20"/>
+                                    <circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="15.08"/>
+                                </svg>
+                                <span class="match-percent">88%</span>
+                            </div>
+                            <span class="match-label">Match</span>
+                        </div>
+                        <span class="opp-priority priority-high">Très élevé</span>
+                        <button class="opp-bookmark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="opportunity-card animate-in" onclick="toggleBookmark(this)">
+                        <div class="opp-logo" style="background: #1a1a2e;">D</div>
+                        <div class="opp-details">
+                            <div class="opp-header">
+                                <h4>Full Stack Developer</h4>
+                                <span class="company-name">Datadog</span>
+                            </div>
+                            <div class="opp-meta">
+                                <span>Paris, France</span>
+                                <span>•</span>
+                                <span>Hybride</span>
+                                <span>•</span>
+                                <span>CDI</span>
+                            </div>
+                            <div class="opp-tags">
+                                <span class="opp-tag">React</span>
+                                <span class="opp-tag">Node.js</span>
+                                <span class="opp-tag">TypeScript</span>
+                                <span class="opp-tag">PostgreSQL</span>
+                            </div>
+                        </div>
+                        <div class="opp-match">
+                            <div class="match-circle">
+                                <svg viewBox="0 0 48 48">
+                                    <circle class="circle-bg" cx="24" cy="24" r="20"/>
+                                    <circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="22.62"/>
+                                </svg>
+                                <span class="match-percent">82%</span>
+                            </div>
+                            <span class="match-label">Match</span>
+                        </div>
+                        <span class="opp-priority priority-high">Élevé</span>
+                        <button class="opp-bookmark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="opportunity-card animate-in" onclick="toggleBookmark(this)">
+                        <div class="opp-logo" style="background: #fff; border: 1px solid #e5e7eb;">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                                <circle cx="14" cy="6" r="3" fill="#4B79CF"/>
+                                <circle cx="14" cy="14" r="3" fill="#E6794B"/>
+                                <circle cx="14" cy="22" r="3" fill="#4B79CF"/>
+                                <circle cx="6" cy="10" r="3" fill="#D4B44B"/>
+                                <circle cx="6" cy="18" r="3" fill="#4B79CF"/>
+                                <circle cx="22" cy="10" r="3" fill="#D4B44B"/>
+                                <circle cx="22" cy="18" r="3" fill="#4B79CF"/>
+                            </svg>
+                        </div>
+                        <div class="opp-details">
+                            <div class="opp-header">
+                                <h4>Software Engineer</h4>
+                                <span class="company-name">Slack</span>
+                            </div>
+                            <div class="opp-meta">
+                                <span>Bordeaux, France</span>
+                                <span>•</span>
+                                <span>Hybride</span>
+                                <span>•</span>
+                                <span>CDI</span>
+                            </div>
+                            <div class="opp-tags">
+                                <span class="opp-tag">Go</span>
+                                <span class="opp-tag">React</span>
+                                <span class="opp-tag">API</span>
+                                <span class="opp-tag">Microservices</span>
+                            </div>
+                        </div>
+                        <div class="opp-match">
+                            <div class="match-circle">
+                                <svg viewBox="0 0 48 48">
+                                    <circle class="circle-bg" cx="24" cy="24" r="20"/>
+                                    <circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="31.42"/>
+                                </svg>
+                                <span class="match-percent">75%</span>
+                            </div>
+                            <span class="match-label">Match</span>
+                        </div>
+                        <span class="opp-priority priority-medium">Moyen</span>
+                        <button class="opp-bookmark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="opportunity-card animate-in" onclick="toggleBookmark(this)">
+                        <div class="opp-logo" style="background: linear-gradient(135deg, #FF5A5F, #FC642D);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="opp-details">
+                            <div class="opp-header">
+                                <h4>Backend Engineer</h4>
+                                <span class="company-name">Airbnb</span>
+                            </div>
+                            <div class="opp-meta">
+                                <span>Marseille, France</span>
+                                <span>•</span>
+                                <span>Sur site</span>
+                                <span>•</span>
+                                <span>CDI</span>
+                            </div>
+                            <div class="opp-tags">
+                                <span class="opp-tag">Python</span>
+                                <span class="opp-tag">Django</span>
+                                <span class="opp-tag">PostgreSQL</span>
+                                <span class="opp-tag">Redis</span>
+                            </div>
+                        </div>
+                        <div class="opp-match">
+                            <div class="match-circle">
+                                <svg viewBox="0 0 48 48">
+                                    <circle class="circle-bg" cx="24" cy="24" r="20"/>
+                                    <circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="37.7"/>
+                                </svg>
+                                <span class="match-percent">70%</span>
+                            </div>
+                            <span class="match-label">Match</span>
+                        </div>
+                        <span class="opp-priority priority-medium">Moyen</span>
+                        <button class="opp-bookmark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <button class="see-more-btn">
+                        Voir plus d'opportunités
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                            <polyline points="12 5 19 12 12 19"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Right Sidebar -->
+                <div class="right-sidebar">
+                    <!-- Top Companies -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-header">
+                            <h3>Top entreprises</h3>
+                            <a>Voir toutes</a>
+                        </div>
+                        <div class="company-item">
+                            <div class="company-logo" style="background: #f8f9fa;">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" fill="#4285F4" opacity="0.1"/>
+                                    <text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#4285F4">G</text>
+                                </svg>
+                            </div>
+                            <div class="company-info">
+                                <div class="comp-name">Google</div>
+                                <div class="comp-opp">8 opportunités</div>
+                            </div>
+                            <svg class="company-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="company-item">
+                            <div class="company-logo" style="background: #f8f9fa;">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="2" y="2" width="9" height="9" fill="#F25022" rx="1"/>
+                                    <rect x="13" y="2" width="9" height="9" fill="#7FBA00" rx="1"/>
+                                    <rect x="2" y="13" width="9" height="9" fill="#00A4EF" rx="1"/>
+                                    <rect x="13" y="13" width="9" height="9" fill="#FFB900" rx="1"/>
+                                </svg>
+                            </div>
+                            <div class="company-info">
+                                <div class="comp-name">Microsoft</div>
+                                <div class="comp-opp">7 opportunités</div>
+                            </div>
+                            <svg class="company-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="company-item">
+                            <div class="company-logo" style="background: #f8f9fa;">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <rect x="4" y="4" width="16" height="16" rx="3" fill="#0052CC"/>
+                                    <text x="12" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="white">D</text>
+                                </svg>
+                            </div>
+                            <div class="company-info">
+                                <div class="comp-name">DataCorp</div>
+                                <div class="comp-opp">6 opportunités</div>
+                            </div>
+                            <svg class="company-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="company-item">
+                            <div class="company-logo" style="background: #f8f9fa;">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 2L4 22h16L12 2z" stroke="#FF5A5F" stroke-width="2" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="company-info">
+                                <div class="comp-name">Airbnb</div>
+                                <div class="comp-opp">5 opportunités</div>
+                            </div>
+                            <svg class="company-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="company-item">
+                            <div class="company-logo" style="background: #f8f9fa;">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" fill="#1DB954"/>
+                                    <path d="M8 16.5C10 15 14 15 16 16.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                    <path d="M7 13.5C9.5 11.5 14.5 11.5 17 13.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                    <path d="M6 10.5C9 8 15 8 18 10.5" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                                </svg>
+                            </div>
+                            <div class="company-info">
+                                <div class="comp-name">Spotify</div>
+                                <div class="comp-opp">4 opportunités</div>
+                            </div>
+                            <svg class="company-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Personalized Tips -->
+                    <div class="sidebar-card">
+                        <div class="sidebar-card-header">
+                            <h3>Conseils personnalisés</h3>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon purple-tip">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Complétez votre profil</h4>
+                                <p>Ajoutez plus d'expériences pour augmenter votre visibilité.</p>
+                            </div>
+                            <svg class="tip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon orange-tip">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Améliorez vos compétences</h4>
+                                <p>Renforcez vos compétences DevOps très demandées.</p>
+                            </div>
+                            <svg class="tip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon green-tip">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    <polyline points="9 12 11 14 15 10"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Activez les alertes</h4>
+                                <p>Recevez des opportunités correspondant à votre profil.</p>
+                            </div>
+                            <svg class="tip-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"/>
+                            </svg>
+                        </div>
+                        <button class="see-all-tips">
+                            Voir tous les conseils
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                                <polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Stats -->
+            <div class="bottom-stats">
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <div class="bottom-stat-info">
+                        <h4>50,000+</h4>
+                        <p>Offres analysées / jour</p>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                            <line x1="9" y1="6" x2="15" y2="6"/>
+                            <line x1="9" y1="10" x2="15" y2="10"/>
+                            <line x1="9" y1="14" x2="12" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="bottom-stat-info">
+                        <h4>2,500+</h4>
+                        <p>Sociétés partenaires</p>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon" style="background: #ede9fe; color: #7c3aed;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <div class="bottom-stat-info">
+                        <h4>98%</h4>
+                        <p>Précision des recommandations</p>
+                    </div>
+                </div>
+                <div class="bottom-stat ai-stat">
+                    <div class="bottom-stat-icon" style="background: #ede9fe; color: #7c3aed;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.5V12"/>
+                            <path d="M12 2a4 4 0 0 0-4 4c0 1.5.8 2.8 2 3.5V12"/>
+                            <path d="M9 12h6v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4z"/>
+                            <path d="M8 22h8"/>
+                            <path d="M12 18v4"/>
+                        </svg>
+                    </div>
+                    <div class="bottom-stat-info">
+                        <h4>Notre IA travaille pour vous 24/7</h4>
+                        <p>Nous analysons en continu des milliers d'offres pour vous proposer les meilleures opportunités.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile sidebar toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Bookmark toggle
+        function toggleBookmark(card) {
+            const bookmark = card.querySelector('.opp-bookmark');
+            bookmark.classList.toggle('bookmarked');
+        }
+
+        // Animate match circles on scroll
+        function animateMatchCircles() {
+            const circles = document.querySelectorAll('.circle-progress');
+            circles.forEach(circle => {
+                const dashoffset = circle.getAttribute('stroke-dashoffset');
+                circle.style.strokeDashoffset = '125.66';
+                setTimeout(() => {
+                    circle.style.strokeDashoffset = dashoffset;
+                }, 300);
+            });
+        }
+
+        // Animate stat numbers
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-info h3');
+            statNumbers.forEach(num => {
+                const target = num.textContent;
+                const numericValue = parseInt(target.replace(/[^0-9]/g, ''));
+                const suffix = target.replace(/[0-9]/g, '');
+                let current = 0;
+                const increment = Math.ceil(numericValue / 40);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= numericValue) {
+                        current = numericValue;
+                        clearInterval(timer);
+                    }
+                    num.textContent = current + suffix;
+                }, 30);
+            });
+        }
+
+        // Filter button active state
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.borderColor = '#6366f1';
+                this.style.color = '#6366f1';
+                setTimeout(() => {
+                    this.style.borderColor = '';
+                    this.style.color = '';
+                }, 1500);
+            });
+        });
+
+        // Nav item click
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Initialize animations
+        window.addEventListener('load', () => {
+            animateMatchCircles();
+            setTimeout(animateNumbers, 500);
+        });
+
+        // Search input focus effect
+        const searchInput = document.querySelector('.search-input');
+        searchInput.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+            this.parentElement.style.transition = 'transform 0.2s ease';
+        });
+        searchInput.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+
+        // Company item hover effect
+        document.querySelectorAll('.company-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.background = '#f8f9fc';
+                setTimeout(() => {
+                    this.style.background = '';
+                }, 300);
+            });
+        });
+
+        // Tip item click
+        document.querySelectorAll('.tip-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.opacity = '0.6';
+                setTimeout(() => {
+                    this.style.opacity = '1';
+                }, 300);
+            });
+        });
+
+        // CTA button ripple effect
+        document.querySelectorAll('.cta-btn, .premium-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.4);
+                    width: 100px;
+                    height: 100px;
+                    left: ${e.clientX - rect.left - 50}px;
+                    top: ${e.clientY - rect.top - 50}px;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
+
