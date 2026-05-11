@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Support</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --purple-bg: #f5f3ff;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --yellow-bg: #fefce8;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo svg { width: 32px; height: 32px; }
+        .sidebar-logo span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-logo span em { font-style: normal; color: var(--accent); }
+
+        .sidebar-nav { flex: 1; padding: 16px 10px; overflow-y: auto; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+        .nav-item.active { background: var(--sidebar-active); color: var(--accent); }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item i { font-size: 20px; width: 24px; text-align: center; }
+
+        .sidebar-plan {
+            margin: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .sidebar-plan h4 i { color: var(--accent); font-size: 18px; }
+        .sidebar-plan p { color: rgba(255,255,255,0.5); font-size: 11.5px; line-height: 1.6; margin-bottom: 14px; }
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-plan .btn-plan:hover { background: var(--accent-hover); }
+
+        .sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-footer .nav-item { margin: 0; }
+
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            background: var(--white);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search-box {
+            position: relative;
+            width: 320px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--bg-main);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box input::placeholder { color: var(--text-light); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .search-box .kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .header-btn:hover { background: var(--bg-main); }
+        .header-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .user-menu img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .user-menu .name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .user-menu .role { font-size: 11px; color: var(--text-light); }
+        .user-menu i { font-size: 16px; color: var(--text-light); }
+
+        .page-content {
+            padding: 24px 28px;
+            display: flex;
+            gap: 0;
+        }
+        .page-main { flex: 1; min-width: 0; }
+
+        .page-header { margin-bottom: 20px; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .page-header p { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: box-shadow 0.2s;
+        }
+        .kpi-card:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .kpi-icon.green { background: var(--green-bg); color: #16a34a; }
+        .kpi-icon.red { background: var(--red-bg); color: var(--red); }
+        .kpi-icon.blue { background: var(--blue-bg); color: #2563eb; }
+        .kpi-icon.orange { background: var(--yellow-bg); color: #ca8a04; }
+        .kpi-label { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; margin-bottom: 6px; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .kpi-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 2px; }
+        .kpi-change.up { color: var(--green); }
+        .kpi-change.down { color: var(--red); }
+        .kpi-footer { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-bar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .filter-search {
+            position: relative;
+            width: 220px;
+        }
+        .filter-search input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+        .filter-search input:focus { border-color: var(--accent); }
+        .filter-search input::placeholder { color: var(--text-light); }
+        .filter-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .filter-select {
+            padding: 9px 30px 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .filter-select:focus { border-color: var(--accent); }
+        .btn-new {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+        .btn-new:hover { opacity: 0.9; }
+
+        .table-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .table-header h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+
+        .table-wrapper { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: var(--bg-main); }
+        .data-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+        .data-table tbody tr { cursor: pointer; transition: background 0.15s; }
+        .data-table tbody tr:hover { background: #f8fafc; }
+        .data-table tbody tr.selected { background: #eff6ff; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .radio-btn {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .ticket-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ticket-id { font-weight: 600; color: var(--text-primary); }
+
+        .client-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .client-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .client-logo.acme { background: #1a1a2e; color: #fff; }
+        .client-logo.data { background: #3b82f6; color: #fff; }
+        .client-logo.nova { background: #22c55e; color: #fff; }
+        .client-logo.green { background: #f0fdf4; color: #16a34a; }
+        .client-logo.talent { background: #1e3a5f; color: #fff; }
+        .client-cell .cname { font-weight: 600; color: var(--text-primary); font-size: 12.5px; }
+
+        .priority-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .priority-badge.high { background: var(--red-bg); color: var(--red); }
+        .priority-badge.medium { background: var(--orange-bg); color: var(--orange); }
+        .priority-badge.low { background: var(--blue-bg); color: var(--blue); }
+        .priority-badge.critical { background: var(--red-bg); color: var(--red); }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.open { background: var(--green-bg); color: var(--green); }
+        .status-badge.progress { background: var(--blue-bg); color: var(--blue); }
+        .status-badge.escalated { background: var(--purple-bg); color: #7c3aed; }
+        .status-badge.resolved { background: var(--green-bg); color: var(--green); }
+        .status-badge.pending { background: var(--orange-bg); color: var(--orange); }
+
+        .assignee-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .assignee-cell img { width: 24px; height: 24px; border-radius: 50%; }
+        .assignee-cell .aname { font-size: 12.5px; color: var(--text-primary); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+        .table-action:hover { background: var(--bg-main); }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .table-footer-info { font-size: 12px; color: var(--text-light); }
+        .pagination { display: flex; align-items: center; gap: 4px; }
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .page-btn.active { background: var(--sidebar-bg); color: #fff; border-color: var(--sidebar-bg); }
+        .page-btn.dots { border: none; background: none; cursor: default; color: var(--text-light); }
+        .page-rows select {
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .chart-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 18px;
+        }
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .chart-header h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .chart-header a { font-size: 11.5px; color: var(--blue); text-decoration: none; font-weight: 600; cursor: pointer; }
+        .chart-container { position: relative; height: 180px; }
+
+        .donut-wrapper { display: flex; align-items: center; gap: 20px; }
+        .donut-container { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .donut-center .value { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .donut-center .label { font-size: 10px; color: var(--text-light); }
+        .donut-legend { display: flex; flex-direction: column; gap: 6px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .legend-item .llabel { color: var(--text-secondary); flex: 1; }
+        .legend-item .lvalue { font-weight: 600; color: var(--text-primary); }
+
+        .health-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+        .health-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+        .health-item i { font-size: 14px; }
+        .health-item .hlabel { font-size: 12px; color: var(--text-secondary); flex: 1; }
+        .health-item .hvalue { font-size: 12px; font-weight: 600; margin-right: 8px; min-width: 32px; text-align: right; }
+        .health-bar {
+            width: 60px;
+            height: 5px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .health-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+        .health-item.green i { color: var(--green); }
+        .health-item.green .hvalue { color: var(--green); }
+        .health-item.green .health-bar-fill { background: var(--green); }
+        .health-item.blue i { color: var(--blue); }
+        .health-item.blue .hvalue { color: var(--blue); }
+        .health-item.blue .health-bar-fill { background: var(--blue); }
+        .health-item.purple i { color: var(--purple); }
+        .health-item.purple .hvalue { color: var(--purple); }
+        .health-item.purple .health-bar-fill { background: var(--purple); }
+        .health-item.red i { color: var(--red); }
+        .health-item.red .hvalue { color: var(--red); }
+        .health-item.red .health-bar-fill { background: var(--red); }
+
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        .bottom-stat {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .bottom-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .bottom-stat-icon.purple { background: var(--purple-bg); color: #7c3aed; }
+        .bottom-stat-icon.blue { background: var(--blue-bg); color: #2563eb; }
+        .bottom-stat-icon.cyan { background: #e0f2fe; }
+        .bottom-stat-icon.cyan i { color: #7c3aed; }
+        .bottom-stat-info .value { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .bottom-stat-info .label { font-size: 11px; color: var(--text-light); }
+
+        .detail-panel {
+            width: 400px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            margin-right: -28px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+        }
+        .detail-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            margin-right: 0;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .panel-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .panel-close:hover { background: var(--bg-main); }
+
+        .panel-ticket {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-ticket .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .panel-ticket .info .id { font-size: 14px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .panel-ticket .info .id .status-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--green-bg); color: var(--green); font-weight: 600; }
+        .panel-ticket .info .sub { font-size: 11.5px; color: var(--text-light); margin-top: 2px; }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            padding: 0 22px;
+        }
+        .panel-tab {
+            padding: 12px 0;
+            margin-right: 22px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+        .panel-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+        .panel-tab:hover:not(.active) { color: var(--text-secondary); }
+
+        .panel-body { padding: 16px 22px; }
+        .panel-section { margin-bottom: 20px; }
+        .panel-section h4 { font-size: 12.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; }
+        .info-row:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+        .info-row .label { font-size: 12px; color: var(--text-light); font-weight: 500; min-width: 80px; }
+        .info-row .value { font-size: 12.5px; color: var(--text-primary); font-weight: 500; text-align: right; }
+        .info-row .value a { color: var(--blue); text-decoration: none; }
+        .info-row .value a:hover { text-decoration: underline; }
+
+        .summary-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-item:hover { background: var(--bg-main); }
+        .action-item:last-child { margin-bottom: 0; }
+        .action-item .aicon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .action-item .aicon.blue { background: var(--blue-bg); color: var(--blue); }
+        .action-item .aicon.orange { background: var(--orange-bg); color: var(--orange); }
+        .action-item .aicon.green { background: var(--green-bg); color: var(--green); }
+        .action-item .ainfo { flex: 1; }
+        .action-item .ainfo .atitle { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+        .action-item .ainfo .adesc { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+        .action-item .aarrow { color: var(--text-light); font-size: 16px; }
+
+        .panel-actions { display: flex; gap: 10px; padding: 16px 22px; border-top: 1px solid var(--border); }
+        .btn-pending {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-pending:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-view {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--accent);
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-view:hover { opacity: 0.9; }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; }
+        .sidebar-overlay.active { display: block; }
+        .panel-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 95; }
+        .panel-overlay.active { display: block; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+        @media (max-width: 1400px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr 1fr; }
+            .bottom-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .detail-panel {
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                width: 400px;
+                box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+                margin-right: 0;
+            }
+            .detail-panel.hidden { transform: translateX(100%); }
+            .menu-toggle { display: flex !important; }
+        }
+        @media (max-width: 768px) {
+            .page-content { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .bottom-stats { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-box { display: none; }
+            .user-menu .info { display: none; }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-primary);
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="panel-overlay" id="panelOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="#"><i class="bx bx-home"></i>Tableau de bord</a>
+        <a class="nav-item" href="#"><i class="bx bx-user"></i>Utilisateurs</a>
+        <a class="nav-item" href="#"><i class="bx bx-building"></i>Entreprises</a>
+        <a class="nav-item" href="#"><i class="bx bx-briefcase"></i>Offres</a>
+        <a class="nav-item" href="#"><i class="bx bx-line-chart"></i>Matching IA</a>
+        <a class="nav-item" href="#"><i class="bx bx-target-lock"></i>Compétences</a>
+        <a class="nav-item" href="#"><i class="bx bx-bar-chart-alt-2"></i>Analyses</a>
+        <a class="nav-item" href="#"><i class="bx bx-check-shield"></i>Abonnements</a>
+        <a class="nav-item active" href="#"><i class="bx bx-headphone"></i>Support</a>
+        <a class="nav-item" href="#"><i class="bx bx-cog"></i>Paramètres</a>
+    </nav>
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Entreprise</h4>
+        <p>Gérez votre plateforme avec toutes les fonctionnalités avancées.</p>
+        <button class="btn-plan">Voir les plans</button>
+    </div>
+    <div class="sidebar-footer">
+        <a class="nav-item" href="#"><i class="bx bx-log-out"></i>Déconnexion</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="top-header">
+        <div style="display:flex;align-items:center;">
+            <button class="menu-toggle" id="menuToggle"><i class="bx bx-menu"></i></button>
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Rechercher dans la plateforme...">
+                <span class="kbd">K</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="bx bx-bell"></i><span class="badge">12</span></button>
+            <div class="user-menu">
+                <img src="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="info">
+                    <div class="name">Admin TheWay</div>
+                    <div class="role">Administrateur</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <div class="page-main">
+            <div class="page-header">
+                <h1>Support</h1>
+                <p>Gérez les tickets, les demandes d'assistance et la qualité du service client de la plateforme.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-headphone"></i></div>
+                    <div>
+                        <div class="kpi-label">Tickets ouverts</div>
+                        <div class="kpi-value">286 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="bx bx-error"></i></div>
+                    <div>
+                        <div class="kpi-label">Tickets critiques</div>
+                        <div class="kpi-value">18 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 4%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="bx bx-check-circle"></i></div>
+                    <div>
+                        <div class="kpi-label">Tickets résolus</div>
+                        <div class="kpi-value">1,248 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 9%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="bx bx-time-five"></i></div>
+                    <div>
+                        <div class="kpi-label">Temps de réponse moyen</div>
+                        <div class="kpi-value">1 h 42 min <span class="kpi-change down"><i class="bx bx-trending-down"></i> 8%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-bar-left">
+                    <div class="filter-search">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="Rechercher un ticket..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="catFilter">
+                        <option value="">Catégorie: Tous</option>
+                        <option value="billing">Facturation</option>
+                        <option value="account">Compte</option>
+                        <option value="ia">IA Matching</option>
+                        <option value="access">Accès</option>
+                        <option value="notifications">Notifications</option>
+                    </select>
+                    <select class="filter-select" id="priorityFilter">
+                        <option value="">Priorité: Toutes</option>
+                        <option value="high">Élevée</option>
+                        <option value="medium">Moyenne</option>
+                        <option value="low">Faible</option>
+                        <option value="critical">Critique</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Statut: Tous</option>
+                        <option value="open">Ouvert</option>
+                        <option value="progress">En cours</option>
+                        <option value="escalated">Escaladé</option>
+                        <option value="resolved">Résolu</option>
+                        <option value="pending">En attente</option>
+                    </select>
+                </div>
+                <button class="btn-new"><i class="bx bx-plus"></i> Nouveau ticket</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Tickets récents</h3>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px"></th>
+                                <th>Ticket</th>
+                                <th>Client</th>
+                                <th>Catégorie</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                                <th>Assigné à</th>
+                                <th>Dernière activité</th>
+                                <th style="width:40px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>286</strong> tickets</div>
+                    <div style="display:flex;align-items:center;gap:14px">
+                        <div class="pagination">
+                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn dots">...</button>
+                            <button class="page-btn">29</button>
+                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
+                        </div>
+                        <div class="page-rows">
+                            <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Évolution des tickets</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div style="font-size:11px;color:var(--text-light);margin-bottom:8px">Nombre de tickets</div>
+                    <div class="chart-container">
+                        <canvas id="ticketChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Répartition par catégorie</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div class="donut-wrapper">
+                        <div class="donut-container">
+                            <canvas id="donutChart"></canvas>
+                            <div class="donut-center">
+                                <div class="value">286</div>
+                                <div class="label">Total</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Facturation</span><span class="lvalue">38%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span class="llabel">Accès</span><span class="lvalue">22%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Compte</span><span class="lvalue">18%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div><span class="llabel">Notifications</span><span class="lvalue">12%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">IA</span><span class="lvalue">10%</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Qualité du support</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div class="health-item green">
+                        <i class="bx bx-check-circle"></i>
+                        <span class="hlabel">SLA respectée</span>
+                        <span class="hvalue">94%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:94%"></div></div>
+                    </div>
+                    <div class="health-item blue">
+                        <i class="bx bx-star"></i>
+                        <span class="hlabel">Satisfaction</span>
+                        <span class="hvalue">92%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:92%"></div></div>
+                    </div>
+                    <div class="health-item purple">
+                        <i class="bx bx-refresh"></i>
+                        <span class="hlabel">Résolution au premier contact</span>
+                        <span class="hvalue">87%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:87%"></div></div>
+                    </div>
+                    <div class="health-item red">
+                        <i class="bx bx-time-five"></i>
+                        <span class="hlabel">Retards</span>
+                        <span class="hvalue">6%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:6%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-stats">
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">50,000+</div>
+                        <div class="label">interactions / mois</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon blue"><i class="bx bx-book-content"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">1,240</div>
+                        <div class="label">articles d'aide</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon cyan"><i class="bx bx-shield-check"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">94%</div>
+                        <div class="label">SLA respectée</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon cyan"><i class="bx bx-headphone"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">Support 24/7</div>
+                        <div class="label">Disponible à tout moment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-header">
+                <h3>Détails du ticket</h3>
+                <button class="panel-close" id="panelClose"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="panel-ticket" id="panelTicket"></div>
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="infos">Informations</button>
+                <button class="panel-tab" data-tab="conversation">Conversation</button>
+                <button class="panel-tab" data-tab="historique">Historique</button>
+                <button class="panel-tab" data-tab="sla">SLA</button>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content active" id="tab-infos">
+                    <div class="panel-section">
+                        <div id="panelDetails"></div>
+                    </div>
+                    <div class="panel-section">
+                        <h4>Résumé court</h4>
+                        <p class="summary-text" id="panelSummary">Le client signale un double prélèvement sur son abonnement mensuel Enterprise.</p>
+                    </div>
+                    <div class="panel-section">
+                        <h4>Actions recommandées</h4>
+                        <div class="action-item">
+                            <div class="aicon blue"><i class="bx bx-message-square"></i></div>
+                            <div class="ainfo">
+                                <div class="atitle">Répondre au client</div>
+                                <div class="adesc">Envoyer une réponse</div>
+                            </div>
+                            <i class="bx bx-chevron-right aarrow"></i>
+                        </div>
+                        <div class="action-item">
+                            <div class="aicon orange"><i class="bx bx-up-arrow"></i></div>
+                            <div class="ainfo">
+                                <div class="atitle">Escalader au support niveau 2</div>
+                                <div class="adesc">Transférer le ticket</div>
+                            </div>
+                            <i class="bx bx-chevron-right aarrow"></i>
+                        </div>
+                        <div class="action-item">
+                            <div class="aicon green"><i class="bx bx-history"></i></div>
+                            <div class="ainfo">
+                                <div class="atitle">Vérifier l'historique de paiement</div>
+                                <div class="adesc">Consulter les transactions</div>
+                            </div>
+                            <i class="bx bx-chevron-right aarrow"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-conversation">
+                    <div class="panel-section">
+                        <h4>Conversation</h4>
+                        <div style="padding:20px 0;text-align:center;color:var(--text-light);font-size:13px">
+                            <i class="bx bx-chat" style="font-size:32px;display:block;margin-bottom:8px;color:var(--text-light)"></i>
+                            Messages de la conversation
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-historique">
+                    <div class="panel-section">
+                        <h4>Historique</h4>
+                        <div style="padding:20px 0;text-align:center;color:var(--text-light);font-size:13px">
+                            <i class="bx bx-history" style="font-size:32px;display:block;margin-bottom:8px;color:var(--text-light)"></i>
+                            Journal des modifications
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-sla">
+                    <div class="panel-section">
+                        <h4>SLA</h4>
+                        <div style="padding:20px 0;text-align:center;color:var(--text-light);font-size:13px">
+                            <i class="bx bx-time-five" style="font-size:32px;display:block;margin-bottom:8px;color:var(--text-light)"></i>
+                            Détails du SLA
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-actions">
+                <button class="btn-pending">Marquer en attente</button>
+                <button class="btn-view"><i class="bx bx-link-external"></i> Voir le ticket</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const tickets = [
+        {
+            id: '#SUP-2048', client: 'ACME Corporation', logo: 'ACME', logoClass: 'acme',
+            category: 'Facturation', categoryKey: 'billing',
+            priority: 'Élevée', priorityClass: 'high', status: 'Ouvert', statusClass: 'open',
+            assignee: 'Sarah Martin', assigneeColor: '#ec4899', activity: 'Il y a 12 min',
+            subject: "Problème d'abonnement Enterprise", contact: 'Sophie Martin', channel: 'Email',
+            created: '30 mai 2024 à 09:18', sla: "Réponse attendue dans 2 h",
+            summary: "Le client signale un double prélèvement sur son abonnement mensuel Enterprise."
+        },
+        {
+            id: '#SUP-2041', client: 'Youssef Haddad', logo: 'YH', logoClass: 'data',
+            category: 'IA Matching', categoryKey: 'ia',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'En cours', statusClass: 'progress',
+            assignee: 'Mehdi Rachedi', assigneeColor: '#6366f1', activity: 'Il y a 35 min',
+            subject: "Problème de matching IA", contact: 'Youssef Haddad', channel: 'Chat',
+            created: '29 mai 2024 à 14:30', sla: "Réponse attendue dans 4 h",
+            summary: "Les recommandations de matching ne s'affichent pas correctement pour certains profils."
+        },
+        {
+            id: '#SUP-2037', client: 'NovaTech', logo: 'N', logoClass: 'nova',
+            category: 'Compte', categoryKey: 'account',
+            priority: 'Critique', priorityClass: 'critical', status: 'Escaladé', statusClass: 'escalated',
+            assignee: 'Leila Benali', assigneeColor: '#14b8a6', activity: 'Il y a 1 h',
+            subject: "Problème d'accès au compte", contact: 'Karim Alaoui', channel: 'Téléphone',
+            created: '28 mai 2024 à 10:00', sla: "Réponse attendue dans 1 h",
+            summary: "L'utilisateur ne peut plus accéder à son compte après la mise à jour."
+        },
+        {
+            id: '#SUP-2032', client: 'GreenSoft', logo: '🌿', logoClass: 'green',
+            category: 'Facturation', categoryKey: 'billing',
+            priority: 'Faible', priorityClass: 'low', status: 'Résolu', statusClass: 'resolved',
+            assignee: 'Omar Bensalem', assigneeColor: '#f59e0b', activity: 'Il y a 3 h',
+            subject: "Question sur la facture", contact: 'Pierre Martin', channel: 'Email',
+            created: '27 mai 2024 à 16:45', sla: "Réponse attendue dans 24 h",
+            summary: "Le client demande des précisions sur les lignes de sa dernière facture."
+        },
+        {
+            id: '#SUP-2029', client: 'TalentBridge', logo: '👥', logoClass: 'talent',
+            category: 'Accès', categoryKey: 'access',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'En attente', statusClass: 'pending',
+            assignee: 'Ines Haddad', assigneeColor: '#ef4444', activity: 'Il y a 5 h',
+            subject: "Demande d'accès supplémentaire", contact: 'Fatima Zahra', channel: 'Email',
+            created: '26 mai 2024 à 09:00', sla: "Réponse attendue dans 8 h",
+            summary: "Le client demande l'ajout de 5 utilisateurs supplémentaires sur son compte."
+        },
+        {
+            id: '#SUP-2022', client: 'DataCorp', logo: 'D', logoClass: 'data',
+            category: 'Notifications', categoryKey: 'notifications',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'En cours', statusClass: 'progress',
+            assignee: 'Fatima Zahra', assigneeColor: '#ec4899', activity: 'Il y a 6 h',
+            subject: "Notifications non reçues", contact: 'Marc Dupont', channel: 'Chat',
+            created: '25 mai 2024 à 11:30', sla: "Réponse attendue dans 4 h",
+            summary: "Le client ne reçoit pas les notifications email pour les nouvelles candidatures."
+        }
+    ];
+
+    function renderTable(data) {
+        document.getElementById('tableBody').innerHTML = data.map((t, i) => `
+            <tr data-id="${t.id}" onclick="selectTicket('${t.id}')">
+                <td><input type="radio" name="ticket" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
+                <td>
+                    <div class="ticket-cell">
+                        <span class="ticket-id">${t.id}</span>
+                    </div>
+                </td>
+                <td>
+                    <div class="client-cell">
+                        <div class="client-logo ${t.logoClass}">${t.logo}</div>
+                        <span class="cname">${t.client}</span>
+                    </div>
+                </td>
+                <td style="color:var(--text-secondary)">${t.category}</td>
+                <td><span class="priority-badge ${t.priorityClass}">${t.priority}</span></td>
+                <td><span class="status-badge ${t.statusClass}">${t.status}</span></td>
+                <td>
+                    <div class="assignee-cell">
+                        <img src="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='${encodeURIComponent(t.assigneeColor)}' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3E${t.assignee.charAt(0)}%3C/text%3E%3C/svg%3E" alt="${t.assignee}">
+                        <span class="aname">${t.assignee}</span>
+                    </div>
+                </td>
+                <td style="color:var(--text-light);font-size:12px">${t.activity}</td>
+                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
+            </tr>
+        `).join('');
+    }
+
+    function selectTicket(id) {
+        const t = tickets.find(x => x.id === id);
+        if (!t) return;
+
+        document.getElementById('detailPanel').classList.remove('hidden');
+        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
+
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', tr.dataset.id === id));
+
+        document.getElementById('panelTicket').innerHTML = `
+            <div class="logo">${t.logo}</div>
+            <div class="info">
+                <div class="id">${t.id} <span class="status-tag">${t.status}</span></div>
+                <div class="sub">${t.client}</div>
+            </div>
+        `;
+
+        document.getElementById('panelDetails').innerHTML = `
+            <div class="info-row"><span class="label">Sujet</span><span class="value">${t.subject}</span></div>
+            <div class="info-row"><span class="label">Client</span><span class="value">${t.client}</span></div>
+            <div class="info-row"><span class="label">Contact</span><span class="value"><a href="#">${t.contact}</a></span></div>
+            <div class="info-row"><span class="label">Canal</span><span class="value">${t.channel}</span></div>
+            <div class="info-row"><span class="label">Catégorie</span><span class="value">${t.category}</span></div>
+            <div class="info-row"><span class="label">Priorité</span><span class="value"><span class="priority-badge ${t.priorityClass}">${t.priority}</span></span></div>
+            <div class="info-row"><span class="label">Assigné à</span><span class="value"><a href="#">${t.assignee}</a></span></div>
+            <div class="info-row"><span class="label">Créé le</span><span class="value">${t.created}</span></div>
+            <div class="info-row"><span class="label">SLA</span><span class="value">${t.sla}</span></div>
+        `;
+
+        document.getElementById('panelSummary').textContent = t.summary;
+    }
+
+    document.getElementById('panelClose').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.getElementById('panelOverlay').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const cat = document.getElementById('catFilter').value.toLowerCase();
+        const priority = document.getElementById('priorityFilter').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value.toLowerCase();
+        let filtered = tickets.filter(t => {
+            const matchSearch = !search || t.id.toLowerCase().includes(search) || t.client.toLowerCase().includes(search) || t.subject.toLowerCase().includes(search);
+            const matchCat = !cat || t.categoryKey === cat;
+            const matchPriority = !priority || t.priorityClass === priority;
+            const matchStatus = !status || t.statusClass === status;
+            return matchSearch && matchCat && matchPriority && matchStatus;
+        });
+        renderTable(filtered);
+    }
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('catFilter').addEventListener('change', applyFilters);
+    document.getElementById('priorityFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Ticket Evolution Chart
+    new Chart(document.getElementById('ticketChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: ['Déc. 2023', 'Janv. 2024', 'Fév. 2024', 'Mars 2024', 'Avr. 2024', 'Mai 2024'],
+            datasets: [{
+                label: 'Nombre de tickets',
+                data: [200, 250, 300, 310, 340, 286],
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59,130,246,0.06)',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 11, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => `${ctx.parsed.y} tickets`
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8' } },
+                y: {
+                    grid: { color: '#f1f5f9' },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#94a3b8'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Donut Chart
+    new Chart(document.getElementById('donutChart').getContext('2d'), {
+        type: 'doughnut',
+         data: {
+            labels: ['Facturation', 'Accès', 'Compte', 'Notifications', 'IA'],
+            datasets: [{
+                data: [38, 22, 18, 12, 10],
+                backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#94a3b8'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '72%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 11, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+                    }
+                }
+            }
+        }
+    });
+
+    renderTable(tickets);
+    setTimeout(() => selectTicket('#SUP-2048'), 300);
+
+    setTimeout(() => {
+        document.querySelectorAll('.health-bar-fill').forEach(bar => {
+            const w = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => { bar.style.width = w; }, 100);
+        });
+    }, 300);
+</script>
+</body>
+</html>
+

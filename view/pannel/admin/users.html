@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Utilisateurs</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/npm/fontsource-inter@4.5.15/latin.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --purple-bg: #f5f3ff;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --yellow-bg: #fefce8;
+            --cyan: #06b6d4;
+            --cyan-bg: #ecfeff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .sidebar-logo span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-logo span em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 10px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+        }
+
+        .nav-item.active i {
+            color: var(--accent);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-plan {
+            margin: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-plan h4 i {
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        .sidebar-plan p {
+            color: rgba(255,255,255,0.5);
+            font-size: 11.5px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sidebar-plan .btn-plan:hover {
+            background: var(--accent-hover);
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-footer .nav-item {
+            margin: 0;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--white);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-left h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header-left p {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-main);
+        }
+
+        .header-btn .badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .user-menu img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-menu .user-info .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-menu .user-info .role {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .user-menu i {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 24px 28px;
+            flex: 1;
+            display: flex;
+            gap: 0;
+        }
+
+        .page-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: box-shadow 0.2s;
+        }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .kpi-icon.purple { background: var(--purple-bg); color: #7c3aed; }
+        .kpi-icon.green { background: var(--green-bg); color: #16a34a; }
+        .kpi-icon.orange { background: var(--yellow-bg); color: #ca8a04; }
+        .kpi-icon.blue { background: var(--blue-bg); color: #2563eb; }
+
+        .kpi-label {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kpi-change {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .kpi-footer {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .action-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            position: relative;
+            width: 260px;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .search-input input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-input input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-input i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 9px 32px 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-filters {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-filters:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .action-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-invite {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-invite:hover {
+            opacity: 0.9;
+        }
+
+        .btn-more {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .btn-more:hover {
+            border-color: var(--accent);
+        }
+
+        /* Table */
+        .table-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: var(--bg-main);
+        }
+
+        .data-table th {
+            text-align: left;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .data-table tbody tr.selected {
+            background: #f0f9ff;
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .table-checkbox:checked {
+            border-color: var(--accent);
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-cell img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-cell .name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .user-cell .email {
+            font-size: 11.5px;
+            color: var(--text-light);
+        }
+
+        .role-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .role-badge.admin { background: var(--purple-bg); color: #7c3aed; }
+        .role-badge.recruiter { background: var(--blue-bg); color: #2563eb; }
+        .role-badge.manager { background: var(--orange-bg); color: var(--orange); }
+        .role-badge.user { background: #f1f5f9; color: var(--text-secondary); }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.active { background: var(--green-bg); color: var(--green); }
+        .status-badge.inactive { background: var(--red-bg); color: var(--red); }
+        .status-badge.pending { background: var(--yellow-bg); color: var(--yellow); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+
+        .table-action:hover {
+            background: var(--bg-main);
+        }
+
+        /* Pagination */
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .table-footer-info {
+            font-size: 12.5px;
+            color: var(--text-light);
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .page-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .page-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .page-btn.active {
+            background: var(--sidebar-bg);
+            color: #fff;
+            border-color: var(--sidebar-bg);
+        }
+
+        .page-btn.dots {
+            border: none;
+            background: none;
+            cursor: default;
+            color: var(--text-light);
+        }
+
+        .page-rows {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-rows select {
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* User Detail Panel */
+        .user-panel {
+            width: 380px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            margin-right: -28px;
+            overflow-y: auto;
+            position: relative;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .user-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            margin-right: 0;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-user img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .panel-user .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-user .name .role-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--purple-bg);
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .panel-user .email {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .panel-user .status-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--green);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .panel-user .status-dot::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        .panel-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .panel-close:hover {
+            background: var(--bg-main);
+        }
+
+        /* Panel Tabs */
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .panel-tab {
+            padding: 12px 0;
+            margin-right: 24px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+
+        .panel-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            font-weight: 600;
+        }
+
+        .panel-tab:hover:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        .panel-body {
+            padding: 20px 24px;
+        }
+
+        .panel-section {
+            margin-bottom: 24px;
+        }
+
+        .panel-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .panel-section-header h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .btn-modifier {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-modifier:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 500;
+            flex-shrink: 0;
+            width: 120px;
+        }
+
+        .info-row .value {
+            font-size: 12.5px;
+            color: var(--text-primary);
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .info-row .value a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .info-row .value a:hover {
+            text-decoration: underline;
+        }
+
+        .panel-actions {
+            display: flex;
+            gap: 10px;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .btn-deactivate {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--red);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--red);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-deactivate:hover {
+            background: var(--red-bg);
+        }
+
+        .btn-delete {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--red);
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-delete:hover {
+            opacity: 0.9;
+        }
+
+        /* Activity Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .activity-item-small {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-item-small:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon-small {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon-small.green { background: var(--green-bg); color: var(--green); }
+        .activity-icon-small.blue { background: var(--blue-bg); color: var(--blue); }
+        .activity-icon-small.orange { background: var(--orange-bg); color: var(--orange); }
+        .activity-icon-small.purple { background: var(--purple-bg); color: #7c3aed; }
+
+        .activity-info-small .title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .activity-info-small .desc {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        /* Sidebar overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .user-panel {
+                width: 340px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .user-panel {
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                width: 380px;
+                box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+                margin-right: 0;
+            }
+            .user-panel.hidden {
+                transform: translateX(100%);
+            }
+            .user-panel-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.3);
+                z-index: 190;
+            }
+            .user-panel-overlay.active {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+            .top-header {
+                padding: 12px 16px;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .search-input {
+                width: 100%;
+            }
+            .action-bar-left {
+                flex-wrap: wrap;
+            }
+            .header-left h1 {
+                font-size: 17px;
+            }
+            .header-left p {
+                display: none;
+            }
+            .user-menu .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="user-panel-overlay" id="panelOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="#">
+            <i class="bx bx-home"></i>
+            Dashboard
+        </a>
+        <a class="nav-item active" href="#">
+            <i class="bx bx-user"></i>
+            Utilisateurs
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-group"></i>
+            Rôles & Permissions
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-building"></i>
+            Entreprises
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-check-shield"></i>
+            Abonnements
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-bar-chart-alt-2"></i>
+            Activité
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-cog"></i>
+            Paramètres
+        </a>
+    </nav>
+
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Premium</h4>
+        <p>Accédez à toutes les fonctionnalités avancées.</p>
+        <button class="btn-plan">Passer Premium</button>
+    </div>
+
+    <div class="sidebar-footer">
+        <a class="nav-item" href="#">
+            <i class="bx bx-log-out"></i>
+            Déconnexion
+        </a>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <h1>Utilisateurs</h1>
+            <p>Gérez les utilisateurs, leurs rôles et leurs accès à la plateforme.</p>
+        </div>
+        <div class="header-right">
+            <button class="header-btn">
+                <i class="bx bx-bell"></i>
+                <span class="badge">3</span>
+            </button>
+            <div class="user-menu">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="user-info">
+                    <div class="name">Amine ELKARTITE</div>
+                    <div class="role">Admin</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        <div class="page-main">
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="bx bx-user"></i></div>
+                    <div>
+                        <div class="kpi-label">Utilisateurs actifs</div>
+                        <div class="kpi-value">5,248 <span class="kpi-change"><i class="bx bx-trending-up"></i> 18%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-user-plus"></i></div>
+                    <div>
+                        <div class="kpi-label">Nouveaux utilisateurs</div>
+                        <div class="kpi-value">312 <span class="kpi-change"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-footer">ce mois-ci</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="bx bx-crown"></i></div>
+                    <div>
+                        <div class="kpi-label">Admins</div>
+                        <div class="kpi-value">24</div>
+                        <div class="kpi-footer">ce mois-ci</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="bx bx-buildings"></i></div>
+                    <div>
+                        <div class="kpi-label">Entreprises</div>
+                        <div class="kpi-value">1,248 <span class="kpi-change"><i class="bx bx-trending-up"></i> 8%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <div class="action-bar-left">
+                    <div class="search-input">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="Rechercher un utilisateur..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="roleFilter">
+                        <option value="">Tous les rôles</option>
+                        <option value="admin">Admin</option>
+                        <option value="recruiter">Recruteur</option>
+                        <option value="manager">Manager</option>
+                        <option value="user">Utilisateur</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Tous les statuts</option>
+                        <option value="active">Actif</option>
+                        <option value="inactive">Inactif</option>
+                        <option value="pending">En attente</option>
+                    </select>
+                    <select class="filter-select" id="companyFilter">
+                        <option value="">Toutes les entreprises</option>
+                        <option value="theway">TheWay</option>
+                        <option value="acme">ACME Corporation</option>
+                        <option value="datacorp">DataCorp</option>
+                        <option value="cloudscale">CloudScale</option>
+                        <option value="devops">DevOps</option>
+                        <option value="airbnb">Airbnb</option>
+                        <option value="spotify">Spotify</option>
+                        <option value="microsoft">Microsoft</option>
+                        <option value="google">Google</option>
+                        <option value="productmanager">Product Manager</option>
+                    </select>
+                    <button class="btn-filters">
+                        <i class="bx bx-filter-alt"></i>
+                        Filtres
+                    </button>
+                </div>
+                <div class="action-bar-right">
+                    <button class="btn-invite">
+                        <i class="bx bx-plus"></i>
+                        Inviter un utilisateur
+                        <i class="bx bx-chevron-down" style="font-size:14px"></i>
+                    </button>
+                    <button class="btn-more">
+                        <i class="bx bx-dots-vertical-rounded"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table class="data-table" id="userTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40px"><input type="checkbox" class="table-checkbox" id="selectAll"></th>
+                                <th>Utilisateur</th>
+                                <th>Rôle</th>
+                                <th>Entreprise</th>
+                                <th>Statut</th>
+                                <th>Dernière activité</th>
+                                <th style="width:50px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">
+                        Affichage de <strong>1 à 10</strong> sur <strong id="totalCount">5,248</strong> utilisateurs
+                    </div>
+                    <div style="display:flex;align-items:center;gap:16px">
+                        <div class="pagination" id="pagination">
+                        </div>
+                        <div class="page-rows">
+                            <select id="rowsPerPage">
+                                <option value="10">10 / page</option>
+                                <option value="25">25 / page</option>
+                                <option value="50">50 / page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Detail Panel -->
+        <div class="user-panel" id="userPanel">
+            <div class="panel-header">
+                <div class="panel-user" id="panelUserInfo">
+                </div>
+                <button class="panel-close" id="panelClose">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="infos">Informations</button>
+                <button class="panel-tab" data-tab="activite">Activité</button>
+                <button class="panel-tab" data-tab="roles">Rôles & Accès</button>
+                <button class="panel-tab" data-tab="securite">Sécurité</button>
+            </div>
+
+            <div class="panel-body">
+                <!-- Informations Tab -->
+                <div class="tab-content active" id="tab-infos">
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Informations personnelles</h4>
+                            <button class="btn-modifier">Modifier</button>
+                        </div>
+                        <div id="personalInfo">
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Rôle & Entreprise</h4>
+                        </div>
+                        <div id="roleInfo">
+                        </div>
+                    </div>
+
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Statut du compte</h4>
+                        </div>
+                        <div id="accountStatus">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activité Tab -->
+                <div class="tab-content" id="tab-activite">
+                    <div class="activity-item-small">
+                        <div class="activity-icon-small blue"><i class="bx bx-log-in"></i></div>
+                        <div class="activity-info-small">
+                            <div class="title">Connexion</div>
+                            <div class="desc">Connexion depuis Chrome · Paris, France</div>
+                        </div>
+                    </div>
+                    <div class="activity-item-small">
+                        <div class="activity-icon-small green"><i class="bx bx-check"></i></div>
+                        <div class="activity-info-small">
+                            <div class="title">Profil mis à jour</div>
+                            <div class="desc">Modification des informations personnelles</div>
+                        </div>
+                    </div>
+                    <div class="activity-item-small">
+                        <div class="activity-icon-small orange"><i class="bx bx-key"></i></div>
+                        <div class="activity-info-small">
+                            <div class="title">Mot de passe modifié</div>
+                            <div class="desc">Le mot de passe a été changé avec succès</div>
+                        </div>
+                    </div>
+                    <div class="activity-item-small">
+                        <div class="activity-icon-small purple"><i class="bx bx-user-plus"></i></div>
+                        <div class="activity-info-small">
+                            <div class="title">Inscription</div>
+                            <div class="desc">Création du compte</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rôles & Accès Tab -->
+                <div class="tab-content" id="tab-roles">
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Permissions</h4>
+                            <button class="btn-modifier">Modifier</button>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Accès Dashboard</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Gestion utilisateurs</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Gestion entreprises</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Gestion offres</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Gestion finances</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Gestion paramètres</span>
+                            <span class="value"><span class="status-badge active">Oui</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sécurité Tab -->
+                <div class="tab-content" id="tab-securite">
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Sessions actives</h4>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Chrome · Paris</span>
+                            <span class="value" style="color:var(--green)">● Actuelle</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Safari · Lyon</span>
+                            <span class="value" style="color:var(--text-light)">Il y a 2h</span>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-section-header">
+                            <h4>Authentification à 2 facteurs</h4>
+                            <button class="btn-modifier">Configurer</button>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Statut</span>
+                            <span class="value"><span class="status-badge active">Activée</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-actions">
+                <button class="btn-deactivate">Désactiver le compte</button>
+                <button class="btn-delete">Supprimer l'utilisateur</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // User Data
+    const users = [
+        {
+            id: 1,
+            name: 'Amine ELKARTITE',
+            email: 'amine.elkartite@theway.com',
+            role: 'Admin',
+            roleClass: 'admin',
+            company: 'TheWay',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 5 min',
+            phone: '+212 712 345 678',
+            location: 'Taza, Maroc',
+            language: 'Français',
+            joined: '12 janvier 2024',
+            department: 'Direction',
+            lastLogin: 'Il y a 5 minutes',
+            activeSessions: '2 sessions'
+        },
+        {
+            id: 2,
+            name: 'Sofia Martin',
+            email: 'sofia.martin@acme.com',
+            role: 'Recruteur',
+            roleClass: 'recruiter',
+            company: 'ACME Corporation',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 1 h',
+            phone: '+33 6 12 34 56 78',
+            location: 'Paris, France',
+            language: 'Français',
+            joined: '15 février 2024',
+            department: 'Ressources Humaines',
+            lastLogin: 'Il y a 1 heure',
+            activeSessions: '1 session'
+        },
+        {
+            id: 3,
+            name: 'Julien Moreau',
+            email: 'julien.moreau@datacorp.com',
+            role: 'Manager',
+            roleClass: 'manager',
+            company: 'DataCorp',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 2 h',
+            phone: '+33 6 98 76 54 32',
+            location: 'Lyon, France',
+            language: 'Français',
+            joined: '3 mars 2024',
+            department: 'Opérations',
+            lastLogin: 'Il y a 2 heures',
+            activeSessions: '1 session'
+        },
+        {
+            id: 4,
+            name: 'Camille Bernard',
+            email: 'camille.bernard@cloudscale.com',
+            role: 'Recruteur',
+            roleClass: 'recruiter',
+            company: 'CloudScale',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 3 h',
+            phone: '+33 6 45 67 89 01',
+            location: 'Marseille, France',
+            language: 'Français',
+            joined: '20 mars 2024',
+            department: 'Ressources Humaines',
+            lastLogin: 'Il y a 3 heures',
+            activeSessions: '1 session'
+        },
+        {
+            id: 5,
+            name: 'Thomas Petit',
+            email: 'thomas.petit@devops.com',
+            role: 'Utilisateur',
+            roleClass: 'user',
+            company: 'DevOps',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 5 h',
+            phone: '+33 6 23 45 67 89',
+            location: 'Bordeaux, France',
+            language: 'Français',
+            joined: '5 avril 2024',
+            department: 'Technique',
+            lastLogin: 'Il y a 5 heures',
+            activeSessions: '1 session'
+        },
+        {
+            id: 6,
+            name: 'Nadia El Amrani',
+            email: 'nadia.elamrani@airbnb.com',
+            role: 'Manager',
+            roleClass: 'manager',
+            company: 'Airbnb',
+            status: 'Inactif',
+            statusClass: 'inactive',
+            activity: 'Il y a 2 jours',
+            phone: '+212 6 78 90 12 34',
+            location: 'Casablanca, Maroc',
+            language: 'Français',
+            joined: '18 avril 2024',
+            department: 'Marketing',
+            lastLogin: 'Il y a 2 jours',
+            activeSessions: '0 sessions'
+        },
+        {
+            id: 7,
+            name: 'Youssef Alaoui',
+            email: 'youssef.alaoui@spotify.com',
+            role: 'Utilisateur',
+            roleClass: 'user',
+            company: 'Spotify',
+            status: 'En attente',
+            statusClass: 'pending',
+            activity: 'Il y a 3 jours',
+            phone: '+212 6 12 34 56 78',
+            location: 'Rabat, Maroc',
+            language: 'Français',
+            joined: '25 avril 2024',
+            department: 'Design',
+            lastLogin: 'Il y a 3 jours',
+            activeSessions: '0 sessions'
+        },
+        {
+            id: 8,
+            name: 'Leila Benali',
+            email: 'leila.benali@microsoft.com',
+            role: 'Recruteur',
+            roleClass: 'recruiter',
+            company: 'Microsoft',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 1 jour',
+            phone: '+212 6 90 12 34 56',
+            location: 'Marrakech, Maroc',
+            language: 'Français',
+            joined: '1 mai 2024',
+            department: 'Ressources Humaines',
+            lastLogin: 'Il y a 1 jour',
+            activeSessions: '1 session'
+        },
+        {
+            id: 9,
+            name: 'Mehdi Rachedi',
+            email: 'mehdi.rachedi@google.com',
+            role: 'Manager',
+            roleClass: 'manager',
+            company: 'Google',
+            status: 'Actif',
+            statusClass: 'active',
+            activity: 'Il y a 30 min',
+            phone: '+212 6 34 56 78 90',
+            location: 'Tanger, Maroc',
+            language: 'Français',
+            joined: '8 mai 2024',
+            department: 'Ingénierie',
+            lastLogin: 'Il y a 30 minutes',
+            activeSessions: '1 session'
+        },
+        {
+            id: 10,
+            name: 'Ines Haddad',
+            email: 'ines.haddad@product.com',
+            role: 'Utilisateur',
+            roleClass: 'user',
+            company: 'Product Manager',
+            status: 'Inactif',
+            statusClass: 'inactive',
+            activity: 'Il y a 5 jours',
+            phone: '+212 6 56 78 90 12',
+            location: 'Fès, Maroc',
+            language: 'Français',
+            joined: '12 mai 2024',
+            department: 'Produit',
+            lastLogin: 'Il y a 5 jours',
+            activeSessions: '0 sessions'
+        }
+    ];
+
+    // Avatar colors
+    const avatarColors = ['#6366f1','#ec4899','#14b8a6','#f59e0b','#8b5cf6','#ef4444','#06b6d4','#22c55e','#f97316','#3b82f6'];
+
+    function getInitials(name) {
+        return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    }
+
+    function getAvatarUrl(name, index) {
+        const color = avatarColors[index % avatarColors.length];
+        const initials = getInitials(name);
+        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='${encodeURIComponent(color)}' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3E${initials}%3C/text%3E%3C/svg%3E`;
+    }
+
+    // Render table
+    function renderTable(data) {
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = data.map((user, i) => `
+            <tr data-id="${user.id}" onclick="selectUser(${user.id})">
+                <td><input type="checkbox" class="table-checkbox row-checkbox" onclick="event.stopPropagation()"></td>
+                <td>
+                    <div class="user-cell">
+                        <img src="${getAvatarUrl(user.name, i)}" alt="${user.name}">
+                        <div>
+                            <div class="name">${user.name}</div>
+                            <div class="email">${user.email}</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="role-badge ${user.roleClass}">${user.role}</span></td>
+                <td style="font-size:13px;color:var(--text-secondary)">${user.company}</td>
+                <td><span class="status-badge ${user.statusClass}">${user.status}</span></td>
+                <td style="font-size:12.5px;color:var(--text-light)">${user.activity}</td>
+                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
+            </tr>
+        `).join('');
+        document.getElementById('totalCount').textContent = data.length.toLocaleString('fr-FR');
+    }
+
+    // Render user panel
+    function selectUser(id) {
+        const user = users.find(u => u.id === id);
+        if (!user) return;
+
+        const panel = document.getElementById('userPanel');
+        const overlay = document.getElementById('panelOverlay');
+        panel.classList.remove('hidden');
+
+        if (window.innerWidth <= 1024) {
+            overlay.classList.add('active');
+        }
+
+        // Highlight selected row
+        document.querySelectorAll('#tableBody tr').forEach(tr => {
+            tr.classList.toggle('selected', parseInt(tr.dataset.id) === id);
+        });
+
+        // Panel user info
+        const colorIndex = (id - 1) % avatarColors.length;
+        document.getElementById('panelUserInfo').innerHTML = `
+            <img src="${getAvatarUrl(user.name, colorIndex)}" alt="${user.name}">
+            <div>
+                <div class="name">${user.name} <span class="role-tag">${user.role}</span></div>
+                <div class="email">${user.email}</div>
+                <div class="status-dot">Actif</div>
+            </div>
+        `;
+
+        // Personal info
+        document.getElementById('personalInfo').innerHTML = `
+            <div class="info-row"><span class="label">Nom complet</span><span class="value">${user.name}</span></div>
+            <div class="info-row"><span class="label">Téléphone</span><span class="value">${user.phone}</span></div>
+            <div class="info-row"><span class="label">Localisation</span><span class="value">${user.location}</span></div>
+            <div class="info-row"><span class="label">Langue</span><span class="value">${user.language}</span></div>
+            <div class="info-row"><span class="label">Inscrit le</span><span class="value">${user.joined}</span></div>
+        `;
+
+        // Role info
+        document.getElementById('roleInfo').innerHTML = `
+            <div class="info-row"><span class="label">Rôle</span><span class="value">${user.role}</span></div>
+            <div class="info-row"><span class="label">Entreprise</span><span class="value">${user.company}</span></div>
+            <div class="info-row"><span class="label">Département</span><span class="value">${user.department}</span></div>
+        `;
+
+        // Account status
+        document.getElementById('accountStatus').innerHTML = `
+            <div class="info-row"><span class="label">Statut</span><span class="value"><span class="status-badge ${user.statusClass}">${user.status}</span></span></div>
+            <div class="info-row"><span class="label">Dernière connexion</span><span class="value">${user.lastLogin}</span></div>
+            <div class="info-row"><span class="label">Sessions actives</span><span class="value"><a href="#">${user.activeSessions}</a></span></div>
+        `;
+    }
+
+    // Close panel
+    document.getElementById('panelClose').addEventListener('click', () => {
+        document.getElementById('userPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.remove('selected'));
+    });
+
+    document.getElementById('panelOverlay').addEventListener('click', () => {
+        document.getElementById('userPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.remove('selected'));
+    });
+
+    // Panel tabs
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    // Select all checkbox
+    document.getElementById('selectAll').addEventListener('change', function() {
+        document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = this.checked;
+        });
+    });
+
+    // Pagination
+    function renderPagination() {
+        const pagination = document.getElementById('pagination');
+        const totalPages = Math.ceil(users.length / 10);
+        let html = '<button class="page-btn" onclick="changePage(currentPage - 1)"><i class="bx bx-chevron-left"></i></button>';
+
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || Math.abs(i - 1) <= 1) {
+                html += `<button class="page-btn ${i === 1 ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            } else if (i === 3) {
+                html += '<button class="page-btn dots">...</button>';
+                html += `<button class="page-btn" onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+        }
+
+        html += '<button class="page-btn" onclick="changePage(currentPage + 1)"><i class="bx bx-chevron-right"></i></button>';
+        pagination.innerHTML = html;
+    }
+
+    let currentPage = 1;
+    window.changePage = function(page) {
+        if (page < 1 || page > Math.ceil(users.length / 10)) return;
+        currentPage = page;
+        renderPagination();
+    };
+
+    renderPagination();
+
+    // Filter logic
+    function applyFilters() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const roleFilter = document.getElementById('roleFilter').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+        const companyFilter = document.getElementById('companyFilter').value.toLowerCase();
+
+        let filtered = users.filter(user => {
+            const matchSearch = !searchTerm || user.name.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm);
+            const matchRole = !roleFilter || user.role.toLowerCase() === roleFilter;
+            const matchStatus = !statusFilter || user.status.toLowerCase() === statusFilter;
+            const matchCompany = !companyFilter || user.company.toLowerCase().includes(companyFilter);
+            return matchSearch && matchRole && matchStatus && matchCompany;
+        });
+
+        renderTable(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('roleFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+    document.getElementById('companyFilter').addEventListener('change', applyFilters);
+
+    // Sidebar toggle
+    const menuToggle = document.createElement('button');
+    menuToggle.className = 'menu-toggle';
+    menuToggle.innerHTML = '<i class="bx bx-menu"></i>';
+    menuToggle.style.cssText = 'display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--text-primary);margin-right:12px;';
+    document.querySelector('.header-left').prepend(menuToggle);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+
+    // Nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Responsive check
+    function checkResponsive() {
+        if (window.innerWidth <= 1024) {
+            menuToggle.style.display = 'block';
+        } else {
+            menuToggle.style.display = 'none';
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        }
+    }
+
+    window.addEventListener('resize', checkResponsive);
+    checkResponsive();
+
+    // Initial render
+    renderTable(users);
+
+    // Auto-open first user
+    setTimeout(() => selectUser(1), 300);
+</script>
+</body>
+</html>

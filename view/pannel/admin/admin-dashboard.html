@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Tableau de bord administrateur</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/npm/fontsource-inter@4.5.15/latin.css');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f1f5f9;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo svg {
+            width: 36px;
+            height: 36px;
+        }
+
+        .sidebar-logo span {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-logo span em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 16px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--sidebar-hover);
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+        }
+
+        .nav-item.active i {
+            color: var(--accent);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-plan {
+            margin: 16px 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-plan h4 i {
+            color: var(--accent);
+        }
+
+        .sidebar-plan p {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sidebar-plan .btn-plan:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Header */
+        .top-header {
+            background: var(--white);
+            padding: 14px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .search-box {
+            position: relative;
+            width: 360px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--bg-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .search-box .kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-main);
+        }
+
+        .header-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-menu img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-menu .user-info {
+            line-height: 1.3;
+        }
+
+        .user-menu .user-info .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-menu .user-info .role {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .user-menu i {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        /* Page Content */
+        .page-content {
+            padding: 24px 32px;
+            flex: 1;
+        }
+
+        .page-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .page-title-row h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .page-title-row p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .page-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            font-size: 13px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .date-picker:hover {
+            border-color: var(--accent);
+        }
+
+        .date-picker i {
+            color: var(--text-light);
+        }
+
+        .btn-export {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 20px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-export:hover {
+            background: var(--accent-hover);
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .kpi-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .kpi-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .kpi-icon.purple { background: #f5f3ff; color: #7c3aed; }
+        .kpi-icon.green { background: #f0fdf4; color: #16a34a; }
+        .kpi-icon.blue { background: #eff6ff; color: #2563eb; }
+        .kpi-icon.orange { background: #fff7ed; color: #ea580c; }
+        .kpi-icon.yellow { background: #fefce8; color: #ca8a04; }
+
+        .kpi-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .kpi-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .kpi-change.up { color: var(--green); }
+        .kpi-change.down { color: var(--red); }
+
+        .kpi-footer {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 20px 0;
+            margin-bottom: 16px;
+        }
+
+        .card-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-header a {
+            font-size: 12px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .card-header a:hover {
+            opacity: 0.7;
+        }
+
+        .card-body {
+            padding: 0 20px 20px;
+        }
+
+        /* Users Table */
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .users-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 0 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .users-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .users-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-cell img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-cell .name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+
+        .user-cell .email {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-badge.active { background: var(--green-bg); color: var(--green); }
+        .status-badge.pending { background: var(--orange-bg); color: var(--orange); }
+        .status-badge.inactive { background: #f1f5f9; color: var(--text-light); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .table-action:hover {
+            background: var(--bg-main);
+        }
+
+        /* Validations */
+        .validation-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+
+        .validation-tab {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .validation-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .validation-tab .count {
+            background: var(--bg-main);
+            padding: 1px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .validation-tab.active .count {
+            background: rgba(245,158,11,0.15);
+            color: var(--accent);
+        }
+
+        .validation-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .validation-item:last-child {
+            border-bottom: none;
+        }
+
+        .validation-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .validation-logo.acme { background: #1a1a2e; color: #fff; }
+        .validation-logo.data { background: #3b82f6; color: #fff; }
+        .validation-logo.aws { background: #ff9900; color: #fff; }
+
+        .validation-info {
+            flex: 1;
+        }
+
+        .validation-info .title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .validation-info .company {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .validation-info .location {
+            font-size: 11px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .validation-meta {
+            text-align: right;
+        }
+
+        .validation-meta .time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .btn-validate {
+            padding: 4px 12px;
+            background: var(--orange-bg);
+            color: var(--orange);
+            border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-validate:hover {
+            background: var(--orange);
+            color: #fff;
+        }
+
+        .card-footer-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--blue);
+            font-weight: 600;
+            cursor: pointer;
+            border-top: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .card-footer-link:hover {
+            background: var(--bg-main);
+        }
+
+        /* Activity Feed */
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.green { background: var(--green-bg); color: var(--green); }
+        .activity-icon.orange { background: var(--orange-bg); color: var(--orange); }
+        .activity-icon.blue { background: var(--blue-bg); color: var(--blue); }
+        .activity-icon.yellow { background: #fefce8; color: var(--yellow); }
+        .activity-icon.purple { background: #f5f3ff; color: var(--purple); }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-info .title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .activity-info .desc {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        /* Analytics Section */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .chart-header .link {
+            font-size: 12px;
+            color: var(--blue);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chart-tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .chart-tab {
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: transparent;
+        }
+
+        .chart-tab.active {
+            background: var(--orange-bg);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 220px;
+        }
+
+        /* Donut Chart */
+        .donut-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .donut-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            flex-shrink: 0;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .donut-center .label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .legend-item .label {
+            color: var(--text-secondary);
+            flex: 1;
+        }
+
+        .legend-item .value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* System Health */
+        .health-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .health-item:last-child {
+            border-bottom: none;
+        }
+
+        .health-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .health-left i {
+            font-size: 18px;
+            color: var(--text-light);
+        }
+
+        .health-left .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .health-value {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .health-value.green { color: var(--green); }
+        .health-value.orange { color: var(--orange); }
+
+        .health-bar {
+            width: 100%;
+            height: 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .health-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        .health-bar-fill.green { background: var(--green); }
+        .health-bar-fill.orange { background: var(--orange); }
+
+        /* Revenue Card */
+        .revenue-header-info {
+            margin-bottom: 16px;
+        }
+
+        .revenue-header-info .label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .revenue-header-info .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .revenue-header-info .amount .change {
+            font-size: 13px;
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        .revenue-header-info .amount .change-label {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .revenue-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .revenue-metric {
+            padding: 12px;
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+        }
+
+        .revenue-metric .label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .revenue-metric .value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .revenue-metric .change {
+            font-size: 11px;
+            color: var(--green);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .revenue-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .revenue-link:hover {
+            background: var(--bg-main);
+        }
+
+        .revenue-link i {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        /* Bottom Stats */
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .bottom-stat {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .bottom-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .bottom-stat-icon.purple { background: #f5f3ff; color: #7c3aed; }
+        .bottom-stat-icon.green { background: #f0fdf4; color: #16a34a; }
+        .bottom-stat-icon.blue { background: #eff6ff; color: #2563eb; }
+        .bottom-stat-icon.orange { background: #fff7ed; color: #ea580c; }
+        .bottom-stat-icon.cyan { background: #ecfeff; color: #0891b2; }
+
+        .bottom-stat-info .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .bottom-stat-info .label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .kpi-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .cards-grid, .analytics-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bottom-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .cards-grid, .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-box {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 16px;
+            }
+            .top-header {
+                padding: 12px 16px;
+            }
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .bottom-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .search-box {
+                display: none;
+            }
+            .user-menu .user-info {
+                display: none;
+            }
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.15);
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a class="nav-item active" href="#">
+            <i class="bx bx-home"></i>
+            Tableau de bord
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-user"></i>
+            Utilisateurs
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-building"></i>
+            Entreprises
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-briefcase"></i>
+            Offres
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-line-chart"></i>
+            Matching IA
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-target-lock"></i>
+            Compétences
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-bar-chart-alt-2"></i>
+            Analyses
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-check-shield"></i>
+            Abonnements
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-headphone"></i>
+            Support
+        </a>
+        <a class="nav-item" href="#">
+            <i class="bx bx-cog"></i>
+            Paramètres
+        </a>
+    </nav>
+
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Entreprise</h4>
+        <p>Gérez votre plateforme avec toutes les fonctionnalités avancées.</p>
+        <button class="btn-plan">Voir les plans</button>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="bx bx-menu"></i>
+            </button>
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Rechercher dans la plateforme...">
+                <span class="kbd">K</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn">
+                <i class="bx bx-bell"></i>
+                <span class="badge">12</span>
+            </button>
+            <div class="user-menu" id="userMenu">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EA%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="user-info">
+                    <div class="name">Admin TheWay</div>
+                    <div class="role">Administrateur</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        <!-- Page Title -->
+        <div class="page-title-row">
+            <div>
+                <h1>Tableau de bord administrateur</h1>
+                <p>Vue d'ensemble de la plateforme et de ses performances en temps réel.</p>
+            </div>
+            <div class="page-actions">
+                <div class="date-picker">
+                    <i class="bx bx-calendar"></i>
+                    <span>1 mai – 31 mai 2024</span>
+                    <i class="bx bx-chevron-down" style="font-size:14px"></i>
+                </div>
+                <button class="btn-export">
+                    <i class="bx bx-download"></i>
+                    Exporter le rapport
+                    <i class="bx bx-chevron-down" style="font-size:14px"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-icon purple"><i class="bx bx-group"></i></div>
+                    <div class="kpi-label">Utilisateurs inscrits</div>
+                </div>
+                <div class="kpi-value">24,582</div>
+                <div class="kpi-change up">
+                    <i class="bx bx-trending-up"></i>
+                    12%
+                </div>
+                <div class="kpi-footer">vs mois dernier</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-icon green"><i class="bx bx-briefcase"></i></div>
+                    <div class="kpi-label">Offres actives</div>
+                </div>
+                <div class="kpi-value">1,248</div>
+                <div class="kpi-change up">
+                    <i class="bx bx-trending-up"></i>
+                    8%
+                </div>
+                <div class="kpi-footer">vs mois dernier</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-icon blue"><i class="bx bx-buildings"></i></div>
+                    <div class="kpi-label">Entreprises partenaires</div>
+                </div>
+                <div class="kpi-value">892</div>
+                <div class="kpi-change up">
+                    <i class="bx bx-trending-up"></i>
+                    15%
+                </div>
+                <div class="kpi-footer">vs mois dernier</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-icon orange"><i class="bx bx-dollar-circle"></i></div>
+                    <div class="kpi-label">Revenus mensuels</div>
+                </div>
+                <div class="kpi-value">128,450 <small style="font-size:14px;font-weight:500;color:var(--text-light)">MAD</small></div>
+                <div class="kpi-change up">
+                    <i class="bx bx-trending-up"></i>
+                    18%
+                </div>
+                <div class="kpi-footer">vs mois dernier</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-header">
+                    <div class="kpi-icon yellow"><i class="bx bx-shield-quarter"></i></div>
+                    <div class="kpi-label">Validations en attente</div>
+                </div>
+                <div class="kpi-value">56</div>
+                <div class="kpi-change down">
+                    <i class="bx bx-trending-down"></i>
+                    6%
+                </div>
+                <div class="kpi-footer">à traiter</div>
+            </div>
+        </div>
+
+        <!-- Middle Cards -->
+        <div class="cards-grid">
+            <!-- Recent Users -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Utilisateurs récents</h3>
+                    <a href="#">Voir tous les utilisateurs</a>
+                </div>
+                <div class="card-body">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Rôle</th>
+                                <th>Statut</th>
+                                <th>Inscription</th>
+                                <th>Dernière activité</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%236366f1' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="">
+                                        <div>
+                                            <div class="name">Amine ELKARTITE</div>
+                                            <div class="email">amine@exemple.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text-secondary)">Développeur</td>
+                                <td><span class="status-badge active">Actif</span></td>
+                                <td style="font-size:12px;color:var(--text-light)">30 avr. 2024</td>
+                                <td style="font-size:12px;color:var(--text-light)">Il y a 5 min</td>
+                                <td><span class="table-action"><i class="bx bx-dots-vertical-rounded"></i></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23ec4899' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3ESB%3C/text%3E%3C/svg%3E" alt="">
+                                        <div>
+                                            <div class="name">Sarah Benali</div>
+                                            <div class="email">sarah.benali@exemple.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text-secondary)">Recruteur</td>
+                                <td><span class="status-badge active">Actif</span></td>
+                                <td style="font-size:12px;color:var(--text-light)">29 avr. 2024</td>
+                                <td style="font-size:12px;color:var(--text-light)">Il y a 1 h</td>
+                                <td><span class="table-action"><i class="bx bx-dots-vertical-rounded"></i></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%2314b8a6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3EYH%3C/text%3E%3C/svg%3E" alt="">
+                                        <div>
+                                            <div class="name">Youssef Haddad</div>
+                                            <div class="email">y.haddad@exemple.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text-secondary)">Ingénieur DevOps</td>
+                                <td><span class="status-badge active">Actif</span></td>
+                                <td style="font-size:12px;color:var(--text-light)">28 avr. 2024</td>
+                                <td style="font-size:12px;color:var(--text-light)">Il y a 3 h</td>
+                                <td><span class="table-action"><i class="bx bx-dots-vertical-rounded"></i></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23f59e0b' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3EFZ%3C/text%3E%3C/svg%3E" alt="">
+                                        <div>
+                                            <div class="name">Fatima Zahra</div>
+                                            <div class="email">fatima.z@exemple.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text-secondary)">Product Manager</td>
+                                <td><span class="status-badge pending">En attente</span></td>
+                                <td style="font-size:12px;color:var(--text-light)">27 avr. 2024</td>
+                                <td style="font-size:12px;color:var(--text-light)">Jamais</td>
+                                <td><span class="table-action"><i class="bx bx-dots-vertical-rounded"></i></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%238b5cf6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3EOB%3C/text%3E%3C/svg%3E" alt="">
+                                        <div>
+                                            <div class="name">Omar Bensalem</div>
+                                            <div class="email">omar.b@exemple.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="font-size:12px;color:var(--text-secondary)">Designer UI/UX</td>
+                                <td><span class="status-badge inactive">Inactif</span></td>
+                                <td style="font-size:12px;color:var(--text-light)">26 avr. 2024</td>
+                                <td style="font-size:12px;color:var(--text-light)">Il y a 2 jours</td>
+                                <td><span class="table-action"><i class="bx bx-dots-vertical-rounded"></i></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Validations -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Validations en attente</h3>
+                    <a href="#">Voir toutes</a>
+                </div>
+                <div class="card-body" style="padding-bottom:0">
+                    <div class="validation-tabs">
+                        <div class="validation-tab active" data-tab="offres">Offres d'emploi <span class="count">(32)</span></div>
+                        <div class="validation-tab" data-tab="entreprises">Entreprises <span class="count">(24)</span></div>
+                    </div>
+                    <div id="validationContent">
+                        <div class="validation-item">
+                            <div class="validation-logo acme">A</div>
+                            <div class="validation-info">
+                                <div class="title">Développeur Full Stack</div>
+                                <div class="company">ACME Corporation</div>
+                            </div>
+                            <div style="font-size:11px;color:var(--text-light);margin-right:8px">Paris, France</div>
+                            <div class="validation-meta">
+                                <div class="time">Il y a 1 h</div>
+                                <button class="btn-validate">À valider</button>
+                            </div>
+                        </div>
+                        <div class="validation-item">
+                            <div class="validation-logo data">D</div>
+                            <div class="validation-info">
+                                <div class="title">Ingénieur DevOps</div>
+                                <div class="company">DataCorp</div>
+                            </div>
+                            <div style="font-size:11px;color:var(--text-light);margin-right:8px">Lyon, France</div>
+                            <div class="validation-meta">
+                                <div class="time">Il y a 2 h</div>
+                                <button class="btn-validate">À valider</button>
+                            </div>
+                        </div>
+                        <div class="validation-item">
+                            <div class="validation-logo aws" style="background:#232f3e">aws</div>
+                            <div class="validation-info">
+                                <div class="title">Cloud Architect</div>
+                                <div class="company">AWS</div>
+                            </div>
+                            <div style="font-size:11px;color:var(--text-light);margin-right:8px">Remote</div>
+                            <div class="validation-meta">
+                                <div class="time">Il y a 3 h</div>
+                                <button class="btn-validate">À valider</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer-link">
+                    Voir toutes les validations
+                    <i class="bx bx-right-arrow-alt"></i>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Activité récente</h3>
+                    <a href="#">Voir toute l'activité</a>
+                </div>
+                <div class="card-body">
+                    <div class="activity-item">
+                        <div class="activity-icon green"><i class="bx bx-user-plus"></i></div>
+                        <div class="activity-info">
+                            <div class="title">Nouvel utilisateur inscrit</div>
+                            <div class="desc">Sarah Benali a rejoint la plateforme</div>
+                        </div>
+                        <div class="activity-time">Il y a 5 min</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon orange"><i class="bx bx-briefcase"></i></div>
+                        <div class="activity-info">
+                            <div class="title">Offre publiée</div>
+                            <div class="desc">ACME a publié une nouvelle offre</div>
+                        </div>
+                        <div class="activity-time">Il y a 15 min</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon blue"><i class="bx bx-building"></i></div>
+                        <div class="activity-info">
+                            <div class="title">Entreprise validée</div>
+                            <div class="desc">DataCorp a été validée</div>
+                        </div>
+                        <div class="activity-time">Il y a 1 h</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon yellow"><i class="bx bx-shield-quarter"></i></div>
+                        <div class="activity-info">
+                            <div class="title">Offre signalée</div>
+                            <div class="desc">Une offre a été signalée par un utilisateur</div>
+                        </div>
+                        <div class="activity-time">Il y a 2 h</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon purple"><i class="bx bx-cog"></i></div>
+                        <div class="activity-info">
+                            <div class="title">Maintenance système</div>
+                            <div class="desc">Sauvegarde quotidienne effectuée</div>
+                        </div>
+                        <div class="activity-time">Il y a 3 h</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics-grid">
+            <!-- Line Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h3>Évolution des inscriptions</h3>
+                    </div>
+                    <div class="chart-tabs">
+                        <button class="chart-tab" data-range="7">7 jours</button>
+                        <button class="chart-tab active" data-range="30">30 jours</button>
+                        <button class="chart-tab" data-range="90">90 jours</button>
+                        <button class="chart-tab" data-range="365">1 an</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Donut Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Répartition des utilisateurs</h3>
+                </div>
+                <div class="donut-wrapper">
+                    <div class="donut-container">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center">
+                            <div class="value">24,582</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                    <div class="donut-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#3b82f6"></div>
+                            <span class="label">Développeurs</span>
+                            <span class="value">45%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#22c55e"></div>
+                            <span class="label">Recruteurs</span>
+                            <span class="value">25%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#a855f7"></div>
+                            <span class="label">Managers</span>
+                            <span class="value">15%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot" style="background:#f59e0b"></div>
+                            <span class="label">Autres</span>
+                            <span class="value">15%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Health + Revenue -->
+            <div style="display:flex;flex-direction:column;gap:16px">
+                <!-- System Health -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Santé du système</h3>
+                        <span class="link">Voir le détail</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-left">
+                            <i class="bx bx-check-circle"></i>
+                            <span class="label">Uptime</span>
+                        </div>
+                        <span class="health-value green">99,98%</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-left">
+                            <i class="bx bx-time-five"></i>
+                            <span class="label">Temps de réponse moyen</span>
+                        </div>
+                        <span class="health-value green">142 ms</span>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-left">
+                            <i class="bx bx-error-circle"></i>
+                            <span class="label">Erreurs système (24h)</span>
+                        </div>
+                        <span class="health-value orange">3</span>
+                    </div>
+                    <div class="health-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+                        <div style="display:flex;justify-content:space-between;width:100%">
+                            <div class="health-left">
+                                <i class="bx bx-chip"></i>
+                                <span class="label">Utilisation CPU</span>
+                            </div>
+                            <span class="health-value" style="font-size:12px">28%</span>
+                        </div>
+                        <div class="health-bar" style="width:100%">
+                            <div class="health-bar-fill green" style="width:28%"></div>
+                        </div>
+                    </div>
+                    <div class="health-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+                        <div style="display:flex;justify-content:space-between;width:100%">
+                            <div class="health-left">
+                                <i class="bx bx-memory-card"></i>
+                                <span class="label">Utilisation mémoire</span>
+                            </div>
+                            <span class="health-value" style="font-size:12px">42%</span>
+                        </div>
+                        <div class="health-bar" style="width:100%">
+                            <div class="health-bar-fill green" style="width:42%"></div>
+                        </div>
+                    </div>
+                    <div class="health-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+                        <div style="display:flex;justify-content:space-between;width:100%">
+                            <div class="health-left">
+                                <i class="bx bx-hard-drive"></i>
+                                <span class="label">Stockage utilisé</span>
+                            </div>
+                            <span class="health-value" style="font-size:12px">67%</span>
+                        </div>
+                        <div class="health-bar" style="width:100%">
+                            <div class="health-bar-fill orange" style="width:67%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Card -->
+        <div class="analytics-grid" style="grid-template-columns:1fr">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Revenus & Abonnements</h3>
+                    <span class="link">Voir le détail</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+                    <div class="revenue-header-info">
+                        <div class="label">Revenus mensuels</div>
+                        <div class="amount">
+                            128,450 MAD
+                            <span class="change"><i class="bx bx-trending-up"></i> 18%</span>
+                            <span class="change-label">vs mois dernier</span>
+                        </div>
+                    </div>
+                    <div class="revenue-metrics">
+                        <div class="revenue-metric">
+                            <div class="label">Abonnements actifs</div>
+                            <div class="value">312</div>
+                            <div class="change">↑ 14%</div>
+                        </div>
+                        <div class="revenue-metric">
+                            <div class="label">Conversion</div>
+                            <div class="value">6.8%</div>
+                            <div class="change">↑ 8%</div>
+                        </div>
+                        <div class="revenue-metric">
+                            <div class="label">MRR</div>
+                            <div class="value">128,450 MAD</div>
+                            <div class="change">↑ 18%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="revenue-link">
+                    <span>Gérer les abonnements</span>
+                    <i class="bx bx-right-arrow-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Stats -->
+        <div class="bottom-stats">
+            <div class="bottom-stat">
+                <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
+                <div class="bottom-stat-info">
+                    <div class="value">24,582</div>
+                    <div class="label">Utilisateurs inscrits</div>
+                </div>
+            </div>
+            <div class="bottom-stat">
+                <div class="bottom-stat-icon green"><i class="bx bx-user-check"></i></div>
+                <div class="bottom-stat-info">
+                    <div class="value">1,248</div>
+                    <div class="label">Offres actives</div>
+                </div>
+            </div>
+            <div class="bottom-stat">
+                <div class="bottom-stat-icon blue"><i class="bx bx-buildings"></i></div>
+                <div class="bottom-stat-info">
+                    <div class="value">892</div>
+                    <div class="label">Entreprises partenaires</div>
+                </div>
+            </div>
+            <div class="bottom-stat">
+                <div class="bottom-stat-icon orange"><i class="bx bx-star"></i></div>
+                <div class="bottom-stat-info">
+                    <div class="value">92%</div>
+                    <div class="label">Taux de satisfaction</div>
+                </div>
+            </div>
+            <div class="bottom-stat">
+                <div class="bottom-stat-icon cyan"><i class="bx bx-headphone"></i></div>
+                <div class="bottom-stat-info">
+                    <div class="value">Support actif 24/7</div>
+                    <div class="label">Temps de réponse moyen : 2h</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+
+    // Nav items
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Validation Tabs
+    document.querySelectorAll('.validation-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.validation-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const type = tab.dataset.tab;
+            const content = document.getElementById('validationContent');
+            if (type === 'offres') {
+                content.innerHTML = `
+                    <div class="validation-item">
+                        <div class="validation-logo acme">A</div>
+                        <div class="validation-info">
+                            <div class="title">Développeur Full Stack</div>
+                            <div class="company">ACME Corporation</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">Paris, France</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 1 h</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                    <div class="validation-item">
+                        <div class="validation-logo data">D</div>
+                        <div class="validation-info">
+                            <div class="title">Ingénieur DevOps</div>
+                            <div class="company">DataCorp</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">Lyon, France</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 2 h</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                    <div class="validation-item">
+                        <div class="validation-logo aws" style="background:#232f3e">aws</div>
+                        <div class="validation-info">
+                            <div class="title">Cloud Architect</div>
+                            <div class="company">AWS</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">Remote</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 3 h</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="validation-item">
+                        <div class="validation-logo acme">T</div>
+                        <div class="validation-info">
+                            <div class="title">TechVision SARL</div>
+                            <div class="company">Casablanca, Maroc</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">12 employés</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 30 min</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                    <div class="validation-item">
+                        <div class="validation-logo data" style="background:#7c3aed">N</div>
+                        <div class="validation-info">
+                            <div class="title">NovaSoft Inc.</div>
+                            <div class="company">Rabat, Maroc</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">45 employés</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 1 h</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                    <div class="validation-item">
+                        <div class="validation-logo aws" style="background:#16a34a">G</div>
+                        <div class="validation-info">
+                            <div class="title">GreenCode Solutions</div>
+                            <div class="company">Marrakech, Maroc</div>
+                        </div>
+                        <div style="font-size:11px;color:var(--text-light);margin-right:8px">8 employés</div>
+                        <div class="validation-meta">
+                            <div class="time">Il y a 4 h</div>
+                            <button class="btn-validate">À valider</button>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    });
+
+    // Chart Tabs
+    document.querySelectorAll('.chart-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            updateLineChart(parseInt(tab.dataset.range));
+        });
+    });
+
+    // Line Chart
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+
+    function generateData(days) {
+        const labels = [];
+        const data1 = [];
+        const data2 = [];
+        const now = new Date(2024, 4, 31);
+
+        for (let i = days - 1; i >= 0; i--) {
+            const d = new Date(now);
+            d.setDate(d.getDate() - i);
+            labels.push(d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }));
+            const base1 = days <= 7 ? 150 : days <= 30 ? 120 : days <= 90 ? 100 : 80;
+            const base2 = days <= 7 ? 80 : days <= 30 ? 65 : days <= 90 ? 55 : 45;
+            data1.push(base1 + Math.random() * 40 + i * (days > 60 ? 2 : 3));
+            data2.push(base2 + Math.random() * 25 + i * (days > 60 ? 1.5 : 2));
+        }
+        return { labels, data1, data2 };
+    }
+
+    const chartData = generateData(30);
+
+    const lineChart = new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [
+                {
+                    label: 'Nouveaux utilisateurs',
+                    data: chartData.data1,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59,130,246,0.08)',
+                    borderWidth: 2.5,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#3b82f6',
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Utilisateurs actifs',
+                    data: chartData.data2,
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34,197,94,0.05)',
+                    borderWidth: 2.5,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#22c55e',
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        padding: 20,
+                        font: { size: 11, family: 'Inter' },
+                        color: '#94a3b8'
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 12, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: true
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#94a3b8',
+                        maxTicksLimit: 8
+                    }
+                },
+                y: {
+                    grid: { color: '#f1f5f9' },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#94a3b8',
+                        padding: 8
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function updateLineChart(days) {
+        const d = generateData(days);
+        lineChart.data.labels = d.labels;
+        lineChart.data.datasets[0].data = d.data1;
+        lineChart.data.datasets[1].data = d.data2;
+        lineChart.update();
+    }
+
+    // Donut Chart
+    const donutCtx = document.getElementById('donutChart').getContext('2d');
+    new Chart(donutCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Développeurs', 'Recruteurs', 'Managers', 'Autres'],
+            datasets: [{
+                data: [45, 25, 15, 15],
+                backgroundColor: ['#3b82f6', '#22c55e', '#a855f7', '#f59e0b'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '72%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 12, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+                    }
+                }
+            }
+        }
+    });
+
+    // Animate KPI numbers
+    function animateValue(el, start, end, duration) {
+        const range = end - start;
+        const startTime = performance.now();
+        const formatted = (v) => {
+            if (v >= 1000) return v.toLocaleString('fr-FR');
+            return v.toString();
+        };
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(start + range * eased);
+            el.textContent = formatted(current);
+            if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    }
+
+    // Animate KPI values on load
+    document.querySelectorAll('.kpi-value').forEach(el => {
+        const text = el.textContent.trim();
+        const numMatch = text.match(/[\d,]+/);
+        if (numMatch) {
+            const num = parseInt(numMatch[0].replace(/,/g, ''));
+            const suffix = text.replace(numMatch[0], '').trim();
+            animateValue(el, 0, num, 1200);
+            setTimeout(() => {
+                el.innerHTML = num.toLocaleString('fr-FR') + (suffix ? ` <small style="font-size:14px;font-weight:500;color:var(--text-light)">${suffix}</small>` : '');
+            }, 1300);
+        }
+    });
+
+    // Health bar animation
+    setTimeout(() => {
+        document.querySelectorAll('.health-bar-fill').forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 100);
+        });
+    }, 300);
+</script>
+</body>
+</html>
+

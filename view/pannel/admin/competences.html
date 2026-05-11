@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Compétences</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://cdn.jsdelivr.net/npm/fontsource-inter@4.5.15/latin.css');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --purple-bg: #f5f3ff;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --yellow-bg: #fefce8;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .sidebar-logo svg { width: 32px; height: 32px; }
+        .sidebar-logo span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-logo span em { font-style: normal; color: var(--accent); }
+
+        .sidebar-nav { flex: 1; padding: 16px 10px; overflow-y: auto; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+        .nav-item.active { background: var(--sidebar-active); color: var(--accent); }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item i { font-size: 20px; width: 24px; text-align: center; }
+
+        .sidebar-plan {
+            margin: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .sidebar-plan h4 i { color: var(--accent); font-size: 18px; }
+        .sidebar-plan p { color: rgba(255,255,255,0.5); font-size: 11.5px; line-height: 1.6; margin-bottom: 14px; }
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-plan .btn-plan:hover { background: var(--accent-hover); }
+
+        .sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-footer .nav-item { margin: 0; }
+
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            background: var(--white);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search-box {
+            position: relative;
+            width: 320px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--bg-main);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box input::placeholder { color: var(--text-light); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .search-box .kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .header-btn:hover { background: var(--bg-main); }
+        .header-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .user-menu img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .user-menu .name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .user-menu .role { font-size: 11px; color: var(--text-light); }
+        .user-menu i { font-size: 16px; color: var(--text-light); }
+
+        .page-content {
+            padding: 24px 28px;
+            display: flex;
+            gap: 0;
+        }
+        .page-main { flex: 1; min-width: 0; }
+
+        .page-header { margin-bottom: 20px; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .page-header p { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: box-shadow 0.2s;
+        }
+        .kpi-card:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .kpi-icon.purple { background: var(--purple-bg); color: #7c3aed; }
+        .kpi-icon.green { background: var(--green-bg); color: #16a34a; }
+        .kpi-icon.orange { background: var(--yellow-bg); color: #ca8a04; }
+        .kpi-icon.red { background: var(--red-bg); color: var(--red); }
+        .kpi-label { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; margin-bottom: 6px; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .kpi-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 2px; }
+        .kpi-change.up { color: var(--green); }
+        .kpi-change.down { color: var(--red); }
+        .kpi-footer { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-bar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .filter-search {
+            position: relative;
+            width: 240px;
+        }
+        .filter-search input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+        .filter-search input:focus { border-color: var(--accent); }
+        .filter-search input::placeholder { color: var(--text-light); }
+        .filter-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .filter-select {
+            padding: 9px 30px 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .filter-select:focus { border-color: var(--accent); }
+        .btn-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+        .btn-add:hover { opacity: 0.9; }
+
+        .table-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .table-wrapper { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: var(--bg-main); }
+        .data-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+        .data-table tbody tr { cursor: pointer; transition: background 0.15s; }
+        .data-table tbody tr:hover { background: #f8fafc; }
+        .data-table tbody tr.selected { background: #eff6ff; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .radio-btn {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .skill-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .skill-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .skill-cell .sname { font-weight: 600; color: var(--text-primary); }
+
+        .trend-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .trend-value { font-size: 12.5px; font-weight: 600; color: var(--green); }
+        .trend-sparkline {
+            width: 40px;
+            height: 20px;
+        }
+        .trend-sparkline svg { width: 100%; height: 100%; }
+
+        .cat-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .cat-badge.dev { background: #eff6ff; color: #2563eb; }
+        .cat-badge.frontend { background: var(--purple-bg); color: #7c3aed; }
+        .cat-badge.backend { background: var(--green-bg); color: #16a34a; }
+        .cat-badge.devops { background: #e0f2fe; color: #0891b2; }
+        .cat-badge.cloud { background: var(--yellow-bg); color: #ca8a04; }
+        .cat-badge.api { background: #fce7f3; color: #db2777; }
+
+        .priority-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .priority-badge.high { background: var(--red-bg); color: var(--red); }
+        .priority-badge.medium { background: var(--orange-bg); color: var(--orange); }
+        .priority-badge.low { background: #f1f5f9; color: var(--text-light); }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.active { background: var(--green-bg); color: var(--green); }
+        .status-badge.rising { background: var(--green-bg); color: var(--green); }
+        .status-badge.watching { background: var(--blue-bg); color: var(--blue); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+        .table-action:hover { background: var(--bg-main); }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .table-footer-info { font-size: 12px; color: var(--text-light); }
+        .pagination { display: flex; align-items: center; gap: 4px; }
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .page-btn.active { background: var(--sidebar-bg); color: #fff; border-color: var(--sidebar-bg); }
+        .page-btn.dots { border: none; background: none; cursor: default; color: var(--text-light); }
+        .page-rows select {
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .chart-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 18px;
+        }
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .chart-header h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .chart-header a { font-size: 11.5px; color: var(--blue); text-decoration: none; font-weight: 600; cursor: pointer; }
+        .chart-container { position: relative; height: 180px; }
+
+        .donut-wrapper { display: flex; align-items: center; gap: 20px; }
+        .donut-container { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .donut-center .value { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .donut-center .label { font-size: 10px; color: var(--text-light); }
+        .donut-legend { display: flex; flex-direction: column; gap: 6px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11.5px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .legend-item .llabel { color: var(--text-secondary); flex: 1; }
+        .legend-item .lvalue { font-weight: 600; color: var(--text-primary); }
+
+        .health-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+        .health-item:not(:last-child) { border-bottom: 1px solid var(--border); }
+        .health-item i { font-size: 16px; }
+        .health-item .hlabel { font-size: 12px; color: var(--text-secondary); flex: 1; }
+        .health-item .hvalue { font-size: 12px; font-weight: 600; margin-right: 8px; min-width: 36px; text-align: right; }
+        .health-bar {
+            width: 70px;
+            height: 5px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .health-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+        .health-item.green i { color: var(--green); }
+        .health-item.green .hvalue { color: var(--green); }
+        .health-item.green .health-bar-fill { background: var(--green); }
+        .health-item.blue i { color: var(--blue); }
+        .health-item.blue .hvalue { color: var(--blue); }
+        .health-item.blue .health-bar-fill { background: var(--blue); }
+        .health-item.purple i { color: var(--purple); }
+        .health-item.purple .hvalue { color: var(--purple); }
+        .health-item.purple .health-bar-fill { background: var(--purple); }
+
+        .bottom-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+        .bottom-stat {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .bottom-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .bottom-stat-icon.purple { background: var(--purple-bg); color: #7c3aed; }
+        .bottom-stat-icon.blue { background: var(--blue-bg); color: #2563eb; }
+        .bottom-stat-icon.cyan { background: #e0f2fe; }
+        .bottom-stat-icon.cyan i { color: #7c3aed; }
+        .bottom-stat-info .value { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .bottom-stat-info .label { font-size: 11px; color: var(--text-light); }
+
+        .detail-panel {
+            width: 360px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            margin-right: -28px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+        }
+        .detail-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            margin-right: 0;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .panel-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .panel-close:hover { background: var(--bg-main); }
+
+        .panel-skill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-skill .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: var(--blue-bg);
+            color: var(--blue);
+        }
+        .panel-skill .info .name { font-size: 14px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .panel-skill .info .name .status-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--green-bg); color: var(--green); font-weight: 600; }
+        .panel-skill .info .sub { font-size: 11.5px; color: var(--text-light); margin-top: 2px; }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            padding: 0 22px;
+        }
+        .panel-tab {
+            padding: 12px 0;
+            margin-right: 22px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+        .panel-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+        .panel-tab:hover:not(.active) { color: var(--text-secondary); }
+
+        .panel-body { padding: 16px 22px; }
+        .panel-section { margin-bottom: 20px; }
+        .panel-section h4 { font-size: 12.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; }
+        .info-row:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+        .info-row .label { font-size: 12px; color: var(--text-light); font-weight: 500; }
+        .info-row .value { font-size: 12.5px; color: var(--text-primary); font-weight: 500; text-align: right; }
+
+        .assoc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+        .assoc-tag {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .assoc-tag.green { background: var(--green-bg); color: #16a34a; }
+        .assoc-tag.purple { background: var(--purple-bg); color: #7c3aed; }
+        .assoc-tag.blue { background: var(--blue-bg); color: #2563eb; }
+        .assoc-tag.orange { background: var(--orange-bg); color: var(--orange); }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .action-item:hover { background: var(--bg-main); }
+        .action-item:last-child { margin-bottom: 0; }
+        .action-item .aicon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .action-item .aicon.blue { background: var(--blue-bg); color: var(--blue); }
+        .action-item .aicon.orange { background: var(--orange-bg); color: var(--orange); }
+        .action-item .aicon.red { background: var(--red-bg); color: var(--red); }
+        .action-item .ainfo { flex: 1; }
+        .action-item .ainfo .atitle { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+        .action-item .ainfo .adesc { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+        .action-item .aarrow { color: var(--text-light); font-size: 16px; }
+
+        .panel-actions { display: flex; gap: 10px; padding: 16px 22px; border-top: 1px solid var(--border); }
+        .btn-deactivate {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--red);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--red);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-deactivate:hover { background: var(--red-bg); }
+        .btn-analyses {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--accent);
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-analyses:hover { opacity: 0.9; }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; }
+        .sidebar-overlay.active { display: block; }
+        .panel-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 95; }
+        .panel-overlay.active { display: block; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+        @media (max-width: 1400px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr 1fr; }
+            .bottom-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .detail-panel {
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                width: 360px;
+                box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+                margin-right: 0;
+            }
+            .detail-panel.hidden { transform: translateX(100%); }
+            .menu-toggle { display: flex !important; }
+        }
+        @media (max-width: 768px) {
+            .page-content { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .bottom-stats { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-box { display: none; }
+            .user-menu .info { display: none; }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-primary);
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="panel-overlay" id="panelOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="#"><i class="bx bx-home"></i>Tableau de bord</a>
+        <a class="nav-item" href="#"><i class="bx bx-user"></i>Utilisateurs</a>
+        <a class="nav-item" href="#"><i class="bx bx-building"></i>Entreprises</a>
+        <a class="nav-item" href="#"><i class="bx bx-briefcase"></i>Offres</a>
+        <a class="nav-item" href="#"><i class="bx bx-line-chart"></i>Matching IA</a>
+        <a class="nav-item active" href="#"><i class="bx bx-target-lock"></i>Compétences</a>
+        <a class="nav-item" href="#"><i class="bx bx-bar-chart-alt-2"></i>Analyses</a>
+        <a class="nav-item" href="#"><i class="bx bx-check-shield"></i>Abonnements</a>
+        <a class="nav-item" href="#"><i class="bx bx-headphone"></i>Support</a>
+        <a class="nav-item" href="#"><i class="bx bx-cog"></i>Paramètres</a>
+    </nav>
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Entreprise</h4>
+        <p>Gérez votre plateforme avec toutes les fonctionnalités avancées.</p>
+        <button class="btn-plan">Voir les plans</button>
+    </div>
+    <div class="sidebar-footer">
+        <a class="nav-item" href="#"><i class="bx bx-log-out"></i>Déconnexion</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="top-header">
+        <div style="display:flex;align-items:center;">
+            <button class="menu-toggle" id="menuToggle"><i class="bx bx-menu"></i></button>
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Rechercher dans la plateforme...">
+                <span class="kbd">K</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="bx bx-bell"></i><span class="badge">12</span></button>
+            <div class="user-menu">
+                <img src="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="info">
+                    <div class="name">Admin TheWay</div>
+                    <div class="role">Administrateur</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <div class="page-main">
+            <div class="page-header">
+                <h1>Compétences</h1>
+                <p>Supervisez les compétences détectées, les tendances du marché et les recommandations de la plateforme.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="bx bx-graduation"></i></div>
+                    <div>
+                        <div class="kpi-label">Compétences suivies</div>
+                        <div class="kpi-value">2,486 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-trending-up"></i></div>
+                    <div>
+                        <div class="kpi-label">Compétences en croissance</div>
+                        <div class="kpi-value">128 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 9%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="bx bx-star"></i></div>
+                    <div>
+                        <div class="kpi-label">Compétences prioritaires</div>
+                        <div class="kpi-value">42 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 16%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="bx bx-error"></i></div>
+                    <div>
+                        <div class="kpi-label">Alertes de pénurie</div>
+                        <div class="kpi-value">19 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 3%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-bar-left">
+                    <div class="filter-search">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="Rechercher une compétence..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="catFilter">
+                        <option value="">Catégorie: Tous</option>
+                        <option value="dev">Développement</option>
+                        <option value="frontend">Frontend</option>
+                        <option value="backend">Backend</option>
+                        <option value="devops">DevOps</option>
+                        <option value="cloud">Cloud</option>
+                        <option value="api">API</option>
+                    </select>
+                    <select class="filter-select" id="demandFilter">
+                        <option value="">Niveau de demande: Tous</option>
+                        <option value="high">Élevé</option>
+                        <option value="medium">Moyen</option>
+                        <option value="low">Faible</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Statut: Tous</option>
+                        <option value="active">Active</option>
+                        <option value="rising">En hausse</option>
+                        <option value="watching">Surveillée</option>
+                    </select>
+                </div>
+                <button class="btn-add"><i class="bx bx-plus"></i> Ajouter une compétence</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px"></th>
+                                <th>Compétence</th>
+                                <th>Catégorie</th>
+                                <th>Tendance marché</th>
+                                <th>Utilisateurs</th>
+                                <th>Demandes entreprises</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                                <th style="width:40px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">Affichage de <strong>1 à 7</strong> sur <strong>2,486</strong> compétences</div>
+                    <div style="display:flex;align-items:center;gap:14px">
+                        <div class="pagination">
+                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn dots">...</button>
+                            <button class="page-btn">356</button>
+                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
+                        </div>
+                        <div class="page-rows">
+                            <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Évolution de la demande</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="demandChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Répartition par catégorie</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div class="donut-wrapper">
+                        <div class="donut-container">
+                            <canvas id="donutChart"></canvas>
+                            <div class="donut-center">
+                                <div class="value">2,486</div>
+                                <div class="label">Total</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div><span class="llabel">Développement</span><span class="lvalue">42%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div><span class="llabel">Frontend</span><span class="lvalue">22%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Backend</span><span class="lvalue">16%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#0891b2"></div><span class="llabel">DevOps</span><span class="lvalue">10%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Cloud</span><span class="lvalue">7%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">Autres</span><span class="lvalue">3%</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Santé des compétences</h3>
+                        <a href="#">Voir le détail</a>
+                    </div>
+                    <div class="health-item green">
+                        <i class="bx bx-check-circle"></i>
+                        <span class="hlabel">Couverture marché</span>
+                        <span class="hvalue">78%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:78%"></div></div>
+                    </div>
+                    <div class="health-item blue">
+                        <i class="bx bx-bullseye"></i>
+                        <span class="hlabel">Précision IA</span>
+                        <span class="hvalue">86%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:86%"></div></div>
+                    </div>
+                    <div class="health-item purple">
+                        <i class="bx bx-trending-up"></i>
+                        <span class="hlabel">Taux d'adoption</span>
+                        <span class="hvalue">64%</span>
+                        <div class="health-bar"><div class="health-bar-fill" style="width:64%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-stats">
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">50,000+</div>
+                        <div class="label">offres analysées / jour</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon blue"><i class="bx bx-buildings"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">2,500+</div>
+                        <div class="label">sociétés surveillées</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon cyan"><i class="bx bx-zap"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">98%</div>
+                        <div class="label">précision des recommandations</div>
+                    </div>
+                </div>
+                <div class="bottom-stat">
+                    <div class="bottom-stat-icon cyan"><i class="bx bx-brain"></i></div>
+                    <div class="bottom-stat-info">
+                        <div class="value">IA active 24/7</div>
+                        <div class="label">analyse continue et en temps réel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-header">
+                <h3>Détails de la compétence</h3>
+                <button class="panel-close" id="panelClose"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="panel-skill" id="panelSkill"></div>
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="infos">Informations</button>
+                <button class="panel-tab" data-tab="tendances">Tendances</button>
+                <button class="panel-tab" data-tab="associations">Associations</button>
+                <button class="panel-tab" data-tab="historique">Historique</button>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content active" id="tab-infos">
+                    <div class="panel-section">
+                        <div id="panelDetails"></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-tendances">
+                    <div class="panel-section">
+                        <h4>Tendances du marché</h4>
+                        <div class="info-row"><span class="label">Croissance 30 jours</span><span class="value" style="color:var(--green)">+24%</span></div>
+                        <div class="info-row"><span class="label">Croissance 90 jours</span><span class="value" style="color:var(--green)">+38%</span></div>
+                        <div class="info-row"><span class="label">Tendance prédite</span><span class="value">Hausse continue</span></div>
+                        <div class="info-row"><span class="label">Pic de demande</span><span class="value">Mai 2024</span></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-associations">
+                    <div class="panel-section">
+                        <h4>Compétences associées</h4>
+                        <div class="assoc-tags" id="assocTags"></div>
+                        <div style="margin-top:8px"><a href="#" style="font-size:12px;color:var(--blue);text-decoration:none;font-weight:600">Voir toutes (12)</a></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-historique">
+                    <div class="panel-section">
+                        <h4>Historique des modifications</h4>
+                        <div class="info-row"><span class="label">12 mai 2024</span><span class="value">Mise à jour données</span></div>
+                        <div class="info-row"><span class="label">1 avr 2024</span><span class="value">Statut → En hausse</span></div>
+                        <div class="info-row"><span class="label">15 fév 2024</span><span class="value">Priorité → Élevée</span></div>
+                        <div class="info-row"><span class="label">15 mai 2023</span><span class="value">Suivi activé</span></div>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h4>Actions recommandées</h4>
+                    <div class="action-item">
+                        <div class="aicon blue"><i class="bx bx-bullseye"></i></div>
+                        <div class="ainfo">
+                            <div class="atitle">Renforcer la recommandation</div>
+                            <div class="adesc">Augmenter le poids de matching</div>
+                        </div>
+                        <i class="bx bx-chevron-right aarrow"></i>
+                    </div>
+                    <div class="action-item">
+                        <div class="aicon orange"><i class="bx bx-bookmark"></i></div>
+                        <div class="ainfo">
+                            <div class="atitle">Mettre en avant dans les matches</div>
+                            <div class="adesc">Booster la visibilité de React</div>
+                        </div>
+                        <i class="bx bx-chevron-right aarrow"></i>
+                    </div>
+                    <div class="action-item">
+                        <div class="aicon red"><i class="bx bx-error"></i></div>
+                        <div class="ainfo">
+                            <div class="atitle">Créer une alerte de pénurie</div>
+                            <div class="adesc">Surveiller les écarts d'offre/demande</div>
+                        </div>
+                        <i class="bx bx-chevron-right aarrow"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-actions">
+                <button class="btn-deactivate"><i class="bx bx-x-circle"></i> Désactiver</button>
+                <button class="btn-analyses"><i class="bx bx-bar-chart"></i> Voir les analyses</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const skills = [
+        {
+            id: 1, name: 'JavaScript', icon: 'JS', iconColor: '#f7df1e', iconBg: '#f7df1e22',
+            category: 'Développement', catClass: 'dev', trend: 18, users: '12,450', demands: '1,248',
+            priority: 'Élevée', priorityClass: 'high', status: 'Active', statusClass: 'active',
+            cat: 'Frontend', demandLevel: 'Élevé', growth: '+24%', concernedUsers: '9,842',
+            demandingCompanies: '1,102', lastUpdate: '12 mai 2024 à 10:30', since: '15 mai 2023',
+            associations: ['TypeScript', 'React', 'Node.js']
+        },
+        {
+            id: 2, name: 'React', icon: '⚛', iconColor: '#61dafb', iconBg: '#61dafb22',
+            category: 'Frontend', catClass: 'frontend', trend: 24, users: '9,842', demands: '1,102',
+            priority: 'Élevée', priorityClass: 'high', status: 'En hausse', statusClass: 'rising',
+            cat: 'Frontend', demandLevel: 'Élevé', growth: '+24%', concernedUsers: '9,842',
+            demandingCompanies: '1,102', lastUpdate: '12 mai 2024 à 10:30', since: '15 mai 2023',
+            associations: ['JavaScript', 'TypeScript', 'Next.js', 'Redux', 'Node.js', 'GraphQL', 'Tailwind CSS', 'Jest']
+        },
+        {
+            id: 3, name: 'Node.js', icon: 'N', iconColor: '#339933', iconBg: '#33993322',
+            category: 'Backend', catClass: 'backend', trend: 15, users: '7,623', demands: '978',
+            priority: 'Élevée', priorityClass: 'high', status: 'Active', statusClass: 'active',
+            cat: 'Backend', demandLevel: 'Élevé', growth: '+15%', concernedUsers: '7,623',
+            demandingCompanies: '978', lastUpdate: '11 mai 2024 à 14:20', since: '10 janv. 2023',
+            associations: ['JavaScript', 'Express', 'MongoDB']
+        },
+        {
+            id: 4, name: 'TypeScript', icon: 'TS', iconColor: '#3178c6', iconBg: '#3178c622',
+            category: 'Développement', catClass: 'dev', trend: 20, users: '6,841', demands: '865',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'En hausse', statusClass: 'rising',
+            cat: 'Développement', demandLevel: 'Élevé', growth: '+20%', concernedUsers: '6,841',
+            demandingCompanies: '865', lastUpdate: '10 mai 2024 à 09:00', since: '20 mars 2023',
+            associations: ['JavaScript', 'React', 'Angular']
+        },
+        {
+            id: 5, name: 'Docker', icon: '🐳', iconColor: '#2496ed', iconBg: '#2496ed22',
+            category: 'DevOps', catClass: 'devops', trend: 12, users: '5,231', demands: '642',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'Surveillée', statusClass: 'watching',
+            cat: 'DevOps', demandLevel: 'Moyen', growth: '+12%', concernedUsers: '5,231',
+            demandingCompanies: '642', lastUpdate: '9 mai 2024 à 16:45', since: '5 fév. 2023',
+            associations: ['Kubernetes', 'CI/CD', 'Linux']
+        },
+        {
+            id: 6, name: 'AWS', icon: 'aws', iconColor: '#ff9900', iconBg: '#ff990022',
+            category: 'Cloud', catClass: 'cloud', trend: 16, users: '4,912', demands: '598',
+            priority: 'Moyenne', priorityClass: 'medium', status: 'Active', statusClass: 'active',
+            cat: 'Cloud', demandLevel: 'Moyen', growth: '+16%', concernedUsers: '4,912',
+            demandingCompanies: '598', lastUpdate: '8 mai 2024 à 11:30', since: '1 avr. 2023',
+            associations: ['Cloud', 'DevOps', 'Terraform']
+        },
+        {
+            id: 7, name: 'GraphQL', icon: '◇', iconColor: '#e10098', iconBg: '#e1009822',
+            category: 'API', catClass: 'api', trend: 28, users: '3,402', demands: '421',
+            priority: 'Faible', priorityClass: 'low', status: 'En hausse', statusClass: 'rising',
+            cat: 'API', demandLevel: 'Moyen', growth: '+28%', concernedUsers: '3,402',
+            demandingCompanies: '421', lastUpdate: '7 mai 2024 à 08:15', since: '12 juin 2023',
+            associations: ['REST API', 'React', 'Node.js']
+        }
+    ];
+
+    function generateSparkline(trend) {
+        const points = [];
+        let val = 20;
+        for (let i = 0; i < 8; i++) {
+            val += (Math.random() - 0.3) * 8;
+            val = Math.max(5, Math.min(35, val));
+            points.push(val);
+        }
+        const max = Math.max(...points);
+        const min = Math.min(...points);
+        const range = max - min || 1;
+        const w = 40, h = 20;
+        const pathD = points.map((p, i) => {
+            const x = (i / (points.length - 1)) * w;
+            const y = h - ((p - min) / range) * (h - 4) - 2;
+            return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+        }).join(' ');
+        return `<svg viewBox="0 0 ${w} ${h}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="${pathD}" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+    }
+
+    function renderTable(data) {
+        document.getElementById('tableBody').innerHTML = data.map((s, i) => `
+            <tr data-id="${s.id}" onclick="selectSkill(${s.id})">
+                <td><input type="radio" name="skill" class="radio-btn" ${i === 1 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
+                <td>
+                    <div class="skill-cell">
+                        <div class="skill-icon" style="background:${s.iconBg};color:${s.iconColor}">${s.icon}</div>
+                        <span class="sname">${s.name}</span>
+                    </div>
+                </td>
+                <td><span class="cat-badge ${s.catClass}">${s.category}</span></td>
+                <td>
+                    <div class="trend-cell">
+                        <span class="trend-value">↑ +${s.trend}%</span>
+                        <div class="trend-sparkline">${generateSparkline(s.trend)}</div>
+                    </div>
+                </td>
+                <td style="font-weight:600">${s.users}</td>
+                <td style="color:var(--text-secondary)">${s.demands}</td>
+                <td><span class="priority-badge ${s.priorityClass}">${s.priority}</span></td>
+                <td><span class="status-badge ${s.statusClass}">${s.status}</span></td>
+                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
+            </tr>
+        `).join('');
+    }
+
+    function selectSkill(id) {
+        const s = skills.find(x => x.id === id);
+        if (!s) return;
+
+        document.getElementById('detailPanel').classList.remove('hidden');
+        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
+
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
+
+        document.getElementById('panelSkill').innerHTML = `
+            <div class="icon" style="background:${s.iconBg};color:${s.iconColor}">${s.icon}</div>
+            <div class="info">
+                <div class="name">${s.name} <span class="status-tag">${s.status}</span></div>
+                <div class="sub">${s.cat} · Suivie depuis le ${s.since}</div>
+            </div>
+        `;
+
+        document.getElementById('panelDetails').innerHTML = `
+            <div class="info-row"><span class="label">Catégorie</span><span class="value">${s.cat}</span></div>
+            <div class="info-row"><span class="label">Niveau de demande</span><span class="value"> ${s.demandLevel}</span></div>
+            <div class="info-row"><span class="label">Croissance (30 jours)</span><span class="value" style="color:var(--green)">↑ ${s.growth}</span></div>
+            <div class="info-row"><span class="label">Utilisateurs concernés</span><span class="value">${s.concernedUsers}</span></div>
+            <div class="info-row"><span class="label">Entreprises demandeuses</span><span class="value">${s.demandingCompanies}</span></div>
+            <div class="info-row"><span class="label">Dernière mise à jour</span><span class="value">${s.lastUpdate}</span></div>
+        `;
+
+        const assocContainer = document.getElementById('assocTags');
+        const tagColors = ['green', 'purple', 'blue', 'green', 'blue', 'purple', 'orange', 'green'];
+        assocContainer.innerHTML = s.associations.map((a, i) =>
+            `<span class="assoc-tag ${tagColors[i % tagColors.length]}">${a}</span>`
+        ).join('');
+    }
+
+    document.getElementById('panelClose').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.getElementById('panelOverlay').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const cat = document.getElementById('catFilter').value.toLowerCase();
+        const demand = document.getElementById('demandFilter').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value.toLowerCase();
+        let filtered = skills.filter(s => {
+            const matchSearch = !search || s.name.toLowerCase().includes(search) || s.category.toLowerCase().includes(search);
+            const matchCat = !cat || s.catClass === cat || s.category.toLowerCase().includes(cat);
+            const matchDemand = !demand || s.priorityClass === demand || s.demandLevel.toLowerCase().includes(demand);
+            const matchStatus = !status || s.statusClass === status;
+            return matchSearch && matchCat && matchDemand && matchStatus;
+        });
+        renderTable(filtered);
+    }
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('catFilter').addEventListener('change', applyFilters);
+    document.getElementById('demandFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    new Chart(document.getElementById('demandChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: ['Déc. 2023', 'Janv. 2024', 'Fév. 2024', 'Mars 2024', 'Avr. 2024', 'Mai 2024'],
+            datasets: [{
+                label: 'Nombre de demandes entreprises',
+                data: [820, 1050, 1400, 1350, 1600, 1850],
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59,130,246,0.06)',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 11, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => ctx.parsed.y.toLocaleString()
+                    }
+                }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8' } },
+                y: {
+                    grid: { color: '#f1f5f9' },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#94a3b8',
+                        callback: (v) => v >= 1000 ? (v / 1000) + 'K' : v
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('donutChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Développement', 'Frontend', 'Backend', 'DevOps', 'Cloud', 'Autres'],
+            datasets: [{
+                data: [42, 22, 16, 10, 7, 3],
+                backgroundColor: ['#16a34a', '#ef4444', '#3b82f6', '#0891b2', '#f59e0b', '#94a3b8'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '70%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 11, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+                    }
+                }
+            }
+        }
+    });
+
+    renderTable(skills);
+    setTimeout(() => selectSkill(2), 300);
+
+    setTimeout(() => {
+        document.querySelectorAll('.health-bar-fill').forEach(bar => {
+            const w = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => { bar.style.width = w; }, 100);
+        });
+    }, 300);
+</script>
+</body>
+</html>
+

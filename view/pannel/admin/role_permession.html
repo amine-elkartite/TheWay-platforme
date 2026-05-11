@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Rôles & Permissions</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --purple-bg: #f5f3ff;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --yellow-bg: #fefce8;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo svg { width: 32px; height: 32px; }
+        .sidebar-logo span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-logo span em { font-style: normal; color: var(--accent); }
+
+        .sidebar-nav { flex: 1; padding: 16px 10px; overflow-y: auto; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+        .nav-item.active { background: var(--sidebar-active); color: var(--accent); }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item i { font-size: 20px; width: 24px; text-align: center; }
+
+        .sidebar-plan {
+            margin: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .sidebar-plan h4 i { color: var(--accent); font-size: 18px; }
+        .sidebar-plan p { color: rgba(255,255,255,0.5); font-size: 11.5px; line-height: 1.6; margin-bottom: 14px; }
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-plan .btn-plan:hover { background: var(--accent-hover); }
+
+        .sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-footer .nav-item { margin: 0; }
+
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            background: var(--white);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search-box {
+            position: relative;
+            width: 320px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--bg-main);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box input::placeholder { color: var(--text-light); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .search-box .kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .header-btn:hover { background: var(--bg-main); }
+        .header-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .user-menu img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .user-menu .name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .user-menu .role { font-size: 11px; color: var(--text-light); }
+        .user-menu i { font-size: 16px; color: var(--text-light); }
+
+        .page-content {
+            padding: 24px 28px;
+            display: flex;
+            gap: 0;
+        }
+        .page-main { flex: 1; min-width: 0; }
+
+        .page-header { margin-bottom: 20px; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .page-header p { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: box-shadow 0.2s;
+        }
+        .kpi-card:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .kpi-icon.purple { background: var(--purple-bg); color: #7c3aed; }
+        .kpi-icon.green { background: var(--green-bg); color: #16a34a; }
+        .kpi-icon.orange { background: var(--yellow-bg); color: #ca8a04; }
+        .kpi-icon.blue { background: var(--blue-bg); color: #2563eb; }
+        .kpi-label { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; margin-bottom: 6px; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .kpi-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 2px; }
+        .kpi-change.up { color: var(--green); }
+        .kpi-change.down { color: var(--red); }
+        .kpi-footer { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-bar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .filter-search {
+            position: relative;
+            width: 220px;
+        }
+        .filter-search input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+        .filter-search input:focus { border-color: var(--accent); }
+        .filter-search input::placeholder { color: var(--text-light); }
+        .filter-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .filter-select {
+            padding: 9px 30px 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .filter-select:focus { border-color: var(--accent); }
+        .btn-create {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+        .btn-create:hover { opacity: 0.9; }
+
+        .table-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .table-wrapper { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: var(--bg-main); }
+        .data-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .data-table td {
+            padding: 14px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+        .data-table tbody tr { cursor: pointer; transition: background 0.15s; }
+        .data-table tbody tr:hover { background: #f8fafc; }
+        .data-table tbody tr.selected { background: #eff6ff; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .radio-btn {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .role-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .role-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .role-cell .rname { font-weight: 600; color: var(--text-primary); }
+
+        .access-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .access-badge.high { background: var(--red-bg); color: var(--red); }
+        .access-badge.medium { background: var(--orange-bg); color: var(--orange); }
+        .access-badge.low { background: var(--blue-bg); color: var(--blue); }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.active { background: var(--green-bg); color: var(--green); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+        .table-action:hover { background: var(--bg-main); }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .table-footer-info { font-size: 12px; color: var(--text-light); }
+        .pagination { display: flex; align-items: center; gap: 4px; }
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .page-btn.active { background: var(--sidebar-bg); color: #fff; border-color: var(--sidebar-bg); }
+        .page-rows select {
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .detail-panel {
+            width: 420px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            margin-right: -28px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+        }
+        .detail-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            margin-right: 0;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .panel-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .panel-close:hover { background: var(--bg-main); }
+
+        .panel-role {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-role .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: var(--purple-bg);
+            color: #7c3aed;
+            flex-shrink: 0;
+        }
+        .panel-role .info .name { font-size: 16px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .panel-role .info .name .status-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--green-bg); color: var(--green); font-weight: 600; }
+        .panel-role .info .desc { font-size: 12px; color: var(--text-secondary); margin-top: 4px; line-height: 1.5; }
+        .panel-role .info .meta { font-size: 11.5px; color: var(--text-light); margin-top: 6px; }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            padding: 0 22px;
+        }
+        .panel-tab {
+            padding: 12px 0;
+            margin-right: 22px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+        .panel-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+        .panel-tab:hover:not(.active) { color: var(--text-secondary); }
+
+        .panel-body { padding: 16px 22px; }
+
+        /* Permissions Table */
+        .perm-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .perm-table th {
+            text-align: center;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            padding: 8px 6px;
+            border-bottom: 1px solid var(--border);
+        }
+        .perm-table th:first-child { text-align: left; }
+        .perm-table td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 12px;
+        }
+        .perm-table td:first-child { text-align: left; }
+        .perm-module { font-weight: 600; color: var(--text-primary); font-size: 12.5px; }
+        .perm-sub { font-size: 10.5px; color: var(--text-light); }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            display: inline-block;
+        }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #cbd5e1;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .toggle-slider:before {
+            content: "";
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .toggle input:checked + .toggle-slider { background: var(--accent); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+        /* Access Level */
+        .access-level {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-main);
+            border-radius: var(--radius);
+            margin-top: 16px;
+        }
+        .access-level .shield {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--red-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--red);
+            flex-shrink: 0;
+        }
+        .access-level .info .title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .access-level .info .desc { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+        .access-level .legend { margin-left: auto; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-secondary); margin-bottom: 4px; }
+        .legend-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+        .legend-dot.green { background: var(--green); }
+        .legend-dot.orange { background: var(--orange); }
+        .legend-dot.red { background: var(--red); }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; }
+        .sidebar-overlay.active { display: block; }
+        .panel-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 95; }
+        .panel-overlay.active { display: block; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+        @media (max-width: 1400px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .detail-panel {
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                width: 420px;
+                box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+                margin-right: 0;
+            }
+            .detail-panel.hidden { transform: translateX(100%); }
+            .menu-toggle { display: flex !important; }
+        }
+        @media (max-width: 768px) {
+            .page-content { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-box { display: none; }
+            .user-menu .info { display: none; }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-primary);
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="panel-overlay" id="panelOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="#"><i class="bx bx-home"></i>Tableau de bord</a>
+        <a class="nav-item" href="#"><i class="bx bx-user"></i>Utilisateurs</a>
+        <a class="nav-item" href="#"><i class="bx bx-building"></i>Entreprises</a>
+        <a class="nav-item" href="#"><i class="bx bx-briefcase"></i>Offres</a>
+        <a class="nav-item" href="#"><i class="bx bx-line-chart"></i>Matching IA</a>
+        <a class="nav-item" href="#"><i class="bx bx-target-lock"></i>Compétences</a>
+        <a class="nav-item" href="#"><i class="bx bx-bar-chart-alt-2"></i>Analyses</a>
+        <a class="nav-item" href="#"><i class="bx bx-check-shield"></i>Abonnements</a>
+        <a class="nav-item" href="#"><i class="bx bx-headphone"></i>Support</a>
+        <a class="nav-item" href="#"><i class="bx bx-cog"></i>Paramètres</a>
+    </nav>
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Entreprise</h4>
+        <p>Gérez votre plateforme avec tous les fonctionnalités avancées.</p>
+        <button class="btn-plan">Voir les plans</button>
+    </div>
+    <div class="sidebar-footer">
+        <a class="nav-item" href="#"><i class="bx bx-log-out"></i>Déconnexion</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="top-header">
+        <div style="display:flex;align-items:center;">
+            <button class="menu-toggle" id="menuToggle"><i class="bx bx-menu"></i></button>
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Rechercher dans la plateforme...">
+                <span class="kbd">K</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="bx bx-bell"></i><span class="badge">12</span></button>
+            <div class="user-menu">
+                <img src="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="info">
+                    <div class="name">Amine ELKARTITE</div>
+                    <div class="role">Admin</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <div class="page-main">
+            <div class="page-header">
+                <h1>Rôles & Permissions</h1>
+                <p>Gérez les rôles, les niveaux d'accès et les permissions des utilisateurs sur la plateforme.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon purple"><i class="bx bx-shield"></i></div>
+                    <div>
+                        <div class="kpi-label">Rôles actifs</div>
+                        <div class="kpi-value">6 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 20%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-key"></i></div>
+                    <div>
+                        <div class="kpi-label">Permissions</div>
+                        <div class="kpi-value">128 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="bx bx-crown"></i></div>
+                    <div>
+                        <div class="kpi-label">Admins</div>
+                        <div class="kpi-value">24 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 14%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon blue"><i class="bx bx-user-plus"></i></div>
+                    <div>
+                        <div class="kpi-label">Demandes d'accès</div>
+                        <div class="kpi-value">7 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 22%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-bar-left">
+                    <div class="filter-search">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="Rechercher un rôle..." id="searchInput">
+                    </div>
+                    <select class="filter-select">
+                        <option>Type de rôle: Tous</option>
+                        <option>Système</option>
+                        <option>Personnalisé</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option>Statut: Tous</option>
+                        <option>Actif</option>
+                        <option>Inactif</option>
+                    </select>
+                </div>
+                <button class="btn-create"><i class="bx bx-plus"></i> Créer un rôle</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px"></th>
+                                <th>Rôle</th>
+                                <th>Description</th>
+                                <th>Utilisateurs</th>
+                                <th>Niveau d'accès</th>
+                                <th>Statut</th>
+                                <th style="width:40px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>6</strong> rôles</div>
+                    <div style="display:flex;align-items:center;gap:14px">
+                        <div class="pagination">
+                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
+                        </div>
+                        <div class="page-rows">
+                            <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-header">
+                <h3>Détails du rôle sélectionné</h3>
+                <button class="panel-close" id="panelClose"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="panel-role" id="panelRole"></div>
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="permissions">Permissions</button>
+                <button class="panel-tab" data-tab="utilisateurs">Utilisateurs (24)</button>
+                <button class="panel-tab" data-tab="infos">Infos générales</button>
+                <button class="panel-tab" data-tab="historique">Historique</button>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content active" id="tab-permissions">
+                    <table class="perm-table">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Voir</th>
+                                <th>Créer</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                                <th>Exporter</th>
+                                <th>Valider</th>
+                            </tr>
+                        </thead>
+                        <tbody id="permTableBody"></tbody>
+                    </table>
+                    <div class="access-level">
+                        <div class="shield"><i class="bx bx-shield-check"></i></div>
+                        <div class="info">
+                            <div class="title">Élevé</div>
+                            <div class="desc">Accès complet à tous les modules et fonctionnalités de la plateforme.</div>
+                        </div>
+                        <div class="legend">
+                            <div class="legend-item"><div class="legend-dot green"></div>6 modules complets</div>
+                            <div class="legend-item"><div class="legend-dot orange"></div>0 module limité</div>
+                            <div class="legend-item"><div class="legend-dot red"></div>0 module restreint</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-utilisateurs">
+                    <div style="padding:20px 0;text-align:center;color:var(--text-light);font-size:13px">
+                        <i class="bx bx-user" style="font-size:32px;display:block;margin-bottom:8px;color:var(--text-light)"></i>
+                        24 utilisateurs avec ce rôle
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-infos">
+                    <div style="padding:10px 0">
+                        <div style="font-size:12px;color:var(--text-light);margin-bottom:6px">Nom du rôle</div>
+                        <div style="font-size:13px;font-weight:600;margin-bottom:16px" id="infoName">Admin</div>
+                        <div style="font-size:12px;color:var(--text-light);margin-bottom:6px">Description</div>
+                        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px" id="infoDesc">Accès complet à toutes les fonctionnalités de la plateforme.</div>
+                        <div style="font-size:12px;color:var(--text-light);margin-bottom:6px">Date de création</div>
+                        <div style="font-size:13px;font-weight:500;margin-bottom:16px">12 janv. 2024</div>
+                        <div style="font-size:12px;color:var(--text-light);margin-bottom:6px">Type</div>
+                        <div style="font-size:13px;font-weight:500">Système</div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-historique">
+                    <div style="padding:10px 0">
+                        <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+                            <div style="font-size:12px;font-weight:600">12 janv. 2024</div>
+                            <div style="font-size:11.5px;color:var(--text-light)">Rôle créé par Admin TheWay</div>
+                        </div>
+                        <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+                            <div style="font-size:12px;font-weight:600">15 fév. 2024</div>
+                            <div style="font-size:11.5px;color:var(--text-light)">Permissions modifiées</div>
+                        </div>
+                        <div style="padding:10px 0">
+                            <div style="font-size:12px;font-weight:600">01 mars 2024</div>
+                            <div style="font-size:11.5px;color:var(--text-light)">Export des utilisateurs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const roles = [
+        {
+            id: 1, name: 'Admin', icon: 'bx-crown', iconBg: '#f5f3ff', iconColor: '#7c3aed',
+            desc: 'Accès complet à toutes les fonctionnalités de la plateforme.',
+            users: 24, pct: '24%', access: 'Élevé', accessClass: 'high', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,true,true,true,true,true] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,true,true,true,true,true] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,true,true,true,true,true] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,true,true,true,true,true] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [true,true,true,true,true,true] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [true,true,true,true,true,false] }
+            ]
+        },
+        {
+            id: 2, name: 'Superviseur', icon: 'bx-shield', iconBg: '#f0fdf4', iconColor: '#16a34a',
+            desc: 'Supervision globale avec validations et rapports.',
+            users: 12, pct: '12%', access: 'Élevé', accessClass: 'high', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,false,false,false,true,true] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,true,true,false,true,true] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,true,true,false,true,true] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,true,true,false,true,true] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [true,true,true,true,true,true] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [true,false,false,false,true,false] }
+            ]
+        },
+        {
+            id: 3, name: 'Recruteur', icon: 'bx-group', iconBg: '#eff6ff', iconColor: '#2563eb',
+            desc: 'Gestion des offres, candidats et processus de recrutement.',
+            users: 36, pct: '36%', access: 'Moyen', accessClass: 'medium', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,false,false,false,false,false] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,true,true,false,false,false] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,true,true,true,true,false] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,true,true,false,false,false] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [true,false,false,false,true,false] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [false,false,false,false,false,false] }
+            ]
+        },
+        {
+            id: 4, name: 'Manager', icon: 'bx-briefcase', iconBg: '#fff7ed', iconColor: '#f59e0b',
+            desc: "Gestion d'équipe, des offres et des candidatures.",
+            users: 28, pct: '28%', access: 'Moyen', accessClass: 'medium', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,false,false,false,false,false] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,true,true,false,false,false] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,true,true,true,true,false] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,false,false,false,false,false] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [true,false,false,false,true,false] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [false,false,false,false,false,false] }
+            ]
+        },
+        {
+            id: 5, name: 'Utilisateur', icon: 'bx-user', iconBg: '#f1f5f9', iconColor: '#64748b',
+            desc: 'Accès limité à son profil et aux fonctionnalités de base.',
+            users: 312, pct: '31%', access: 'Faible', accessClass: 'low', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,false,false,false,false,false] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,false,true,false,false,false] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,false,false,false,false,false] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,false,false,false,false,false] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [false,false,false,false,false,false] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [true,false,false,false,false,false] }
+            ]
+        },
+        {
+            id: 6, name: 'Support', icon: 'bx-headphone', iconBg: '#f5f3ff', iconColor: '#a855f7',
+            desc: 'Gestion des tickets, aide et support utilisateurs.',
+            users: 8, pct: '8%', access: 'Faible', accessClass: 'low', status: 'Actif', statusClass: 'active',
+            permissions: [
+                { module: 'Général', sub: 'Tableau de bord, paramètres', perms: [true,false,false,false,false,false] },
+                { module: 'Utilisateurs', sub: 'Gestion des utilisateurs', perms: [true,true,true,false,false,false] },
+                { module: 'Offres', sub: 'Offres & candidatures', perms: [true,false,false,false,false,false] },
+                { module: 'Entreprises', sub: 'Entreprises & contacts', perms: [true,false,false,false,false,false] },
+                { module: 'Analyses', sub: 'Rapports & statistiques', perms: [false,false,false,false,false,false] },
+                { module: 'Facturation', sub: 'Abonnements & paiements', perms: [false,false,false,false,false,false] }
+            ]
+        }
+    ];
+
+    function renderTable(data) {
+        document.getElementById('tableBody').innerHTML = data.map((r, i) => `
+            <tr data-id="${r.id}" onclick="selectRole(${r.id})">
+                <td><input type="radio" name="role" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
+                <td>
+                    <div class="role-cell">
+                        <div class="role-icon" style="background:${r.iconBg};color:${r.iconColor}"><i class="bx ${r.icon}"></i></div>
+                        <span class="rname">${r.name}</span>
+                    </div>
+                </td>
+                <td style="color:var(--text-secondary);max-width:220px;white-space:normal;line-height:1.4">${r.desc}</td>
+                <td>
+                    <span style="font-weight:700">${r.users}</span>
+                    <span style="color:var(--text-light);margin-left:4px">${r.pct}</span>
+                </td>
+                <td><span class="access-badge ${r.accessClass}">${r.access}</span></td>
+                <td><span class="status-badge ${r.statusClass}">${r.status}</span></td>
+                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
+            </tr>
+        `).join('');
+    }
+
+    function selectRole(id) {
+        const r = roles.find(x => x.id === id);
+        if (!r) return;
+
+        document.getElementById('detailPanel').classList.remove('hidden');
+        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
+
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
+
+        document.getElementById('panelRole').innerHTML = `
+            <div class="icon"><i class="bx ${r.icon}"></i></div>
+            <div class="info">
+                <div class="name">${r.name} <span class="status-tag">${r.status}</span></div>
+                <div class="desc">${r.desc}</div>
+                <div class="meta">${r.users} utilisateurs · Créé le 12 janv. 2024</div>
+            </div>
+        `;
+
+        document.getElementById('infoName').textContent = r.name;
+        document.getElementById('infoDesc').textContent = r.desc;
+
+        document.getElementById('permTableBody').innerHTML = r.permissions.map(p => `
+            <tr>
+                <td>
+                    <div class="perm-module">${p.module}</div>
+                    <div class="perm-sub">${p.sub}</div>
+                </td>
+                ${p.perms.map(v => `
+                    <td style="text-align:center">
+                        <label class="toggle">
+                            <input type="checkbox" ${v ? 'checked' : ''} onclick="event.stopPropagation()">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </td>
+                `).join('')}
+            </tr>
+        `).join('');
+    }
+
+    document.getElementById('panelClose').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.getElementById('panelOverlay').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value.toLowerCase();
+        let filtered = roles.filter(r => {
+            const matchSearch = !search || r.name.toLowerCase().includes(search);
+            const matchStatus = !status || r.status.toLowerCase().includes(status);
+            return matchSearch && matchStatus;
+        });
+        renderTable(filtered);
+    }
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Add click handler to toggle switches to prevent row selection
+    document.addEventListener('change', (e) => {
+        if (e.target.closest('.toggle')) {
+            e.stopPropagation();
+        }
+    });
+
+    renderTable(roles);
+    setTimeout(() => selectRole(1), 300);
+</script>
+</body>
+</html>
+

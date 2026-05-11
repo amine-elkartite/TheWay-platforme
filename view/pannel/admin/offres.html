@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE WAY - Offres</title>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sidebar-bg: #0a1628;
+            --sidebar-hover: #132038;
+            --sidebar-active: #1a2d4a;
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --bg-main: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --green: #22c55e;
+            --green-bg: #f0fdf4;
+            --orange: #f97316;
+            --orange-bg: #fff7ed;
+            --blue: #3b82f6;
+            --blue-bg: #eff6ff;
+            --purple: #a855f7;
+            --purple-bg: #f5f3ff;
+            --red: #ef4444;
+            --red-bg: #fef2f2;
+            --yellow: #f59e0b;
+            --yellow-bg: #fefce8;
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-logo {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-logo svg { width: 32px; height: 32px; }
+        .sidebar-logo span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .sidebar-logo span em { font-style: normal; color: var(--accent); }
+
+        .sidebar-nav { flex: 1; padding: 16px 10px; overflow-y: auto; }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+        }
+        .nav-item:hover { background: var(--sidebar-hover); color: rgba(255,255,255,0.9); }
+        .nav-item.active { background: var(--sidebar-active); color: var(--accent); }
+        .nav-item.active i { color: var(--accent); }
+        .nav-item i { font-size: 20px; width: 24px; text-align: center; }
+
+        .sidebar-plan {
+            margin: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #1a2d4a, #0f1f36);
+            border-radius: var(--radius);
+            border: 1px solid rgba(245,158,11,0.15);
+        }
+        .sidebar-plan h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .sidebar-plan h4 i { color: var(--accent); font-size: 18px; }
+        .sidebar-plan p { color: rgba(255,255,255,0.5); font-size: 11.5px; line-height: 1.6; margin-bottom: 14px; }
+        .sidebar-plan .btn-plan {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-plan .btn-plan:hover { background: var(--accent-hover); }
+
+        .sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+        .sidebar-footer .nav-item { margin: 0; }
+
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top-header {
+            background: var(--white);
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .search-box {
+            position: relative;
+            width: 320px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 9px 16px 9px 40px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            color: var(--text-primary);
+            background: var(--bg-main);
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box input::placeholder { color: var(--text-light); }
+        .search-box i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .search-box .kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .header-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 20px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .header-btn:hover { background: var(--bg-main); }
+        .header-btn .badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: var(--red);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid var(--border);
+            cursor: pointer;
+        }
+        .user-menu img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+        .user-menu .name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+        .user-menu .role { font-size: 11px; color: var(--text-light); }
+        .user-menu i { font-size: 16px; color: var(--text-light); }
+
+        .page-content {
+            padding: 24px 28px;
+            display: flex;
+            gap: 0;
+        }
+        .page-main { flex: 1; min-width: 0; }
+
+        .page-header { margin-bottom: 20px; }
+        .page-header h1 { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .page-header p { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: box-shadow 0.2s;
+        }
+        .kpi-card:hover { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .kpi-icon.green { background: var(--green-bg); color: #16a34a; }
+        .kpi-icon.blue { background: var(--blue-bg); color: #2563eb; }
+        .kpi-icon.orange { background: var(--yellow-bg); color: #ca8a04; }
+        .kpi-icon.red { background: var(--red-bg); color: var(--red); }
+        .kpi-label { font-size: 12.5px; color: var(--text-secondary); font-weight: 500; margin-bottom: 6px; }
+        .kpi-value { font-size: 24px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .kpi-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 2px; }
+        .kpi-change.up { color: var(--green); }
+        .kpi-change.down { color: var(--red); }
+        .kpi-footer { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-bar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .filter-search {
+            position: relative;
+            width: 240px;
+        }
+        .filter-search input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+        .filter-search input:focus { border-color: var(--accent); }
+        .filter-search input::placeholder { color: var(--text-light); }
+        .filter-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 16px; }
+        .filter-select {
+            padding: 9px 30px 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            background-image: url("image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .filter-select:focus { border-color: var(--accent); }
+        .btn-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 18px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+        .btn-add:hover { opacity: 0.9; }
+
+        .table-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .table-wrapper { overflow-x: auto; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: var(--bg-main); }
+        .data-table th {
+            text-align: left;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        .data-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+        .data-table tbody tr { cursor: pointer; transition: background 0.15s; }
+        .data-table tbody tr:hover { background: #f8fafc; }
+        .data-table tbody tr.selected { background: #eff6ff; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .radio-btn {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .offer-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .offer-cell .offer-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .offer-cell .oname { font-weight: 600; color: var(--text-primary); }
+        .offer-cell .oref { font-size: 11px; color: var(--text-light); }
+
+        .company-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .company-mini-logo {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .company-mini-logo.acme { background: #1a1a2e; color: #fff; }
+        .company-mini-logo.data { background: #3b82f6; color: #fff; }
+        .company-mini-logo.cloud { background: #06b6d4; color: #fff; }
+        .company-mini-logo.talent { background: #1e3a5f; color: #fff; }
+        .company-mini-logo.nova { background: #22c55e; color: #fff; }
+        .company-mini-logo.green { background: #f0fdf4; color: #16a34a; }
+        .company-cell .cname { font-weight: 600; color: var(--text-primary); font-size: 12.5px; }
+
+        .location-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-secondary);
+            font-size: 12.5px;
+        }
+
+        .contract-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .contract-badge.cdi { background: var(--blue-bg); color: #2563eb; }
+        .contract-badge.cdd { background: var(--orange-bg); color: var(--orange); }
+        .contract-badge.hybrid { background: var(--purple-bg); color: #7c3aed; }
+        .contract-badge.stage { background: #f1f5f9; color: var(--text-secondary); }
+
+        .status-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.active { background: var(--green-bg); color: var(--green); }
+        .status-badge.pending { background: var(--orange-bg); color: var(--orange); }
+        .status-badge.expired { background: var(--red-bg); color: var(--red); }
+        .status-badge.suspended { background: #f1f5f9; color: var(--text-light); }
+
+        .table-action {
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+            border: none;
+            background: none;
+        }
+        .table-action:hover { background: var(--bg-main); }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+        }
+        .table-footer-info { font-size: 12px; color: var(--text-light); }
+        .pagination { display: flex; align-items: center; gap: 4px; }
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .page-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .page-btn.active { background: var(--sidebar-bg); color: #fff; border-color: var(--sidebar-bg); }
+        .page-btn.dots { border: none; background: none; cursor: default; color: var(--text-light); }
+        .page-rows select {
+            padding: 5px 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-primary);
+            background: var(--white);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .detail-panel {
+            width: 400px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            margin-right: -28px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+        }
+        .detail-panel.hidden {
+            transform: translateX(100%);
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+            margin-right: 0;
+            border: none;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+        .panel-close {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .panel-close:hover { background: var(--bg-main); }
+
+        .panel-job {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-job .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .panel-job .info .name { font-size: 14px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .panel-job .info .name .status-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--green-bg); color: var(--green); font-weight: 600; }
+        .panel-job .info .sub { font-size: 11.5px; color: var(--text-light); margin-top: 2px; }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            padding: 0 22px;
+        }
+        .panel-tab {
+            padding: 12px 0;
+            margin-right: 20px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+        .panel-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+        .panel-tab:hover:not(.active) { color: var(--text-secondary); }
+
+        .panel-body { padding: 16px 22px; }
+        .panel-section { margin-bottom: 20px; }
+        .panel-section h4 { font-size: 12.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; }
+        .info-row:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+        .info-row .label { font-size: 12px; color: var(--text-light); font-weight: 500; }
+        .info-row .value { font-size: 12.5px; color: var(--text-primary); font-weight: 500; text-align: right; }
+
+        .desc-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+
+        .perf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .perf-card {
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+        }
+        .perf-card .plabel { font-size: 10.5px; color: var(--text-light); margin-bottom: 6px; }
+        .perf-card .pvalue { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .perf-card .pchange { font-size: 10.5px; font-weight: 600; margin-top: 4px; }
+        .perf-card .pchange.up { color: var(--green); }
+
+        .validation-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: var(--green-bg);
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+        }
+        .validation-status i { color: var(--green); }
+        .validation-status .vtext { font-size: 12px; color: var(--green); font-weight: 600; }
+        .validation-status .vsub { font-size: 10.5px; color: var(--text-light); }
+
+        .panel-actions { display: flex; gap: 10px; padding: 16px 22px; border-top: 1px solid var(--border); }
+        .btn-suspend {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--red);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--red);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-suspend:hover { background: var(--red-bg); }
+        .btn-view {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--accent);
+            cursor: pointer;
+            transition: opacity 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .btn-view:hover { opacity: 0.9; }
+
+        .chart-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+        .chart-section h4 { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+        .chart-section h4 .info-icon { color: var(--text-light); font-size: 16px; cursor: pointer; }
+        .donut-row { display: flex; align-items: center; gap: 24px; }
+        .donut-wrap { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+        .donut-wrap canvas { width: 100%; height: 100%; }
+        .donut-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .donut-center-text .val { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .donut-center-text .lbl { font-size: 10px; color: var(--text-light); }
+        .donut-legend { flex: 1; }
+        .donut-legend-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+        .donut-legend-item:not(:last-child) { border-bottom: 1px solid #f1f5f9; }
+        .donut-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .donut-legend-item .dl-label { font-size: 12px; color: var(--text-secondary); flex: 1; }
+        .donut-legend-item .dl-value { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; }
+        .sidebar-overlay.active { display: block; }
+        .panel-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 95; }
+        .panel-overlay.active { display: block; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
+
+        @media (max-width: 1400px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .detail-panel {
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 200;
+                width: 400px;
+                box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+                margin-right: 0;
+            }
+            .detail-panel.hidden { transform: translateX(100%); }
+            .menu-toggle { display: flex !important; }
+        }
+        @media (max-width: 768px) {
+            .page-content { padding: 16px; }
+            .top-header { padding: 12px 16px; }
+            .kpi-grid { grid-template-columns: 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .search-box { display: none; }
+            .user-menu .info { display: none; }
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-primary);
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="panel-overlay" id="panelOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <svg viewBox="0 0 36 36" fill="none">
+            <path d="M18 2L4 8v20l14 6 14-6V8L18 2z" fill="#f59e0b" opacity="0.2"/>
+            <path d="M18 4L6 9.5v17L18 31.5l12-5v-17L18 4z" fill="#f59e0b"/>
+            <path d="M12 14h12l-6 8h-6l6-8z" fill="#0a1628"/>
+            <path d="M18 10l-8 6h4l4-3 4 3h4l-8-6z" fill="#fff"/>
+        </svg>
+        <span>THE <em>WAY</em></span>
+    </div>
+    <nav class="sidebar-nav">
+        <a class="nav-item" href="#"><i class="bx bx-home"></i>Tableau de bord</a>
+        <a class="nav-item" href="#"><i class="bx bx-user"></i>Utilisateurs</a>
+        <a class="nav-item" href="#"><i class="bx bx-building"></i>Entreprises</a>
+        <a class="nav-item active" href="#"><i class="bx bx-briefcase"></i>Offres</a>
+        <a class="nav-item" href="#"><i class="bx bx-line-chart"></i>Matching IA</a>
+        <a class="nav-item" href="#"><i class="bx bx-target-lock"></i>Compétences</a>
+        <a class="nav-item" href="#"><i class="bx bx-bar-chart-alt-2"></i>Analyses</a>
+        <a class="nav-item" href="#"><i class="bx bx-check-shield"></i>Abonnements</a>
+        <a class="nav-item" href="#"><i class="bx bx-headphone"></i>Support</a>
+        <a class="nav-item" href="#"><i class="bx bx-cog"></i>Paramètres</a>
+    </nav>
+    <div class="sidebar-plan">
+        <h4><i class="bx bxs-crown"></i> Plan Entreprise</h4>
+        <p>Gérez votre plateforme avec toutes les fonctionnalités avancées.</p>
+        <button class="btn-plan">Voir les plans</button>
+    </div>
+    <div class="sidebar-footer">
+        <a class="nav-item" href="#"><i class="bx bx-log-out"></i>Déconnexion</a>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="top-header">
+        <div style="display:flex;align-items:center;">
+            <button class="menu-toggle" id="menuToggle"><i class="bx bx-menu"></i></button>
+            <div class="search-box">
+                <i class="bx bx-search"></i>
+                <input type="text" placeholder="Rechercher dans la plateforme...">
+                <span class="kbd">K</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="header-btn"><i class="bx bx-bell"></i><span class="badge">12</span></button>
+            <div class="user-menu">
+                <img src="image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%233b82f6' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40' font-family='Arial' dy='.1em'%3EAE%3C/text%3E%3C/svg%3E" alt="Admin">
+                <div class="info">
+                    <div class="name">Admin TheWay</div>
+                    <div class="role">Administrateur</div>
+                </div>
+                <i class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-content">
+        <div class="page-main">
+            <div class="page-header">
+                <h1>Offres</h1>
+                <p>Gérez les offres d'emploi, leur validation, leur diffusion et leur performance sur la plateforme.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-briefcase"></i></div>
+                    <div>
+                        <div class="kpi-label">Offres actives</div>
+                        <div class="kpi-value">1,248 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 8%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon green"><i class="bx bx-plus-circle"></i></div>
+                    <div>
+                        <div class="kpi-label">Nouvelles offres</div>
+                        <div class="kpi-value">86 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 14%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon orange"><i class="bx bx-time-five"></i></div>
+                    <div>
+                        <div class="kpi-label">En attente de validation</div>
+                        <div class="kpi-value">32 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 10%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon red"><i class="bx bx-calendar-x"></i></div>
+                    <div>
+                        <div class="kpi-label">Offres expirées</div>
+                        <div class="kpi-value">57 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 6%</span></div>
+                        <div class="kpi-footer">vs mois dernier</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-bar">
+                <div class="filter-bar-left">
+                    <div class="filter-search">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="Rechercher une offre..." id="searchInput">
+                    </div>
+                    <select class="filter-select" id="sectorFilter">
+                        <option value="">Secteur: Tous</option>
+                        <option value="tech">Tech</option>
+                        <option value="saas">SaaS</option>
+                        <option value="rh">RH</option>
+                        <option value="finance">Finance</option>
+                    </select>
+                    <select class="filter-select" id="contractFilter">
+                        <option value="">Type de contrat: Tous</option>
+                        <option value="cdi">CDI</option>
+                        <option value="cdd">CDD</option>
+                        <option value="hybride">Hybride</option>
+                        <option value="stage">Stage</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Statut: Tous</option>
+                        <option value="active">Actif</option>
+                        <option value="pending">En attente</option>
+                        <option value="expired">Expiré</option>
+                        <option value="suspended">Suspendu</option>
+                    </select>
+                </div>
+                <button class="btn-add"><i class="bx bx-plus"></i> Ajouter une offre</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:30px"></th>
+                                <th>Offre</th>
+                                <th>Entreprise</th>
+                                <th>Localisation</th>
+                                <th>Contrat</th>
+                                <th>Statut</th>
+                                <th>Candidatures</th>
+                                <th>Dernière activité</th>
+                                <th style="width:40px">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="table-footer">
+                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>1,248</strong> offres</div>
+                    <div style="display:flex;align-items:center;gap:14px">
+                        <div class="pagination">
+                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
+                            <button class="page-btn active">1</button>
+                            <button class="page-btn">2</button>
+                            <button class="page-btn">3</button>
+                            <button class="page-btn dots">...</button>
+                            <button class="page-btn">208</button>
+                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
+                        </div>
+                        <div class="page-rows">
+                            <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h4>Répartition des offres <i class="bx bx-info-circle info-icon"></i></h4>
+                <div class="donut-row">
+                    <div class="donut-wrap">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center-text">
+                            <div class="val">1,248</div>
+                            <div class="lbl">Total</div>
+                        </div>
+                    </div>
+                    <div class="donut-legend">
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-dot" style="background:#22c55e"></div>
+                            <span class="dl-label">Actives (1,248)</span>
+                            <span class="dl-value">60%</span>
+                        </div>
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-dot" style="background:#f59e0b"></div>
+                            <span class="dl-label">En attente (32)</span>
+                            <span class="dl-value">16%</span>
+                        </div>
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-dot" style="background:#ef4444"></div>
+                            <span class="dl-label">Expirées (57)</span>
+                            <span class="dl-value">14%</span>
+                        </div>
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-dot" style="background:#94a3b8"></div>
+                            <span class="dl-label">Suspendues (18)</span>
+                            <span class="dl-value">10%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-panel" id="detailPanel">
+            <div class="panel-header">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <div class="logo" style="width:40px;height:40px;border-radius:8px;background:#1a1a2e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">ACME</div>
+                    <div>
+                        <div style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px">Développeur Full Stack <span class="status-tag" style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-bg);color:var(--green);font-weight:600">Actif</span></div>
+                        <div style="font-size:11.5px;color:var(--text-light)">ACME Corporation · Publiée le 12 mai 2024</div>
+                    </div>
+                </div>
+                <button class="panel-close" id="panelClose"><i class="bx bx-x"></i></button>
+            </div>
+            <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="infos">Informations</button>
+                <button class="panel-tab" data-tab="candidatures">Candidatures (128)</button>
+                <button class="panel-tab" data-tab="performance">Performance</button>
+                <button class="panel-tab" data-tab="historique">Historique</button>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content active" id="tab-infos">
+                    <div class="panel-section">
+                        <h4>Informations générales</h4>
+                        <div class="info-row"><span class="label">Entreprise</span><span class="value">ACME Corporation</span></div>
+                        <div class="info-row"><span class="label">Localisation</span><span class="value">Paris, France</span></div>
+                        <div class="info-row"><span class="label">Contrat</span><span class="value">CDI</span></div>
+                        <div class="info-row"><span class="label">Mode de travail</span><span class="value">Hybride</span></div>
+                        <div class="info-row"><span class="label">Salaire</span><span class="value">18 000 – 25 000 MAD</span></div>
+                        <div class="info-row"><span class="label">Date de publication</span><span class="value">12 mai 2024</span></div>
+                    </div>
+                    <div class="panel-section">
+                        <h4>Description courte</h4>
+                        <p class="desc-text">Rejoignez notre équipe pour développer des applications web innovantes avec React, Node.js, TypeScript et PostgreSQL.</p>
+                    </div>
+                    <div class="panel-section">
+                        <h4>Performances de l'offre</h4>
+                        <div class="perf-grid">
+                            <div class="perf-card">
+                                <div class="plabel">Candidatures</div>
+                                <div class="pvalue">128</div>
+                                <div class="pchange up">↑ 18%</div>
+                            </div>
+                            <div class="perf-card">
+                                <div class="plabel">Vues</div>
+                                <div class="pvalue">3 240</div>
+                                <div class="pchange up">↑ 12%</div>
+                            </div>
+                            <div class="perf-card">
+                                <div class="plabel">Taux de conversion</div>
+                                <div class="pvalue">6.8%</div>
+                                <div class="pchange up">↑ 0.8%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <h4>Statut de validation</h4>
+                        <div class="validation-status">
+                            <i class="bx bx-check-circle"></i>
+                            <div>
+                                <div class="vtext">Validée</div>
+                                <div class="vsub">Validée le 12 mai 2024 par Superviseur</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-candidatures">
+                    <div class="panel-section">
+                        <h4>Candidats récents</h4>
+                        <div class="info-row"><span class="label">Youssef Haddad</span><span class="value">92% match</span></div>
+                        <div class="info-row"><span class="label">Amine El Kartite</span><span class="value">88% match</span></div>
+                        <div class="info-row"><span class="label">Sofia Martin</span><span class="value">85% match</span></div>
+                        <div class="info-row"><span class="label">Karim Alaoui</span><span class="value">79% match</span></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-performance">
+                    <div class="panel-section">
+                        <h4>Métriques de performance</h4>
+                        <div class="info-row"><span class="label">Taux de clic</span><span class="value">4.2%</span></div>
+                        <div class="info-row"><span class="label">Taux de candidature</span><span class="value">6.8%</span></div>
+                        <div class="info-row"><span class="label">Temps moyen de réponse</span><span class="value">2.3 jours</span></div>
+                        <div class="info-row"><span class="label">Entretiens programmés</span><span class="value">24</span></div>
+                    </div>
+                </div>
+                <div class="tab-content" id="tab-historique">
+                    <div class="panel-section">
+                        <h4>Historique des modifications</h4>
+                        <div class="info-row"><span class="label">12 mai 2024</span><span class="value">Publication</span></div>
+                        <div class="info-row"><span class="label">12 mai 2024</span><span class="value">Validation</span></div>
+                        <div class="info-row"><span class="label">10 mai 2024</span><span class="value">Soumission</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-actions">
+                <button class="btn-suspend"><i class="bx bx-x-circle"></i> Suspendre</button>
+                <button class="btn-view"><i class="bx bx-link-external"></i> Voir l'offre</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    const offers = [
+        {
+            id: 1, name: 'Développeur Full Stack', ref: 'OFF-2024-1248', icon: '💻', iconBg: '#1a1a2e', iconColor: '#fff',
+            company: { name: 'ACME Corporation', logo: 'ACME', logoClass: 'acme' },
+            location: 'Paris', contract: 'CDI', contractClass: 'cdi',
+            status: 'Actif', statusClass: 'active', applications: 128,
+            activity: 'Il y a 2 h'
+        },
+        {
+            id: 2, name: 'UX Designer', ref: 'OFF-2024-1187', icon: '🎨', iconBg: '#f5f3ff', iconColor: '#7c3aed',
+            company: { name: 'DataCorp', logo: 'D', logoClass: 'data' },
+            location: 'Lyon', contract: 'Hybride', contractClass: 'hybrid',
+            status: 'Actif', statusClass: 'active', applications: 84,
+            activity: 'Il y a 4 h'
+        },
+        {
+            id: 3, name: 'Ingénieur DevOps', ref: 'OFF-2024-1123', icon: '📦', iconBg: '#fff7ed', iconColor: '#f59e0b',
+            company: { name: 'CloudScale', logo: '☁', logoClass: 'cloud' },
+            location: 'Remote', contract: 'CDI', contractClass: 'cdi',
+            status: 'En attente', statusClass: 'pending', applications: 63,
+            activity: 'Il y a 1 h'
+        },
+        {
+            id: 4, name: 'Product Manager', ref: 'OFF-2024-1098', icon: '📋', iconBg: '#eff6ff', iconColor: '#3b82f6',
+            company: { name: 'TalentBridge', logo: '👥', logoClass: 'talent' },
+            location: 'Casablanca', contract: 'CDI', contractClass: 'cdi',
+            status: 'Actif', statusClass: 'active', applications: 51,
+            activity: 'Il y a 6 h'
+        },
+        {
+            id: 5, name: 'Backend Engineer', ref: 'OFF-2024-0987', icon: '⚙️', iconBg: '#fef2f2', iconColor: '#ef4444',
+            company: { name: 'NovaTech', logo: 'N', logoClass: 'nova' },
+            location: 'Paris', contract: 'CDD', contractClass: 'cdd',
+            status: 'Expirée', statusClass: 'expired', applications: 27,
+            activity: 'Il y a 1 j'
+        },
+        {
+            id: 6, name: 'Data Analyst', ref: 'OFF-2024-0876', icon: '📊', iconBg: '#f0fdf4', iconColor: '#22c55e',
+            company: { name: 'GreenSoft', logo: '🌿', logoClass: 'green' },
+            location: 'Lyon', contract: 'Stage', contractClass: 'stage',
+            status: 'Suspendue', statusClass: 'suspended', applications: 18,
+            activity: 'Il y a 3 h'
+        }
+    ];
+
+    function renderTable(data) {
+        document.getElementById('tableBody').innerHTML = data.map((o, i) => `
+            <tr data-id="${o.id}" onclick="selectOffer(${o.id})">
+                <td><input type="radio" name="offer" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
+                <td>
+                    <div class="offer-cell">
+                        <div class="offer-icon" style="background:${o.iconBg};color:${o.iconColor}">${o.icon}</div>
+                        <div>
+                            <div class="oname">${o.name}</div>
+                            <div class="oref">Réf. ${o.ref}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="company-cell">
+                        <div class="company-mini-logo ${o.company.logoClass}">${o.company.logo}</div>
+                        <span class="cname">${o.company.name}</span>
+                    </div>
+                </td>
+                <td><span class="location-badge"><i class="bx bx-map-pin"></i> ${o.location}</span></td>
+                <td><span class="contract-badge ${o.contractClass}">${o.contract}</span></td>
+                <td><span class="status-badge ${o.statusClass}">${o.status}</span></td>
+                <td style="font-weight:600">${o.applications}</td>
+                <td style="color:var(--text-light)">${o.activity}</td>
+                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
+            </tr>
+        `).join('');
+    }
+
+    function selectOffer(id) {
+        const o = offers.find(x => x.id === id);
+        if (!o) return;
+
+        document.getElementById('detailPanel').classList.remove('hidden');
+        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
+
+        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
+    }
+
+    document.getElementById('panelClose').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.getElementById('panelOverlay').addEventListener('click', () => {
+        document.getElementById('detailPanel').classList.add('hidden');
+        document.getElementById('panelOverlay').classList.remove('active');
+    });
+
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+        });
+    });
+
+    function applyFilters() {
+        const search = document.getElementById('searchInput').value.toLowerCase();
+        const contract = document.getElementById('contractFilter').value.toLowerCase();
+        const status = document.getElementById('statusFilter').value.toLowerCase();
+        let filtered = offers.filter(o => {
+            const matchSearch = !search || o.name.toLowerCase().includes(search) || o.company.name.toLowerCase().includes(search);
+            const matchContract = !contract || o.contract.toLowerCase().includes(contract);
+            const matchStatus = !status || o.status.toLowerCase().includes(status);
+            return matchSearch && matchContract && matchStatus;
+        });
+        renderTable(filtered);
+    }
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('contractFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            if (window.innerWidth <= 1024) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+
+    // Donut Chart
+    const ctx = document.getElementById('donutChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+         data :{
+            labels: ['Actives', 'En attente', 'Expirées', 'Suspendues'],
+            datasets: [{
+                 data: [60, 16, 14, 10],
+                backgroundColor: ['#22c55e', '#f59e0b', '#ef4444', '#94a3b8'],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '75%',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleFont: { size: 11, family: 'Inter' },
+                    bodyFont: { size: 11, family: 'Inter' },
+                    padding: 10,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
+                    }
+                }
+            }
+        }
+    });
+
+    renderTable(offers);
+    setTimeout(() => selectOffer(1), 300);
+</script>
+</body>
+</html>
+
