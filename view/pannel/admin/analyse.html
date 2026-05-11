@@ -1136,6 +1136,7 @@
     </div>
 </main>
 
+<script src="../../../assets/js/theway-table-utils.js"></script>
 <script>
     const analyses = [
         {
@@ -1264,24 +1265,64 @@
         </div>`;
     }
 
+    const {
+        createElement,
+        createTextCell,
+        appendRowsInChunks,
+        createInfoRow
+    } = window.TheWayTable;
+
+    function createAnalysisRow(a, i) {
+        const row = document.createElement('tr');
+        row.dataset.id = a.id;
+        row.addEventListener('click', () => selectAnalysis(a.id));
+
+        const radioCell = document.createElement('td');
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'analysis';
+        radio.className = 'radio-btn';
+        radio.value = a.id;
+        radio.checked = i === 0;
+        radio.addEventListener('click', event => event.stopPropagation());
+        radioCell.appendChild(radio);
+
+        const analysisCell = document.createElement('td');
+        const analysis = createElement('div', 'analysis-cell');
+        const icon = createElement('div', `analysis-icon ${a.iconClass}`);
+        icon.appendChild(createElement('i', `bx ${a.icon}`));
+        analysis.appendChild(icon);
+        analysis.appendChild(createElement('span', 'aname', a.name));
+        analysisCell.appendChild(analysis);
+
+        const scoreCell = document.createElement('td');
+        scoreCell.insertAdjacentHTML('beforeend', getScoreCircle(Number(a.score)));
+
+        const statusCell = document.createElement('td');
+        statusCell.appendChild(createElement('span', `status-badge ${a.statusClass}`, a.status));
+
+        const actionCell = document.createElement('td');
+        const actionButton = createElement('button', 'table-action');
+        actionButton.addEventListener('click', event => event.stopPropagation());
+        actionButton.appendChild(createElement('i', 'bx bx-dots-vertical-rounded'));
+        actionCell.appendChild(actionButton);
+
+        row.append(
+            radioCell,
+            analysisCell,
+            createTextCell(a.category, 'color:var(--text-secondary)'),
+            createTextCell(a.target, 'color:var(--text-secondary)'),
+            scoreCell,
+            statusCell,
+            createTextCell(a.updated, 'color:var(--text-light)'),
+            actionCell
+        );
+
+        return row;
+    }
+
     function renderTable(data) {
-        document.getElementById('tableBody').innerHTML = data.map((a, i) => `
-            <tr data-id="${a.id}" onclick="selectAnalysis(${a.id})">
-                <td><input type="radio" name="analysis" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
-                <td>
-                    <div class="analysis-cell">
-                        <div class="analysis-icon ${a.iconClass}"><i class="bx ${a.icon}"></i></div>
-                        <span class="aname">${a.name}</span>
-                    </div>
-                </td>
-                <td style="color:var(--text-secondary)">${a.category}</td>
-                <td style="color:var(--text-secondary)">${a.target}</td>
-                <td>${getScoreCircle(a.score)}</td>
-                <td><span class="status-badge ${a.statusClass}">${a.status}</span></td>
-                <td style="color:var(--text-light)">${a.updated}</td>
-                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
-            </tr>
-        `).join('');
+        appendRowsInChunks(data, createAnalysisRow);
     }
 
     function selectAnalysis(id) {
@@ -1292,22 +1333,29 @@
         if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
 
         document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
+        const selectedRadio = document.querySelector(`input[name="analysis"][value="${id}"]`);
+        if (selectedRadio) selectedRadio.checked = true;
 
-        document.getElementById('panelAnalysis').innerHTML = `
-            <div class="icon"><i class="bx ${a.icon}"></i></div>
-            <div class="info">
-                <div class="name">${a.name} <span class="status-tag">${a.status}</span></div>
-                <div class="sub">${a.date}</div>
-            </div>
-        `;
+        const panelAnalysis = document.getElementById('panelAnalysis');
+        panelAnalysis.textContent = '';
+        const panelIcon = createElement('div', 'icon');
+        panelIcon.appendChild(createElement('i', `bx ${a.icon}`));
+        const panelInfo = createElement('div', 'info');
+        const panelName = createElement('div', 'name', `${a.name} `);
+        panelName.appendChild(createElement('span', 'status-tag', a.status));
+        panelInfo.appendChild(panelName);
+        panelInfo.appendChild(createElement('div', 'sub', a.date));
+        panelAnalysis.append(panelIcon, panelInfo);
 
-        document.getElementById('panelDetails').innerHTML = `
-            <div class="info-row"><span class="label">Catégorie</span><span class="value">${a.category2}</span></div>
-            <div class="info-row"><span class="label">Responsable</span><span class="value">${a.responsible}</span></div>
-            <div class="info-row"><span class="label">Périmètre</span><span class="value">${a.perimeter}</span></div>
-            <div class="info-row"><span class="label">Dernière exécution</span><span class="value">${a.lastExec}</span></div>
-            <div class="info-row"><span class="label">Modèle</span><span class="value">${a.model}</span></div>
-        `;
+        const panelDetails = document.getElementById('panelDetails');
+        panelDetails.textContent = '';
+        [
+            ['Catégorie', a.category2],
+            ['Responsable', a.responsible],
+            ['Périmètre', a.perimeter],
+            ['Dernière exécution', a.lastExec],
+            ['Modèle', a.model]
+        ].forEach(([label, value]) => panelDetails.appendChild(createInfoRow(label, value)));
     }
 
     document.getElementById('panelClose').addEventListener('click', () => {
@@ -1457,6 +1505,6 @@
         });
     }, 300);
 </script>
+    <script src="../../../assets/js/theway-dynamic.js"></script>
 </body>
 </html>
-
