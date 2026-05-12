@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TheWay - Trouvez votre voie professionnelle</title>
-  <link rel="icon" href="../assets/images/icon.png" type="image/png">
+  <link rel="icon" href="../../assets/images/icon.png" type="image/png">
+  <script>
+    // API Configuration - set backend URL
+    window.THEWAY_API_BASE = 'http://localhost:3001';
+  </script>
   <style>
     :root {
       --dark: #05070a;
@@ -243,7 +247,7 @@
       min-height: 560px;
       background:
         linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.34) 38%, rgba(0, 0, 0, 0.04) 66%),
-        url("../assets/images/main-background.png") center center / cover no-repeat,
+        url("../../assets/images/main-background.png") center center / cover no-repeat,
         #020304;
       color: var(--white);
     }
@@ -688,7 +692,7 @@
     .mission {
       background:
         linear-gradient(90deg, rgba(4, 8, 14, 0.62) 0%, rgba(4, 8, 14, 0.28) 48%, rgba(4, 8, 14, 0.04) 78%),
-        url("../assets/images/about-background.png") center center / cover no-repeat,
+        url("../../assets/images/about-background.png") center center / cover no-repeat,
         #0a0f15;
       color: var(--white);
     }
@@ -1241,7 +1245,7 @@
         min-height: auto;
         background:
           linear-gradient(90deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.58) 58%, rgba(0, 0, 0, 0.26) 100%),
-          url("../assets/images/main-background.png") 12% center / cover no-repeat,
+          url("../../assets/images/main-background.png") 12% center / cover no-repeat,
           #020304;
       }
 
@@ -1484,7 +1488,7 @@
       <div class="container nav">
         <a class="brand" href="#top" aria-label="TheWay accueil">
           <span class="brand-logo">
-            <img src="../assets/images/icon.png" alt="">
+            <img src="../../assets/images/icon.png" alt="">
             <span class="brand-text" aria-hidden="true">
               <span class="brand-name">THE<span>WAY</span></span>
               <span class="brand-subtitle">Data • Insights • Opportunities</span>

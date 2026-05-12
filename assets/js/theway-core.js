@@ -3,6 +3,7 @@
 
     const app = window.TheWay || (window.TheWay = {});
     const APP_PREFIX = "theway";
+    const DEFAULT_API_BASE = "http://localhost:3001";
     const storage = window.sessionStorage;
 
     const context = {
@@ -62,6 +63,19 @@
         } catch (error) {
             console.warn("Storage write failed:", key, error);
         }
+    }
+
+    function storageValue(key) {
+        try {
+            return localStorage.getItem(key) || sessionStorage.getItem(key) || "";
+        } catch (error) {
+            return "";
+        }
+    }
+
+    function apiBase() {
+        const configured = window.THEWAY_API_BASE || storageValue("theway_api_base") || DEFAULT_API_BASE;
+        return String(configured).replace(/\/$/, "");
     }
 
     function resolveURL(relativePath) {
@@ -154,6 +168,7 @@
 
     app.core = {
         APP_PREFIX: APP_PREFIX,
+        DEFAULT_API_BASE: DEFAULT_API_BASE,
         CURRENT_USER_KEY: APP_PREFIX + ".currentUser",
         SAVED_LINKS_KEY: APP_PREFIX + ".savedOpportunities",
         context: context,
@@ -163,6 +178,8 @@
         normalize: normalize,
         readJSON: readJSON,
         writeJSON: writeJSON,
+        storageValue: storageValue,
+        apiBase: apiBase,
         resolveURL: resolveURL,
         goTo: goTo,
         authPath: authPath,

@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TheWay - Créer un compte</title>
+    <script>
+        // API Configuration - set backend URL
+        window.THEWAY_API_BASE = 'http://localhost:3001';
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
@@ -816,7 +820,7 @@
                         </svg>
                     </div>
                     <label class="checkbox-label" for="termsCheckbox">
-                        J'accepte les <a href="#">Conditions d'utilisation</a> et la <a href="#">Politique de confidentialité</a>
+                        J'accepte les <a href="#" class="legal-link">Conditions d'utilisation</a> et la <a href="#" class="legal-link">Politique de confidentialité</a>
                     </label>
                 </div>
 
@@ -850,7 +854,7 @@
 
             <div class="form-footer animate-in">
                 En vous inscrivant, vous acceptez nos<br>
-                <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a>.
+                <a href="#" class="legal-link">Conditions d'utilisation</a> et notre <a href="#" class="legal-link">Politique de confidentialité</a>.
             </div>
         </div>
     </div>
@@ -1093,4 +1097,3 @@
     <script src="../../assets/js/theway-dynamic.js"></script>
 </body>
 </html>
-

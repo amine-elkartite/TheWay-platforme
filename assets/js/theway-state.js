@@ -133,6 +133,22 @@
         syncProfileFields();
     }
 
+    function collectPageSettings() {
+        const settings = {};
+        document.querySelectorAll("input, textarea, select").forEach(function (control) {
+            if (!shouldPersistControl(control)) return;
+            settings[controlKey(control)] = getControlValue(control);
+        });
+        return settings;
+    }
+
+    function persistPageSettings() {
+        document.querySelectorAll("input, textarea, select").forEach(function (control) {
+            if (!shouldPersistControl(control)) return;
+            core.writeJSON(pageStorageKey(controlKey(control)), getControlValue(control));
+        });
+    }
+
     function initAuthForms() {
         const signup = document.getElementById("signupForm");
         if (signup) {
@@ -187,10 +203,34 @@
             if (!button) return;
 
             updateUserFromProfile();
-            document.querySelectorAll("input, textarea, select").forEach(function (control) {
-                if (!shouldPersistControl(control)) return;
-                core.writeJSON(pageStorageKey(controlKey(control)), getControlValue(control));
-            });
+            persistPageSettings();
+
+            const payload = {
+                label: (button.textContent || "save").replace(/\s+/g, " ").trim(),
+                page: location.pathname,
+                settings: collectPageSettings(),
+                user: core.getCurrentUser()
+            };
+
+            if (app.api && typeof app.api.request === "function") {
+                const task = function () {
+                    return app.api.request("entity.update", payload);
+                };
+
+                if (app.actionFeedback && typeof app.actionFeedback.runAsyncAction === "function") {
+                    app.actionFeedback.runAsyncAction(button, {
+                        loading: "Sauvegarde...",
+                        success: "Modifications synchronisees.",
+                        error: "Sauvegarde locale OK, synchronisation impossible."
+                    }, task);
+                    return;
+                }
+
+                task()
+                    .then(function () { core.showMessage("Modifications synchronisees."); })
+                    .catch(function (error) { core.showMessage("Sauvegarde locale OK, synchronisation impossible. " + (error.message || "")); });
+                return;
+            }
 
             core.showMessage("Modifications enregistrees.");
         });
@@ -207,6 +247,8 @@
         updateUserFromProfile: updateUserFromProfile,
         shouldPersistControl: shouldPersistControl,
         controlKey: controlKey,
-        getControlValue: getControlValue
+        getControlValue: getControlValue,
+        collectPageSettings: collectPageSettings,
+        persistPageSettings: persistPageSettings
     };
 })(window, document);

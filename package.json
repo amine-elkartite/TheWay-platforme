@@ -1,0 +1,20 @@
+{
+  "name": "theway",
+  "version": "1.0.0",
+  "description": "TheWay - Intelligent Skills Matching Platform",
+  "private": true,
+  "scripts": {
+    "start": "cd API && npm start",
+    "dev": "cd API && npm run dev",
+    "install-all": "npm install && cd API && npm install",
+    "setup": "echo 'Please run: npm install && cd API && npm install && npm start'"
+  },
+  "keywords": [
+    "skills",
+    "matching",
+    "opportunities",
+    "career"
+  ],
+  "author": "TheWay Team",
+  "license": "MIT"
+}
