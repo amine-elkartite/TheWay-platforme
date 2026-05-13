@@ -15,6 +15,7 @@
             "theway-action-feedback.js",
             "theway-action-files.js",
         ],
+        ["theway-panel-data.js"],
         [
             "theway-action-registry.js",
             "theway-action-ui.js",
@@ -52,7 +53,7 @@
 
     function assertModulesReady() {
         const app = window.TheWay || {};
-        const required = ["core", "routing", "state", "ui", "api", "auth", "actionFeedback", "actionUI", "actionFiles", "actionNavigation", "actionRegistry", "actionHandlers", "actions"];
+        const required = ["core", "routing", "state", "ui", "api", "panelData", "auth", "actionFeedback", "actionUI", "actionFiles", "actionNavigation", "actionRegistry", "actionHandlers", "actions"];
         const missing = required.filter(function (name) { return !app[name]; });
         if (missing.length) {
             throw new Error("Missing THEWAY module(s): " + missing.join(", "));
