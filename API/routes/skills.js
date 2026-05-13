@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 
 module.exports = function createSkillsRouter(deps) {
     const router = express.Router();
@@ -7,18 +8,20 @@ module.exports = function createSkillsRouter(deps) {
     router.post('/api/skills', verifyToken, async (req, res) => {
         try {
             const { nom, categorie } = req.body;
+            const skillId = crypto.randomUUID();
             const connection = await getConnection();
             try {
-                const [result] = await connection.execute(
-                    'INSERT INTO competence (nom, categorie) VALUES (?, ?)',
-                    [nom, categorie]
+                await connection.execute(
+                    'INSERT INTO competence (id_skill, nom, categorie) VALUES (?, ?, ?)',
+                    [skillId, nom, categorie]
                 );
 
                 res.json({
                     ok: true,
                     message: 'Compétence ajoutée',
                     skill: {
-                        id: result.insertId,
+                        id: skillId,
+                        id_skill: skillId,
                         nom: nom,
                         categorie: categorie
                     }

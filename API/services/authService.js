@@ -121,19 +121,21 @@ async function createDatabaseUser(deps, data) {
     return await withConnection(deps.getConnection, async connection => {
         await connection.beginTransaction();
         try {
-            const [paramResult] = await connection.execute(
-                'INSERT INTO parametres (notification_email, notification_push) VALUES (?, ?)',
-                ['enabled', 'enabled']
+            const paramId = crypto.randomUUID();
+            const userId = crypto.randomUUID();
+            await connection.execute(
+                'INSERT INTO parametres (id_params, notification_email, notification_push) VALUES (?, ?, ?)',
+                [paramId, 'enabled', 'enabled']
             );
-            const [userResult] = await connection.execute(
-                'INSERT INTO utilisateur (id_params, nom, prenom, email, password, telephone, localisation, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                [paramResult.insertId, data.nom, data.prenom, data.email, data.hashedPassword, data.telephone || null, data.localisation || null, 'user']
+            await connection.execute(
+                'INSERT INTO utilisateur (id_user, id_params, nom, prenom, email, password, telephone, localisation, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [userId, paramId, data.nom, data.prenom, data.email, data.hashedPassword, data.telephone || null, data.localisation || null, 'user']
             );
             await connection.commit();
 
             const user = {
-                id: userResult.insertId,
-                id_user: userResult.insertId,
+                id: userId,
+                id_user: userId,
                 nom: data.nom,
                 prenom: data.prenom,
                 email: data.email,

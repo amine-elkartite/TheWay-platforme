@@ -13,6 +13,7 @@ const createIntegrationsRouter = require('./routes/integrations');
 const createSkillsRouter = require('./routes/skills');
 const createProfileRouter = require('./routes/profile');
 const createOpportunitiesRouter = require('./routes/opportunities');
+const createPanelRouter = require('./routes/panel');
 const {
     allowedOrigins,
     corsOrigin,
@@ -23,8 +24,8 @@ const {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-function requiredEnv(name) {
-    if (!process.env[name]) {
+function requiredEnv(name, allowEmpty) {
+    if (process.env[name] === undefined || (!allowEmpty && process.env[name] === '')) {
         throw new Error(name + ' environment variable is required.');
     }
     return process.env[name];
@@ -33,8 +34,9 @@ function requiredEnv(name) {
 // MySQL Connection Pool
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT, 10) || 3306,
     user: requiredEnv('DB_USER'),
-    password: requiredEnv('DB_PASSWORD'),
+    password: requiredEnv('DB_PASSWORD', true),
     database: process.env.DB_NAME || 'theway',
     waitForConnections: true,
     connectionLimit: 10,
@@ -49,6 +51,19 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/assets', express.static(path.join(__dirname, '..', 'assets')));
+
+const viewDir = path.join(__dirname, '..', 'view');
+const publicIndexPath = path.join(viewDir, 'public', 'index.html');
+
+app.use('/view', express.static(viewDir));
+
+app.get('/', (req, res) => {
+    res.sendFile(publicIndexPath);
+});
+
+app.get('/authentification.html', (req, res) => {
+    res.sendFile(path.join(viewDir, 'authentification', 'login.html'));
+});
 
 // File Upload Configuration
 const uploadDir = path.join(__dirname, '..', 'assets', 'uploads');
@@ -123,6 +138,7 @@ app.use(createIntegrationsRouter(routeDeps));
 app.use(createSkillsRouter(routeDeps));
 app.use(createProfileRouter(routeDeps));
 app.use(createOpportunitiesRouter(routeDeps));
+app.use(createPanelRouter(routeDeps));
 
 // ==========================================
 // HEALTH CHECK
