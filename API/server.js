@@ -14,6 +14,17 @@ const createSkillsRouter = require('./routes/skills');
 const createProfileRouter = require('./routes/profile');
 const createOpportunitiesRouter = require('./routes/opportunities');
 const createPanelRouter = require('./routes/panel');
+const createAdminDashboardRouter = require('./routes/admin/dashboard');
+const createAdminUsersRouter = require('./routes/admin/users');
+const createAdminEnterprisesRouter = require('./routes/admin/enterprises');
+const createAdminOffersRouter = require('./routes/admin/offers');
+const createAdminMatchingRouter = require('./routes/admin/matching');
+const createAdminSkillsRouter = require('./routes/admin/skills');
+const createAdminAnalyticsRouter = require('./routes/admin/analytics');
+const createAdminSubscriptionsRouter = require('./routes/admin/subscriptions');
+const createAdminSupportRouter = require('./routes/admin/support');
+const createAdminSettingsRouter = require('./routes/admin/settings');
+const createAdminNotificationsRouter = require('./routes/admin/notifications');
 const {
     allowedOrigins,
     corsOrigin,
@@ -139,6 +150,17 @@ app.use(createSkillsRouter(routeDeps));
 app.use(createProfileRouter(routeDeps));
 app.use(createOpportunitiesRouter(routeDeps));
 app.use(createPanelRouter(routeDeps));
+app.use(createAdminDashboardRouter(routeDeps));
+app.use(createAdminUsersRouter(routeDeps));
+app.use(createAdminEnterprisesRouter(routeDeps));
+app.use(createAdminOffersRouter(routeDeps));
+app.use(createAdminMatchingRouter(routeDeps));
+app.use(createAdminSkillsRouter(routeDeps));
+app.use(createAdminAnalyticsRouter(routeDeps));
+app.use(createAdminSubscriptionsRouter(routeDeps));
+app.use(createAdminSupportRouter(routeDeps));
+app.use(createAdminSettingsRouter(routeDeps));
+app.use(createAdminNotificationsRouter(routeDeps));
 
 // ==========================================
 // HEALTH CHECK
@@ -166,10 +188,10 @@ app.use((req, res) => {
 // ==========================================
 
 app.listen(PORT, () => {
-    console.log(`🚀 TheWay API Server running on http://localhost:${PORT}`);
-    console.log('📝 Database:', process.env.DB_NAME);
-    console.log('🔑 JWT Secret configured:', true);
-    console.log('🌐 CORS origins:', allowedOrigins.join(', '));
+    console.log(`TheWay API Server running on http://localhost:${PORT}`);
+    console.log('Database:', process.env.DB_NAME);
+    console.log('JWT Secret configured:', true);
+    console.log('CORS origins:', allowedOrigins.join(', '));
 });
 
 module.exports = app;

@@ -116,13 +116,191 @@ The platform includes multiple settings pages:
 
 ### Admin Panel
 
-The admin area is designed to manage the platform and monitor activity.
+The admin area is connected to the Express API and MySQL database.
 
-Current admin module:
+- Dynamic dashboard
+- Dynamic users, enterprises, offers, matching, skills, analytics, subscriptions, support, settings, and notifications
+- Admin-only API routes protected by JWT and role checking
+- Loading, empty, and error states on every admin page
 
-- Admin dashboard
-- Platform overview
-- Future-ready structure for users, companies, offers, skills, subscriptions, support, and security management
+---
+
+## Installation
+
+```bash
+npm install
+cd API
+npm install
+```
+
+If `npm start` reports `Cannot find module 'express'`, run `npm install` inside `API/`.
+
+---
+
+## API Configuration
+
+Create `API/.env`:
+
+```env
+PORT=3001
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=theway
+JWT_SECRET=change_this_secret
+JWT_EXPIRY=7d
+CORS_ORIGIN=http://localhost:3001,http://localhost:8000,http://127.0.0.1:8000
+```
+
+Use the MySQL password configured in XAMPP/MAMP if your local `root` account is not passwordless.
+
+---
+
+## Database Import
+
+Create/import the database:
+
+```bash
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS theway CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -p theway < database/database_structure.sql
+mysql -u root -p theway < database/migrations/001_admin_tables.sql
+```
+
+The migration creates:
+
+- `abonnement`
+- `support_ticket`
+
+These are required for the dynamic subscriptions and support pages.
+
+---
+
+## Run Backend
+
+From the project root:
+
+```bash
+npm start
+```
+
+Backend URL:
+
+```text
+http://localhost:3001
+```
+
+Health check:
+
+```text
+http://localhost:3001/health
+```
+
+---
+
+## Admin Login
+
+Log in from:
+
+```text
+http://localhost:3001/view/authentification/login.html
+```
+
+Use an account from `utilisateur` with:
+
+```text
+role = admin
+```
+
+The frontend stores only the auth token and minimal session data. Admin panel records are loaded from MySQL through the API.
+
+---
+
+## Open Admin Panel
+
+Dynamic admin URLs:
+
+```text
+/view/pannel/admin/dashboard.html
+/view/pannel/admin/utilisateurs.html
+/view/pannel/admin/entreprises.html
+/view/pannel/admin/offres.html
+/view/pannel/admin/matching.html
+/view/pannel/admin/competences.html
+/view/pannel/admin/analyses.html
+/view/pannel/admin/abonnements.html
+/view/pannel/admin/support.html
+/view/pannel/admin/parametres.html
+```
+
+Existing internal page names also work:
+
+```text
+/view/pannel/admin/admin-dashboard.html
+/view/pannel/admin/users.html
+/view/pannel/admin/analyse.html
+/view/pannel/admin/settings/generale.html
+```
+
+---
+
+## Dynamic Admin API Routes
+
+All admin routes require:
+
+```http
+Authorization: Bearer <token>
+```
+
+The token user must have `role = admin`.
+
+```text
+GET    /api/admin/dashboard
+
+GET    /api/admin/users
+GET    /api/admin/users/:id
+POST   /api/admin/users
+PUT    /api/admin/users/:id
+DELETE /api/admin/users/:id
+
+GET    /api/admin/enterprises
+GET    /api/admin/enterprises/:id
+POST   /api/admin/enterprises
+PUT    /api/admin/enterprises/:id
+DELETE /api/admin/enterprises/:id
+
+GET    /api/admin/offers
+GET    /api/admin/offers/:id
+POST   /api/admin/offers
+PUT    /api/admin/offers/:id
+DELETE /api/admin/offers/:id
+
+GET    /api/admin/skills
+POST   /api/admin/skills
+PUT    /api/admin/skills/:id
+DELETE /api/admin/skills/:id
+
+GET    /api/admin/matching
+GET    /api/admin/analytics
+
+GET    /api/admin/subscriptions
+POST   /api/admin/subscriptions
+PUT    /api/admin/subscriptions/:id
+DELETE /api/admin/subscriptions/:id
+
+GET    /api/admin/support
+POST   /api/admin/support
+PUT    /api/admin/support/:id
+DELETE /api/admin/support/:id
+
+GET    /api/admin/settings
+PUT    /api/admin/settings
+
+GET    /api/admin/notifications
+POST   /api/admin/notifications
+PUT    /api/admin/notifications/:id
+DELETE /api/admin/notifications/:id
+```
 
 ---
 

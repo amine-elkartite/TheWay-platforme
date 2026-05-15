@@ -804,7 +804,7 @@
         }
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open { transform: translateX; }
             .main-content { margin-left: 0; }
             .detail-panel {
                 position: fixed;
@@ -858,7 +858,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="nav-item active" href="#">
+        <a class="nav-item" href="#">
             <i class="bx bx-home"></i>
             Tableau de bord
         </a>
@@ -874,7 +874,7 @@
             <i class="bx bx-briefcase"></i>
             Offres
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item active" href="#">
             <i class="bx bx-line-chart"></i>
             Matching IA
         </a>
@@ -942,7 +942,7 @@
                     <div class="kpi-icon green"><i class="bx bx-line-chart"></i></div>
                     <div>
                         <div class="kpi-label">Matchs générés</div>
-                        <div class="kpi-value">18,426 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 16%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -950,7 +950,7 @@
                     <div class="kpi-icon blue"><i class="bx bx-target"></i></div>
                     <div>
                         <div class="kpi-label">Taux moyen de compatibilité</div>
-                        <div class="kpi-value">84% <span class="kpi-change up"><i class="bx bx-trending-up"></i> 7%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -958,7 +958,7 @@
                     <div class="kpi-icon orange"><i class="bx bx-puzzle"></i></div>
                     <div>
                         <div class="kpi-label">Recommandations IA</div>
-                        <div class="kpi-value">6,240 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 11%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -966,7 +966,7 @@
                     <div class="kpi-icon red"><i class="bx bx-error"></i></div>
                     <div>
                         <div class="kpi-label">Alertes de faible match</div>
-                        <div class="kpi-value">93 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 4%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -1020,21 +1020,15 @@
                                 <th style="width:40px">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="tableBody">
+</tbody>
                     </table>
                 </div>
                 <div class="table-footer">
-                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>18,426</strong> correspondances</div>
+                    <div class="table-footer-info">Chargement des donnees...</div>
                     <div style="display:flex;align-items:center;gap:14px">
                         <div class="pagination">
-                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
-                            <button class="page-btn active">1</button>
-                            <button class="page-btn">2</button>
-                            <button class="page-btn">3</button>
-                            <button class="page-btn dots">...</button>
-                            <button class="page-btn">3,071</button>
-                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
-                        </div>
+</div>
                         <div class="page-rows">
                             <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
                         </div>
@@ -1062,14 +1056,14 @@
                         <div class="donut-container">
                             <canvas id="donutChart"></canvas>
                             <div class="donut-center">
-                                <div class="value">18,426</div>
+                                <div class="value">Chargement...</div>
                                 <div class="label">Total</div>
                             </div>
                         </div>
                         <div class="donut-legend">
-                            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span class="llabel">Élevé (≥ 80%)</span><span class="lvalue">45%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Moyen (60-79%)</span><span class="lvalue">30%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div><span class="llabel">Faible (< 60%)</span><span class="lvalue">25%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span class="llabel">Élevé (≥ 80%)</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Moyen (60-79%)</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div><span class="llabel">Faible (< 60%)</span><span class="lvalue">0%</span></div>
                         </div>
                     </div>
                 </div>
@@ -1109,28 +1103,28 @@
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">50,000+</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">offres analysées / jour</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon blue"><i class="bx bx-buildings"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">2,500+</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">sociétés surveillées</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon cyan"><i class="bx bx-zap"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">98%</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">précision des recommandations</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon cyan"><i class="bx bx-brain"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">IA active 24/7</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">analyse continue et en temps réel</div>
                     </div>
                 </div>
@@ -1214,357 +1208,9 @@
         </div>
     </div>
 </main>
-
-<script>
-    const matches = [
-        {
-            id: 1,
-            candidate: { name: 'Youssef Haddad', email: 'y.haddad@email.com', role: 'Développeur Full Stack', location: 'Rabat, Maroc', exp: '4 ans', color: '#6366f1', initials: 'YH' },
-            company: { name: 'ACME Corporation', sub: 'Tech', logo: 'ACME', logoClass: 'acme' },
-            position: 'Développeur Full Stack',
-            score: 92,
-            missingSkills: ['Next.js', 'Docker', 'AWS'],
-            extraSkills: 1,
-            status: 'Élevé', statusClass: 'high', statusSub: 'Validé',
-            lastAnalysis: 'Il y a 2 h',
-            detectedSkills: ['JavaScript', 'React', 'Node.js', 'TypeScript', 'Git'],
-            allMissing: ['Next.js', 'Docker', 'AWS', 'GraphQL'],
-            extraCount: '+7 autres'
-        },
-        {
-            id: 2,
-            candidate: { name: 'Fatima Zahra', email: 'fzahra@email.com', role: 'Ingénieur DevOps', location: 'Casablanca, Maroc', exp: '3 ans', color: '#ec4899', initials: 'FZ' },
-            company: { name: 'DataCorp', sub: 'IT Services', logo: 'D', logoClass: 'data' },
-            position: 'Ingénieur DevOps',
-            score: 88,
-            missingSkills: ['Kubernetes', 'Terraform'],
-            extraSkills: 0,
-            status: 'Élevé', statusClass: 'high', statusSub: 'Validé',
-            lastAnalysis: 'Il y a 4 h',
-            detectedSkills: ['Linux', 'CI/CD', 'Python', 'Ansible'],
-            allMissing: ['Kubernetes', 'Terraform'],
-            extraCount: '+5 autres'
-        },
-        {
-            id: 3,
-            candidate: { name: 'Omar Bensalem', email: 'omar.b@email.com', role: 'Architecte Cloud', location: 'Paris, France', exp: '6 ans', color: '#14b8a6', initials: 'OB' },
-            company: { name: 'CloudScale', sub: 'Cloud', logo: '☁', logoClass: 'cloud' },
-            position: 'Architecte Cloud',
-            score: 84,
-            missingSkills: ['AWS', 'Terraform', 'Python'],
-            extraSkills: 0,
-            status: 'Moyen', statusClass: 'medium', statusSub: 'À revoir',
-            lastAnalysis: 'Il y a 6 h',
-            detectedSkills: ['Azure', 'GCP', 'Docker'],
-            allMissing: ['AWS', 'Terraform', 'Python'],
-            extraCount: '+4 autres'
-        },
-        {
-            id: 4,
-            candidate: { name: 'Ines Haddad', email: 'ines.h@email.com', role: 'Product Manager', location: 'Marrakech, Maroc', exp: '5 ans', color: '#f59e0b', initials: 'IH' },
-            company: { name: 'TalentBridge', sub: 'RH Tech', logo: '👥', logoClass: 'talent' },
-            position: 'Product Manager',
-            score: 79,
-            missingSkills: ['Soft Skills', 'Excel'],
-            extraSkills: 0,
-            status: 'Moyen', statusClass: 'medium', statusSub: 'À revoir',
-            lastAnalysis: 'Il y a 8 h',
-            detectedSkills: ['Agile', 'Scrum', 'Jira'],
-            allMissing: ['Soft Skills', 'Excel'],
-            extraCount: '+3 autres'
-        },
-        {
-            id: 5,
-            candidate: { name: 'Mehdi Rachedi', email: 'mehdi.r@email.com', role: 'Ingénieur Backend', location: 'Tunis, Tunisie', exp: '2 ans', color: '#8b5cf6', initials: 'MR' },
-            company: { name: 'NovaTech', sub: 'Fintech', logo: 'N', logoClass: 'nova' },
-            position: 'Ingénieur Backend',
-            score: 71,
-            missingSkills: ['GraphQL', 'Docker', 'AWS'],
-            extraSkills: 1,
-            status: 'Faible', statusClass: 'low', statusSub: 'À revoir',
-            lastAnalysis: 'Il y a 12 h',
-            detectedSkills: ['Java', 'Spring', 'MySQL'],
-            allMissing: ['GraphQL', 'Docker', 'AWS'],
-            extraCount: '+2 autres'
-        },
-        {
-            id: 6,
-            candidate: { name: 'Leila Benali', email: 'leila.b@email.com', role: 'Data Analyst', location: 'Rabat, Maroc', exp: '1 an', color: '#ef4444', initials: 'LB' },
-            company: { name: 'GreenSoft', sub: 'Énergie', logo: '🌿', logoClass: 'green' },
-            position: 'Data Analyst',
-            score: 65,
-            missingSkills: ['SQL', 'Python', 'Soft Skills'],
-            extraSkills: 0,
-            status: 'Faible', statusClass: 'low', statusSub: 'À revoir',
-            lastAnalysis: 'Il y a 16 h',
-            detectedSkills: ['Excel', 'Power BI'],
-            allMissing: ['SQL', 'Python', 'Soft Skills'],
-            extraCount: '+2 autres'
-        }
-    ];
-
-    function getScoreCircle(score) {
-        const circumference = 2 * Math.PI * 10;
-        const offset = circumference - (score / 100) * circumference;
-        const color = score >= 80 ? '#22c55e' : score >= 60 ? '#f59e0b' : '#ef4444';
-        return `<div class="score-cell">
-            <span class="score-value">${score}%</span>
-            <div class="score-circle">
-                <svg width="24" height="24" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" fill="none" stroke="#e2e8f0" stroke-width="2.5"/>
-                    <circle cx="12" cy="12" r="10" fill="none" stroke="${color}" stroke-width="2.5"
-                        stroke-dasharray="${circumference}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
-                </svg>
-            </div>
-        </div>`;
-    }
-
-    function renderTable(data) {
-        document.getElementById('tableBody').innerHTML = data.map((m, i) => `
-            <tr data-id="${m.id}" onclick="selectMatch(${m.id})">
-                <td><input type="radio" name="match" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
-                <td>
-                    <div class="match-cell">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='${encodeURIComponent(m.candidate.color)}' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3E${m.candidate.initials}%3C/text%3E%3C/svg%3E" alt="${m.candidate.name}">
-                        <div>
-                            <div class="mname">${m.candidate.name}</div>
-                            <div class="memail">${m.candidate.email}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="company-cell">
-                        <div class="company-mini-logo ${m.company.logoClass}">${m.company.logo}</div>
-                        <div>
-                            <div class="cname">${m.company.name}</div>
-                            <div class="csub">${m.company.sub}</div>
-                        </div>
-                    </div>
-                </td>
-                <td style="color:var(--text-secondary);font-size:12.5px">${m.position}</td>
-                <td>${getScoreCircle(m.score)}</td>
-                <td>
-                    <div class="skill-tags">
-                        ${m.missingSkills.map(s => `<span class="skill-tag missing">${s}</span>`).join('')}
-                        ${m.extraSkills > 0 ? `<span class="skill-plus">+${m.extraSkills}</span>` : ''}
-                    </div>
-                </td>
-                <td>
-                    <div class="match-status ${m.statusClass}">
-                        ${m.status}
-                        <span class="sub">${m.statusSub}</span>
-                    </div>
-                </td>
-                <td style="color:var(--text-light);font-size:12px">${m.lastAnalysis}</td>
-                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
-            </tr>
-        `).join('');
-    }
-
-    function selectMatch(id) {
-        const m = matches.find(x => x.id === id);
-        if (!m) return;
-
-        document.getElementById('detailPanel').classList.remove('hidden');
-        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
-
-        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
-
-        document.getElementById('panelMatchFlow').innerHTML = `
-            <div class="person">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='${encodeURIComponent(m.candidate.color)}' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3E${m.candidate.initials}%3C/text%3E%3C/svg%3E" alt="${m.candidate.name}">
-                <div class="name">${m.candidate.name}</div>
-                <div class="role">${m.candidate.role}</div>
-            </div>
-            <div class="arrow"><i class="bx bx-right-arrow-alt"></i></div>
-            <div class="score-box">
-                <div class="val">${m.score}%</div>
-                <div class="lbl">Match</div>
-            </div>
-            <div class="arrow"><i class="bx bx-right-arrow-alt"></i></div>
-            <div class="person">
-                <div style="width:44px;height:44px;border-radius:8px;background:#1a1a2e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin:0 auto 6px">${m.company.logo}</div>
-                <div class="name">${m.company.name}</div>
-                <div class="role">${m.company.sub}</div>
-            </div>
-        `;
-
-        document.getElementById('panelDetails').innerHTML = `
-            <div class="info-row"><span class="label">Candidat</span><span class="value">${m.candidate.name}</span></div>
-            <div class="info-row"><span class="label">Entreprise</span><span class="value">${m.company.name}</span></div>
-            <div class="info-row"><span class="label">Poste cible</span><span class="value">${m.position}</span></div>
-            <div class="info-row"><span class="label"><i class="bx bx-map-pin"></i> Localisation</span><span class="value">${m.candidate.location}</span></div>
-            <div class="info-row"><span class="label">Expérience</span><span class="value">${m.candidate.exp}</span></div>
-            <div class="info-row"><span class="label">Date d'analyse</span><span class="value">${m.lastAnalysis}</span></div>
-        `;
-
-        document.getElementById('detectedSkills').innerHTML =
-            m.detectedSkills.map(s => `<span class="skill-badge detected">${s}</span>`).join('') +
-            `<span class="skill-badge detected" style="background:#f1f5f9;color:var(--text-light)">${m.extraCount}</span>`;
-
-        document.getElementById('missingSkills').innerHTML =
-            m.allMissing.map(s => `<span class="skill-badge missing">${s}</span>`).join('') +
-            `<span class="skill-badge missing" style="background:#f1f5f9;color:var(--text-light)">+1 autre</span>`;
-    }
-
-    document.getElementById('panelClose').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.getElementById('panelOverlay').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.querySelectorAll('.panel-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-        });
-    });
-
-    function applyFilters() {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        const match = document.getElementById('matchFilter').value;
-        const status = document.getElementById('statusFilter').value;
-        let filtered = matches.filter(m => {
-            const matchSearch = !search || m.candidate.name.toLowerCase().includes(search) || m.company.name.toLowerCase().includes(search);
-            const matchLevel = !match ||
-                (match === 'high' && m.score >= 80) ||
-                (match === 'medium' && m.score >= 60 && m.score < 80) ||
-                (match === 'low' && m.score < 60);
-            const matchStatus = !status ||
-                (status === 'validated' && m.statusSub === 'Validé') ||
-                (status === 'review' && m.statusSub === 'À revoir');
-            return matchSearch && matchLevel && matchStatus;
-        });
-        renderTable(filtered);
-    }
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('matchFilter').addEventListener('change', applyFilters);
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
-
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        sidebarOverlay.classList.toggle('active');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('active');
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            if (window.innerWidth <= 1024) {
-                sidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('active');
-            }
-        });
-    });
-
-    // Performance Chart
-    new Chart(document.getElementById('performanceChart').getContext('2d'), {
-        type: 'line',
-         data :{
-            labels: ['Déc. 2023', 'Janv. 2024', 'Fév. 2024', 'Mars 2024', 'Avr. 2024', 'Mai 2024'],
-            datasets: [{
-                label: 'Score moyen',
-                 data: [58, 65, 72, 78, 80, 84],
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59,130,246,0.06)',
-                borderWidth: 2.5,
-                pointRadius: 4,
-                pointBackgroundColor: '#3b82f6',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    titleFont: { size: 11, family: 'Inter' },
-                    bodyFont: { size: 11, family: 'Inter' },
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: (ctx) => `Score: ${ctx.parsed.y}%`
-                    }
-                }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8' } },
-                y: {
-                    grid: { color: '#f1f5f9' },
-                    ticks: {
-                        font: { size: 10, family: 'Inter' },
-                        color: '#94a3b8',
-                        callback: (v) => v + '%'
-                    },
-                    min: 0,
-                    max: 100
-                }
-            }
-        }
-    });
-
-    // Donut Chart
-    new Chart(document.getElementById('donutChart').getContext('2d'), {
-        type: 'doughnut',
-         data :{
-            labels: ['Élevé', 'Moyen', 'Faible'],
-            datasets: [{
-                 data: [45, 30, 25],
-                backgroundColor: ['#22c55e', '#f59e0b', '#ef4444'],
-                borderWidth: 0,
-                hoverOffset: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            cutout: '72%',
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    titleFont: { size: 11, family: 'Inter' },
-                    bodyFont: { size: 11, family: 'Inter' },
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
-                    }
-                }
-            }
-        }
-    });
-
-    renderTable(matches);
-    setTimeout(() => selectMatch(1), 300);
-
-    setTimeout(() => {
-        document.querySelectorAll('.health-bar-fill').forEach(bar => {
-            const w = bar.style.width;
-            bar.style.width = '0%';
-            setTimeout(() => { bar.style.width = w; }, 100);
-        });
-    }, 300);
-</script>
-    <script src="../../../assets/js/theway-dynamic.js"></script>
+<script src="/view/js/api.js"></script>
+<script src="/view/pannel/admin/js/admin-common.js"></script>
+<script src="/view/pannel/admin/js/matching.js"></script>
 </body>
 </html>
 

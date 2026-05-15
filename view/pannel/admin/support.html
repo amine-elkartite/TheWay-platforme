@@ -784,7 +784,7 @@
         }
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open { transform: translateX; }
             .main-content { margin-left: 0; }
             .detail-panel {
                 position: fixed;
@@ -838,7 +838,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="nav-item active" href="#">
+        <a class="nav-item" href="#">
             <i class="bx bx-home"></i>
             Tableau de bord
         </a>
@@ -870,7 +870,7 @@
             <i class="bx bx-check-shield"></i>
             Abonnements
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item active" href="#">
             <i class="bx bx-headphone"></i>
             Support
         </a>
@@ -922,7 +922,7 @@
                     <div class="kpi-icon green"><i class="bx bx-headphone"></i></div>
                     <div>
                         <div class="kpi-label">Tickets ouverts</div>
-                        <div class="kpi-value">286 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -930,7 +930,7 @@
                     <div class="kpi-icon red"><i class="bx bx-error"></i></div>
                     <div>
                         <div class="kpi-label">Tickets critiques</div>
-                        <div class="kpi-value">18 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 4%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -938,7 +938,7 @@
                     <div class="kpi-icon blue"><i class="bx bx-check-circle"></i></div>
                     <div>
                         <div class="kpi-label">Tickets résolus</div>
-                        <div class="kpi-value">1,248 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 9%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -946,7 +946,7 @@
                     <div class="kpi-icon orange"><i class="bx bx-time-five"></i></div>
                     <div>
                         <div class="kpi-label">Temps de réponse moyen</div>
-                        <div class="kpi-value">1 h 42 min <span class="kpi-change down"><i class="bx bx-trending-down"></i> 8%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -1004,21 +1004,15 @@
                                 <th style="width:40px">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="tableBody">
+</tbody>
                     </table>
                 </div>
                 <div class="table-footer">
-                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>286</strong> tickets</div>
+                    <div class="table-footer-info">Chargement des donnees...</div>
                     <div style="display:flex;align-items:center;gap:14px">
                         <div class="pagination">
-                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
-                            <button class="page-btn active">1</button>
-                            <button class="page-btn">2</button>
-                            <button class="page-btn">3</button>
-                            <button class="page-btn dots">...</button>
-                            <button class="page-btn">29</button>
-                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
-                        </div>
+</div>
                         <div class="page-rows">
                             <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
                         </div>
@@ -1046,16 +1040,16 @@
                         <div class="donut-container">
                             <canvas id="donutChart"></canvas>
                             <div class="donut-center">
-                                <div class="value">286</div>
+                                <div class="value">Chargement...</div>
                                 <div class="label">Total</div>
                             </div>
                         </div>
                         <div class="donut-legend">
-                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Facturation</span><span class="lvalue">38%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span class="llabel">Accès</span><span class="lvalue">22%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Compte</span><span class="lvalue">18%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div><span class="llabel">Notifications</span><span class="lvalue">12%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">IA</span><span class="lvalue">10%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Facturation</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span class="llabel">Accès</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div><span class="llabel">Compte</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div><span class="llabel">Notifications</span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">IA</span><span class="lvalue">0%</span></div>
                         </div>
                     </div>
                 </div>
@@ -1095,28 +1089,28 @@
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">50,000+</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">interactions / mois</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon blue"><i class="bx bx-book-content"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">1,240</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">articles d'aide</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon cyan"><i class="bx bx-shield-check"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">94%</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">SLA respectée</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon cyan"><i class="bx bx-headphone"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">Support 24/7</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">Disponible à tout moment</div>
                     </div>
                 </div>
@@ -1207,281 +1201,9 @@
         </div>
     </div>
 </main>
-
-<script>
-    const tickets = [
-        {
-            id: '#SUP-2048', client: 'ACME Corporation', logo: 'ACME', logoClass: 'acme',
-            category: 'Facturation', categoryKey: 'billing',
-            priority: 'Élevée', priorityClass: 'high', status: 'Ouvert', statusClass: 'open',
-            assignee: 'Sarah Martin', assigneeColor: '#ec4899', activity: 'Il y a 12 min',
-            subject: "Problème d'abonnement Enterprise", contact: 'Sophie Martin', channel: 'Email',
-            created: '30 mai 2024 à 09:18', sla: "Réponse attendue dans 2 h",
-            summary: "Le client signale un double prélèvement sur son abonnement mensuel Enterprise."
-        },
-        {
-            id: '#SUP-2041', client: 'Youssef Haddad', logo: 'YH', logoClass: 'data',
-            category: 'IA Matching', categoryKey: 'ia',
-            priority: 'Moyenne', priorityClass: 'medium', status: 'En cours', statusClass: 'progress',
-            assignee: 'Mehdi Rachedi', assigneeColor: '#6366f1', activity: 'Il y a 35 min',
-            subject: "Problème de matching IA", contact: 'Youssef Haddad', channel: 'Chat',
-            created: '29 mai 2024 à 14:30', sla: "Réponse attendue dans 4 h",
-            summary: "Les recommandations de matching ne s'affichent pas correctement pour certains profils."
-        },
-        {
-            id: '#SUP-2037', client: 'NovaTech', logo: 'N', logoClass: 'nova',
-            category: 'Compte', categoryKey: 'account',
-            priority: 'Critique', priorityClass: 'critical', status: 'Escaladé', statusClass: 'escalated',
-            assignee: 'Leila Benali', assigneeColor: '#14b8a6', activity: 'Il y a 1 h',
-            subject: "Problème d'accès au compte", contact: 'Karim Alaoui', channel: 'Téléphone',
-            created: '28 mai 2024 à 10:00', sla: "Réponse attendue dans 1 h",
-            summary: "L'utilisateur ne peut plus accéder à son compte après la mise à jour."
-        },
-        {
-            id: '#SUP-2032', client: 'GreenSoft', logo: '🌿', logoClass: 'green',
-            category: 'Facturation', categoryKey: 'billing',
-            priority: 'Faible', priorityClass: 'low', status: 'Résolu', statusClass: 'resolved',
-            assignee: 'Omar Bensalem', assigneeColor: '#f59e0b', activity: 'Il y a 3 h',
-            subject: "Question sur la facture", contact: 'Pierre Martin', channel: 'Email',
-            created: '27 mai 2024 à 16:45', sla: "Réponse attendue dans 24 h",
-            summary: "Le client demande des précisions sur les lignes de sa dernière facture."
-        },
-        {
-            id: '#SUP-2029', client: 'TalentBridge', logo: '👥', logoClass: 'talent',
-            category: 'Accès', categoryKey: 'access',
-            priority: 'Moyenne', priorityClass: 'medium', status: 'En attente', statusClass: 'pending',
-            assignee: 'Ines Haddad', assigneeColor: '#ef4444', activity: 'Il y a 5 h',
-            subject: "Demande d'accès supplémentaire", contact: 'Fatima Zahra', channel: 'Email',
-            created: '26 mai 2024 à 09:00', sla: "Réponse attendue dans 8 h",
-            summary: "Le client demande l'ajout de 5 utilisateurs supplémentaires sur son compte."
-        },
-        {
-            id: '#SUP-2022', client: 'DataCorp', logo: 'D', logoClass: 'data',
-            category: 'Notifications', categoryKey: 'notifications',
-            priority: 'Moyenne', priorityClass: 'medium', status: 'En cours', statusClass: 'progress',
-            assignee: 'Fatima Zahra', assigneeColor: '#ec4899', activity: 'Il y a 6 h',
-            subject: "Notifications non reçues", contact: 'Marc Dupont', channel: 'Chat',
-            created: '25 mai 2024 à 11:30', sla: "Réponse attendue dans 4 h",
-            summary: "Le client ne reçoit pas les notifications email pour les nouvelles candidatures."
-        }
-    ];
-
-    function renderTable(data) {
-        document.getElementById('tableBody').innerHTML = data.map((t, i) => `
-            <tr data-id="${t.id}" onclick="selectTicket('${t.id}')">
-                <td><input type="radio" name="ticket" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
-                <td>
-                    <div class="ticket-cell">
-                        <span class="ticket-id">${t.id}</span>
-                    </div>
-                </td>
-                <td>
-                    <div class="client-cell">
-                        <div class="client-logo ${t.logoClass}">${t.logo}</div>
-                        <span class="cname">${t.client}</span>
-                    </div>
-                </td>
-                <td style="color:var(--text-secondary)">${t.category}</td>
-                <td><span class="priority-badge ${t.priorityClass}">${t.priority}</span></td>
-                <td><span class="status-badge ${t.statusClass}">${t.status}</span></td>
-                <td>
-                    <div class="assignee-cell">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='${encodeURIComponent(t.assigneeColor)}' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='36' font-family='Arial' dy='.1em'%3E${t.assignee.charAt(0)}%3C/text%3E%3C/svg%3E" alt="${t.assignee}">
-                        <span class="aname">${t.assignee}</span>
-                    </div>
-                </td>
-                <td style="color:var(--text-light);font-size:12px">${t.activity}</td>
-                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
-            </tr>
-        `).join('');
-    }
-
-    function selectTicket(id) {
-        const t = tickets.find(x => x.id === id);
-        if (!t) return;
-
-        document.getElementById('detailPanel').classList.remove('hidden');
-        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
-
-        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', tr.dataset.id === id));
-
-        document.getElementById('panelTicket').innerHTML = `
-            <div class="logo">${t.logo}</div>
-            <div class="info">
-                <div class="id">${t.id} <span class="status-tag">${t.status}</span></div>
-                <div class="sub">${t.client}</div>
-            </div>
-        `;
-
-        document.getElementById('panelDetails').innerHTML = `
-            <div class="info-row"><span class="label">Sujet</span><span class="value">${t.subject}</span></div>
-            <div class="info-row"><span class="label">Client</span><span class="value">${t.client}</span></div>
-            <div class="info-row"><span class="label">Contact</span><span class="value"><a href="#">${t.contact}</a></span></div>
-            <div class="info-row"><span class="label">Canal</span><span class="value">${t.channel}</span></div>
-            <div class="info-row"><span class="label">Catégorie</span><span class="value">${t.category}</span></div>
-            <div class="info-row"><span class="label">Priorité</span><span class="value"><span class="priority-badge ${t.priorityClass}">${t.priority}</span></span></div>
-            <div class="info-row"><span class="label">Assigné à</span><span class="value"><a href="#">${t.assignee}</a></span></div>
-            <div class="info-row"><span class="label">Créé le</span><span class="value">${t.created}</span></div>
-            <div class="info-row"><span class="label">SLA</span><span class="value">${t.sla}</span></div>
-        `;
-
-        document.getElementById('panelSummary').textContent = t.summary;
-    }
-
-    document.getElementById('panelClose').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.getElementById('panelOverlay').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.querySelectorAll('.panel-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-        });
-    });
-
-    function applyFilters() {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        const cat = document.getElementById('catFilter').value.toLowerCase();
-        const priority = document.getElementById('priorityFilter').value.toLowerCase();
-        const status = document.getElementById('statusFilter').value.toLowerCase();
-        let filtered = tickets.filter(t => {
-            const matchSearch = !search || t.id.toLowerCase().includes(search) || t.client.toLowerCase().includes(search) || t.subject.toLowerCase().includes(search);
-            const matchCat = !cat || t.categoryKey === cat;
-            const matchPriority = !priority || t.priorityClass === priority;
-            const matchStatus = !status || t.statusClass === status;
-            return matchSearch && matchCat && matchPriority && matchStatus;
-        });
-        renderTable(filtered);
-    }
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('catFilter').addEventListener('change', applyFilters);
-    document.getElementById('priorityFilter').addEventListener('change', applyFilters);
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
-
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        sidebarOverlay.classList.toggle('active');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('active');
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            if (window.innerWidth <= 1024) {
-                sidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('active');
-            }
-        });
-    });
-
-    // Ticket Evolution Chart
-    new Chart(document.getElementById('ticketChart').getContext('2d'), {
-        type: 'line',
-        data: {
-            labels: ['Déc. 2023', 'Janv. 2024', 'Fév. 2024', 'Mars 2024', 'Avr. 2024', 'Mai 2024'],
-            datasets: [{
-                label: 'Nombre de tickets',
-                data: [200, 250, 300, 310, 340, 286],
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59,130,246,0.06)',
-                borderWidth: 2.5,
-                pointRadius: 4,
-                pointBackgroundColor: '#3b82f6',
-                pointBorderColor: '#fff',
-                pointBorderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    titleFont: { size: 11, family: 'Inter' },
-                    bodyFont: { size: 11, family: 'Inter' },
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: (ctx) => `${ctx.parsed.y} tickets`
-                    }
-                }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { font: { size: 10, family: 'Inter' }, color: '#94a3b8' } },
-                y: {
-                    grid: { color: '#f1f5f9' },
-                    ticks: {
-                        font: { size: 10, family: 'Inter' },
-                        color: '#94a3b8'
-                    },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Donut Chart
-    new Chart(document.getElementById('donutChart').getContext('2d'), {
-        type: 'doughnut',
-         data: {
-            labels: ['Facturation', 'Accès', 'Compte', 'Notifications', 'IA'],
-            datasets: [{
-                data: [38, 22, 18, 12, 10],
-                backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#a855f7', '#94a3b8'],
-                borderWidth: 0,
-                hoverOffset: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            cutout: '72%',
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    titleFont: { size: 11, family: 'Inter' },
-                    bodyFont: { size: 11, family: 'Inter' },
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
-                    }
-                }
-            }
-        }
-    });
-
-    renderTable(tickets);
-    setTimeout(() => selectTicket('#SUP-2048'), 300);
-
-    setTimeout(() => {
-        document.querySelectorAll('.health-bar-fill').forEach(bar => {
-            const w = bar.style.width;
-            bar.style.width = '0%';
-            setTimeout(() => { bar.style.width = w; }, 100);
-        });
-    }, 300);
-</script>
-    <script src="../../../assets/js/theway-dynamic.js"></script>
+<script src="/view/js/api.js"></script>
+<script src="/view/pannel/admin/js/admin-common.js"></script>
+<script src="/view/pannel/admin/js/support.js"></script>
 </body>
 </html>
 

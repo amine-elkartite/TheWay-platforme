@@ -64,7 +64,7 @@ REGISTER_RESPONSE=$(curl -s -X POST "http://localhost:3001/auth/register" \
     -d '{
         "nom": "Test",
         "prenom": "User",
-        "email": "test'$(date +%s)'@example.com",
+        "email": "test'$(date +%s)'@gmail.com",
         "password": "TestPassword123",
         "telephone": "+33612345678",
         "localisation": "Paris"
@@ -87,7 +87,7 @@ echo -n "Testing user login... "
 LOGIN_RESPONSE=$(curl -s -X POST "http://localhost:3001/auth/login" \
     -H "Content-Type: application/json" \
     -d '{
-        "email": "test@example.com",
+        "email": "test'$(date +%s)'@gmail.com",
         "password": "TestPassword123"
     }')
 
@@ -104,10 +104,10 @@ else
 fi
 
 # Test password recovery
-test_endpoint "POST" "/auth-password-recovery" '{"email":"test@example.com"}' ""
+test_endpoint "POST" "/auth-password-recovery" '{"email":"test'$(date +%s)'@gmail.com"}' ""
 
 # Test social login
-test_endpoint "POST" "/auth-social" '{"provider":"google","email":"social'$(date +%s)'@example.com","nom":"Test","prenom":"Social"}' ""
+test_endpoint "POST" "/auth-social" '{"provider":"google","email":"social'$(date +%s)'@gmail.com","nom":"Test","prenom":"Social"}' ""
 
 echo ""
 

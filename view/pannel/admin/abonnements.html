@@ -791,7 +791,7 @@
         }
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open { transform: translateX; }
             .main-content { margin-left: 0; }
             .detail-panel {
                 position: fixed;
@@ -846,7 +846,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="nav-item active" href="#">
+        <a class="nav-item" href="#">
             <i class="bx bx-home"></i>
             Tableau de bord
         </a>
@@ -874,7 +874,7 @@
             <i class="bx bx-bar-chart-alt-2"></i>
             Analyses
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item active" href="#">
             <i class="bx bx-check-shield"></i>
             Abonnements
         </a>
@@ -932,7 +932,7 @@
                     <div class="kpi-icon purple"><i class="bx bx-user"></i></div>
                     <div>
                         <div class="kpi-label">Abonnements actifs</div>
-                        <div class="kpi-value">2,486 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 12%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -940,7 +940,7 @@
                     <div class="kpi-icon green"><i class="bx bx-plus-circle"></i></div>
                     <div>
                         <div class="kpi-label">Nouveaux abonnements</div>
-                        <div class="kpi-value">124 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 9%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -948,7 +948,7 @@
                     <div class="kpi-icon orange"><i class="bx bx-dollar-circle"></i></div>
                     <div>
                         <div class="kpi-label">Revenus récurrents</div>
-                        <div class="kpi-value">184,500 MAD <span class="kpi-change up"><i class="bx bx-trending-up"></i> 18%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -956,7 +956,7 @@
                     <div class="kpi-icon red"><i class="bx bx-calendar-plus"></i></div>
                     <div>
                         <div class="kpi-label">Échéances proches</div>
-                        <div class="kpi-value">37 <span class="kpi-change up"><i class="bx bx-trending-down"></i> 4%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -1009,21 +1009,15 @@
                                 <th style="width:40px">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="tableBody">
+</tbody>
                     </table>
                 </div>
                 <div class="table-footer">
-                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>2,486</strong> abonnements</div>
+                    <div class="table-footer-info">Chargement des donnees...</div>
                     <div style="display:flex;align-items:center;gap:14px">
                         <div class="pagination">
-                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
-                            <button class="page-btn active">1</button>
-                            <button class="page-btn">2</button>
-                            <button class="page-btn">3</button>
-                            <button class="page-btn dots">...</button>
-                            <button class="page-btn">415</button>
-                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
-                        </div>
+</div>
                         <div class="page-rows">
                             <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
                         </div>
@@ -1051,14 +1045,14 @@
                         <div class="donut-container">
                             <canvas id="donutChart"></canvas>
                             <div class="donut-center">
-                                <div class="value">2,486</div>
+                                <div class="value">Chargement...</div>
                                 <div class="label">Total</div>
                             </div>
                         </div>
                         <div class="donut-legend">
-                            <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div><span class="llabel">Enterprise (892)</span><span class="lvalue">36%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Pro (984)</span><span class="lvalue">39%</span></div>
-                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">Basic (610)</span><span class="lvalue">25%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div><span class="llabel">Enterprise </span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span class="llabel">Pro </span><span class="lvalue">0%</span></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div><span class="llabel">Basic </span><span class="lvalue">0%</span></div>
                         </div>
                     </div>
                 </div>
@@ -1099,28 +1093,28 @@
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon purple"><i class="bx bx-globe"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">50,000+</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">offres analysées / jour</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon" style="background:var(--blue-bg)"><i class="bx bx-buildings" style="color:var(--blue)"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">2,500+</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">sociétés surveillées</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon" style="background:#e0f2fe"><i class="bx bx-zap" style="color:#7c3aed"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">98%</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">précision des recommandations</div>
                     </div>
                 </div>
                 <div class="bottom-stat">
                     <div class="bottom-stat-icon" style="background:#e0f2fe"><i class="bx bx-headphone" style="color:#7c3aed"></i></div>
                     <div class="bottom-stat-info">
-                        <div class="value">Support actif 24/7</div>
+                        <div class="value">Chargement...</div>
                         <div class="label">Temps de réponse moyen : 2h</div>
                     </div>
                 </div>
@@ -1170,16 +1164,16 @@
                 <div class="tab-content" id="tab-facturation">
                     <div class="panel-section">
                         <h4>Historique de facturation</h4>
-                        <div class="info-row"><span class="label">INV-2024-0512</span><span class="value">12,500 MAD <a href="#" data-tw-action="download" data-tw-download="invoice">PDF</a></span></div>
-                        <div class="info-row"><span class="label">INV-2024-0412</span><span class="value">12,500 MAD <a href="#">PDF</a></span></div>
-                        <div class="info-row"><span class="label">INV-2024-0312</span><span class="value">12,500 MAD <a href="#">PDF</a></span></div>
-                        <div class="info-row"><span class="label">INV-2024-0212</span><span class="value">12,500 MAD <a href="#">PDF</a></span></div>
+                        <div class="info-row"><span class="label">Facture indisponible</span><span class="value">Non renseigne <a href="#" data-tw-action="download" data-tw-download="invoice">PDF</a></span></div>
+                        <div class="info-row"><span class="label">Facture indisponible</span><span class="value">Non renseigne <a href="#">PDF</a></span></div>
+                        <div class="info-row"><span class="label">Facture indisponible</span><span class="value">Non renseigne <a href="#">PDF</a></span></div>
+                        <div class="info-row"><span class="label">Facture indisponible</span><span class="value">Non renseigne <a href="#">PDF</a></span></div>
                     </div>
                 </div>
                 <div class="tab-content" id="tab-historique">
                     <div class="panel-section">
                         <h4>Journal d'activité</h4>
-                        <div class="info-row"><span class="label">12 juin 2024</span><span class="value">Renouvellement automatique</span></div>
+                        <div class="info-row"><span class="label">Non renseigne</span><span class="value">Renouvellement automatique</span></div>
                         <div class="info-row"><span class="label">15 mai 2024</span><span class="value">Utilisateur ajouté (+3)</span></div>
                         <div class="info-row"><span class="label">12 avr 2024</span><span class="value">Renouvellement automatique</span></div>
                         <div class="info-row"><span class="label">01 mar 2024</span><span class="value">Mise à niveau → Enterprise</span></div>
@@ -1204,7 +1198,8 @@
 </main>
 
 <script src="../../../assets/js/theway-table-utils.js"></script>
-<script src="../../../assets/js/admin-abonnements-controller.js"></script>
-    <script src="../../../assets/js/theway-dynamic.js"></script>
+<script src="/view/js/api.js"></script>
+<script src="/view/pannel/admin/js/admin-common.js"></script>
+<script src="/view/pannel/admin/js/subscriptions.js"></script>
 </body>
 </html>

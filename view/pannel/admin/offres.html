@@ -712,7 +712,7 @@
         }
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
+            .sidebar.open { transform: translateX; }
             .main-content { margin-left: 0; }
             .detail-panel {
                 position: fixed;
@@ -764,7 +764,7 @@
     </div>
 
     <nav class="sidebar-nav">
-        <a class="nav-item active" href="#">
+        <a class="nav-item" href="#">
             <i class="bx bx-home"></i>
             Tableau de bord
         </a>
@@ -776,7 +776,7 @@
             <i class="bx bx-building"></i>
             Entreprises
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item active" href="#">
             <i class="bx bx-briefcase"></i>
             Offres
         </a>
@@ -848,7 +848,7 @@
                     <div class="kpi-icon green"><i class="bx bx-briefcase"></i></div>
                     <div>
                         <div class="kpi-label">Offres actives</div>
-                        <div class="kpi-value">1,248 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 8%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -856,7 +856,7 @@
                     <div class="kpi-icon green"><i class="bx bx-plus-circle"></i></div>
                     <div>
                         <div class="kpi-label">Nouvelles offres</div>
-                        <div class="kpi-value">86 <span class="kpi-change up"><i class="bx bx-trending-up"></i> 14%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -864,7 +864,7 @@
                     <div class="kpi-icon orange"><i class="bx bx-time-five"></i></div>
                     <div>
                         <div class="kpi-label">En attente de validation</div>
-                        <div class="kpi-value">32 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 10%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -872,7 +872,7 @@
                     <div class="kpi-icon red"><i class="bx bx-calendar-x"></i></div>
                     <div>
                         <div class="kpi-label">Offres expirées</div>
-                        <div class="kpi-value">57 <span class="kpi-change down"><i class="bx bx-trending-down"></i> 6%</span></div>
+                        <div class="kpi-value">Chargement...</div>
                         <div class="kpi-footer">vs mois dernier</div>
                     </div>
                 </div>
@@ -925,21 +925,15 @@
                                 <th style="width:40px">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody"></tbody>
+                        <tbody id="tableBody">
+</tbody>
                     </table>
                 </div>
                 <div class="table-footer">
-                    <div class="table-footer-info">Affichage de <strong>1 à 6</strong> sur <strong>1,248</strong> offres</div>
+                    <div class="table-footer-info">Chargement des donnees...</div>
                     <div style="display:flex;align-items:center;gap:14px">
                         <div class="pagination">
-                            <button class="page-btn"><i class="bx bx-chevron-left"></i></button>
-                            <button class="page-btn active">1</button>
-                            <button class="page-btn">2</button>
-                            <button class="page-btn">3</button>
-                            <button class="page-btn dots">...</button>
-                            <button class="page-btn">208</button>
-                            <button class="page-btn"><i class="bx bx-chevron-right"></i></button>
-                        </div>
+</div>
                         <div class="page-rows">
                             <select><option>10 / page</option><option>25 / page</option><option>50 / page</option></select>
                         </div>
@@ -953,30 +947,30 @@
                     <div class="donut-wrap">
                         <canvas id="donutChart"></canvas>
                         <div class="donut-center-text">
-                            <div class="val">1,248</div>
+                            <div class="val">Chargement...</div>
                             <div class="lbl">Total</div>
                         </div>
                     </div>
                     <div class="donut-legend">
                         <div class="donut-legend-item">
                             <div class="donut-legend-dot" style="background:#22c55e"></div>
-                            <span class="dl-label">Actives (1,248)</span>
-                            <span class="dl-value">60%</span>
+                            <span class="dl-label">Chargement...</span>
+                            <span class="dl-value">0%</span>
                         </div>
                         <div class="donut-legend-item">
                             <div class="donut-legend-dot" style="background:#f59e0b"></div>
-                            <span class="dl-label">En attente (32)</span>
-                            <span class="dl-value">16%</span>
+                            <span class="dl-label">Chargement...</span>
+                            <span class="dl-value">0%</span>
                         </div>
                         <div class="donut-legend-item">
                             <div class="donut-legend-dot" style="background:#ef4444"></div>
-                            <span class="dl-label">Expirées (57)</span>
-                            <span class="dl-value">14%</span>
+                            <span class="dl-label">Chargement...</span>
+                            <span class="dl-value">0%</span>
                         </div>
                         <div class="donut-legend-item">
                             <div class="donut-legend-dot" style="background:#94a3b8"></div>
-                            <span class="dl-label">Suspendues (18)</span>
-                            <span class="dl-value">10%</span>
+                            <span class="dl-label">Chargement...</span>
+                            <span class="dl-value">0%</span>
                         </div>
                     </div>
                 </div>
@@ -986,17 +980,17 @@
         <div class="detail-panel" id="detailPanel">
             <div class="panel-header">
                 <div style="display:flex;align-items:center;gap:12px">
-                    <div class="logo" style="width:40px;height:40px;border-radius:8px;background:#1a1a2e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">ACME</div>
+                    <div class="logo" style="width:40px;height:40px;border-radius:8px;background:#1a1a2e;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">Chargement...</div>
                     <div>
                         <div style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px">Développeur Full Stack <span class="status-tag" style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-bg);color:var(--green);font-weight:600">Actif</span></div>
-                        <div style="font-size:11.5px;color:var(--text-light)">ACME Corporation · Publiée le 12 mai 2024</div>
+                        <div style="font-size:11.5px;color:var(--text-light)">Chargement... · Publiée le 12 mai 2024</div>
                     </div>
                 </div>
                 <button class="panel-close" id="panelClose"><i class="bx bx-x"></i></button>
             </div>
             <div class="panel-tabs">
                 <button class="panel-tab active" data-tab="infos">Informations</button>
-                <button class="panel-tab" data-tab="candidatures">Candidatures (128)</button>
+                <button class="panel-tab" data-tab="candidatures">Candidatures </button>
                 <button class="panel-tab" data-tab="performance">Performance</button>
                 <button class="panel-tab" data-tab="historique">Historique</button>
             </div>
@@ -1004,7 +998,7 @@
                 <div class="tab-content active" id="tab-infos">
                     <div class="panel-section">
                         <h4>Informations générales</h4>
-                        <div class="info-row"><span class="label">Entreprise</span><span class="value">ACME Corporation</span></div>
+                        <div class="info-row"><span class="label">Entreprise</span><span class="value">Chargement...</span></div>
                         <div class="info-row"><span class="label">Localisation</span><span class="value">Paris, France</span></div>
                         <div class="info-row"><span class="label">Contrat</span><span class="value">CDI</span></div>
                         <div class="info-row"><span class="label">Mode de travail</span><span class="value">Hybride</span></div>
@@ -1020,7 +1014,7 @@
                         <div class="perf-grid">
                             <div class="perf-card">
                                 <div class="plabel">Candidatures</div>
-                                <div class="pvalue">128</div>
+                                <div class="pvalue">Chargement...</div>
                                 <div class="pchange up">↑ 18%</div>
                             </div>
                             <div class="perf-card">
@@ -1049,7 +1043,7 @@
                 <div class="tab-content" id="tab-candidatures">
                     <div class="panel-section">
                         <h4>Candidats récents</h4>
-                        <div class="info-row"><span class="label">Youssef Haddad</span><span class="value">92% match</span></div>
+                        <div class="info-row"><span class="label">Chargement...</span><span class="value">92% match</span></div>
                         <div class="info-row"><span class="label">Amine El Kartite</span><span class="value">88% match</span></div>
                         <div class="info-row"><span class="label">Sofia Martin</span><span class="value">85% match</span></div>
                         <div class="info-row"><span class="label">Karim Alaoui</span><span class="value">79% match</span></div>
@@ -1080,186 +1074,8 @@
         </div>
     </div>
 </main>
-
-<script>
-    const offers = [
-        {
-            id: 1, name: 'Développeur Full Stack', ref: 'OFF-2024-1248', icon: '💻', iconBg: '#1a1a2e', iconColor: '#fff',
-            company: { name: 'ACME Corporation', logo: 'ACME', logoClass: 'acme' },
-            location: 'Paris', contract: 'CDI', contractClass: 'cdi',
-            status: 'Actif', statusClass: 'active', applications: 128,
-            activity: 'Il y a 2 h'
-        },
-        {
-            id: 2, name: 'UX Designer', ref: 'OFF-2024-1187', icon: '🎨', iconBg: '#f5f3ff', iconColor: '#7c3aed',
-            company: { name: 'DataCorp', logo: 'D', logoClass: 'data' },
-            location: 'Lyon', contract: 'Hybride', contractClass: 'hybrid',
-            status: 'Actif', statusClass: 'active', applications: 84,
-            activity: 'Il y a 4 h'
-        },
-        {
-            id: 3, name: 'Ingénieur DevOps', ref: 'OFF-2024-1123', icon: '📦', iconBg: '#fff7ed', iconColor: '#f59e0b',
-            company: { name: 'CloudScale', logo: '☁', logoClass: 'cloud' },
-            location: 'Remote', contract: 'CDI', contractClass: 'cdi',
-            status: 'En attente', statusClass: 'pending', applications: 63,
-            activity: 'Il y a 1 h'
-        },
-        {
-            id: 4, name: 'Product Manager', ref: 'OFF-2024-1098', icon: '📋', iconBg: '#eff6ff', iconColor: '#3b82f6',
-            company: { name: 'TalentBridge', logo: '👥', logoClass: 'talent' },
-            location: 'Casablanca', contract: 'CDI', contractClass: 'cdi',
-            status: 'Actif', statusClass: 'active', applications: 51,
-            activity: 'Il y a 6 h'
-        },
-        {
-            id: 5, name: 'Backend Engineer', ref: 'OFF-2024-0987', icon: '⚙️', iconBg: '#fef2f2', iconColor: '#ef4444',
-            company: { name: 'NovaTech', logo: 'N', logoClass: 'nova' },
-            location: 'Paris', contract: 'CDD', contractClass: 'cdd',
-            status: 'Expirée', statusClass: 'expired', applications: 27,
-            activity: 'Il y a 1 j'
-        },
-        {
-            id: 6, name: 'Data Analyst', ref: 'OFF-2024-0876', icon: '📊', iconBg: '#f0fdf4', iconColor: '#22c55e',
-            company: { name: 'GreenSoft', logo: '🌿', logoClass: 'green' },
-            location: 'Lyon', contract: 'Stage', contractClass: 'stage',
-            status: 'Suspendue', statusClass: 'suspended', applications: 18,
-            activity: 'Il y a 3 h'
-        }
-    ];
-
-    function renderTable(data) {
-        document.getElementById('tableBody').innerHTML = data.map((o, i) => `
-            <tr data-id="${o.id}" onclick="selectOffer(${o.id})">
-                <td><input type="radio" name="offer" class="radio-btn" ${i === 0 ? 'checked' : ''} onclick="event.stopPropagation()"></td>
-                <td>
-                    <div class="offer-cell">
-                        <div class="offer-icon" style="background:${o.iconBg};color:${o.iconColor}">${o.icon}</div>
-                        <div>
-                            <div class="oname">${o.name}</div>
-                            <div class="oref">Réf. ${o.ref}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="company-cell">
-                        <div class="company-mini-logo ${o.company.logoClass}">${o.company.logo}</div>
-                        <span class="cname">${o.company.name}</span>
-                    </div>
-                </td>
-                <td><span class="location-badge"><i class="bx bx-map-pin"></i> ${o.location}</span></td>
-                <td><span class="contract-badge ${o.contractClass}">${o.contract}</span></td>
-                <td><span class="status-badge ${o.statusClass}">${o.status}</span></td>
-                <td style="font-weight:600">${o.applications}</td>
-                <td style="color:var(--text-light)">${o.activity}</td>
-                <td><button class="table-action" onclick="event.stopPropagation()"><i class="bx bx-dots-vertical-rounded"></i></button></td>
-            </tr>
-        `).join('');
-    }
-
-    function selectOffer(id) {
-        const o = offers.find(x => x.id === id);
-        if (!o) return;
-
-        document.getElementById('detailPanel').classList.remove('hidden');
-        if (window.innerWidth <= 1024) document.getElementById('panelOverlay').classList.add('active');
-
-        document.querySelectorAll('#tableBody tr').forEach(tr => tr.classList.toggle('selected', parseInt(tr.dataset.id) === id));
-    }
-
-    document.getElementById('panelClose').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.getElementById('panelOverlay').addEventListener('click', () => {
-        document.getElementById('detailPanel').classList.add('hidden');
-        document.getElementById('panelOverlay').classList.remove('active');
-    });
-
-    document.querySelectorAll('.panel-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-        });
-    });
-
-    function applyFilters() {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        const contract = document.getElementById('contractFilter').value.toLowerCase();
-        const status = document.getElementById('statusFilter').value.toLowerCase();
-        let filtered = offers.filter(o => {
-            const matchSearch = !search || o.name.toLowerCase().includes(search) || o.company.name.toLowerCase().includes(search);
-            const matchContract = !contract || o.contract.toLowerCase().includes(contract);
-            const matchStatus = !status || o.status.toLowerCase().includes(status);
-            return matchSearch && matchContract && matchStatus;
-        });
-        renderTable(filtered);
-    }
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('contractFilter').addEventListener('change', applyFilters);
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
-
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const menuToggle = document.getElementById('menuToggle');
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('open');
-        sidebarOverlay.classList.toggle('active');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('active');
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-            if (window.innerWidth <= 1024) {
-                sidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('active');
-            }
-        });
-    });
-
-    // Donut Chart
-    const ctx = document.getElementById('donutChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'doughnut',
-         data :{
-            labels: ['Actives', 'En attente', 'Expirées', 'Suspendues'],
-            datasets: [{
-                 data: [60, 16, 14, 10],
-                backgroundColor: ['#22c55e', '#f59e0b', '#ef4444', '#94a3b8'],
-                borderWidth: 0,
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: '75%',
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e293b',
-                    titleFont: { size: 11, family: 'Inter' },
-                    bodyFont: { size: 11, family: 'Inter' },
-                    padding: 10,
-                    cornerRadius: 8,
-                    callbacks: {
-                        label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
-                    }
-                }
-            }
-        }
-    });
-
-    renderTable(offers);
-    setTimeout(() => selectOffer(1), 300);
-</script>
-    <script src="../../../assets/js/theway-dynamic.js"></script>
+<script src="/view/js/api.js"></script>
+<script src="/view/pannel/admin/js/admin-common.js"></script>
+<script src="/view/pannel/admin/js/offers.js"></script>
 </body>
 </html>
