@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: theway
+          MYSQL_USER: theway
+          MYSQL_PASSWORD: theway_dev_password
+          MYSQL_ROOT_PASSWORD: root_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ptheway_dev_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      NODE_ENV: test
+      PORT: 3001
+      APP_BASE_URL: http://127.0.0.1:3001
+      CLIENT_BASE_URL: http://127.0.0.1:3001
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: theway
+      DB_PASSWORD: theway_dev_password
+      DB_NAME: theway
+      COOKIE_SECRET: ci-cookie-secret-change-me-32-chars
+      CSRF_SECRET: ci-csrf-secret-change-me-32-chars
+      CORS_ORIGIN: http://127.0.0.1:3001
+      STORAGE_DRIVER: local
+      LOCAL_UPLOAD_DIR: storage/uploads
+      AI_PROVIDER: test
+      LOG_LEVEL: warn
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: API/package-lock.json
+      - run: cd API && npm ci
+      - run: cd API && npm run migrate
+      - run: cd API && npm run seed
+      - run: cd API && npm run lint
+      - run: cd API && npm run typecheck
+      - run: cd API && npm test
+      - run: cd API && npm run build
+      - run: cd API && npx playwright install --with-deps chromium
+      - name: Playwright smoke
+        run: |
+          cd API
+          npm start &
+          server_pid=$!
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3001/health/ready; then
+              break
+            fi
+            sleep 1
+          done
+          npm run test:e2e
+          kill "$server_pid"
+      - run: docker build -t theway-api .

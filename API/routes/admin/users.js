@@ -1,7 +1,7 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 const requireAdmin = require('../../middleware/requireAdmin');
 const { id, pagination, normalizeLike, withConnection, httpError, respondError } = require('./helpers');
+const { hashPassword } = require('../../lib/passwords');
 
 module.exports = function createAdminUsersRouter(deps) {
     const router = express.Router();
@@ -73,7 +73,7 @@ module.exports = function createAdminUsersRouter(deps) {
                 });
                 const userId = id();
                 const paramId = id();
-                const password = await bcrypt.hash(req.body.password, 10);
+                const password = await hashPassword(req.body.password);
                 await connection.beginTransaction();
                 try {
                     await connection.execute(
@@ -120,7 +120,7 @@ module.exports = function createAdminUsersRouter(deps) {
                 const params = updates.map(field => req.body[field] || null);
                 if (req.body.password) {
                     sqlParts.push('password = ?');
-                    params.push(await bcrypt.hash(req.body.password, 10));
+                    params.push(await hashPassword(req.body.password));
                 }
                 params.push(req.params.id);
                 const [result] = await connection.execute(

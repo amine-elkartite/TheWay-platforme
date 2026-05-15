@@ -26,18 +26,36 @@
     }
 
     function openLegalModal(context) {
-        ui.openModal({
-            title: context.label || "Information juridique",
-            message: "Contenu juridique de demonstration. Ajoutez ici vos conditions finales avant publication.",
-            confirmText: "Fermer"
-        });
+        api.get("api/settings/public/legal")
+            .then(function (result) {
+                const data = result.data || result;
+                ui.openModal({
+                    title: context.label || "Information juridique",
+                    message: data.content || "Les documents juridiques sont geres depuis les parametres administrateur.",
+                    confirmText: "Fermer"
+                });
+            })
+            .catch(function () {
+                ui.openModal({
+                    title: context.label || "Information juridique",
+                    message: "Les documents juridiques sont geres depuis les parametres administrateur.",
+                    confirmText: "Fermer"
+                });
+            });
     }
 
     function openPlansModal() {
         ui.openModal({
             title: "Plans THEWAY",
-            message: "Cette action ouvre l'espace des plans. Le module paiement n'est pas connecte a un backend dans cette version.",
-            confirmText: "Compris"
+            message: "Envoyez une demande d'activation. Un administrateur gerera le plan, l'abonnement et la facture.",
+            input: true,
+            placeholder: "Plan souhaite ou message",
+            confirmText: "Envoyer",
+            onConfirm: function (message) {
+                api.request("billing.upgradeRequest", { plan: "premium", message: message, page: location.pathname })
+                    .then(function () { core.showMessage("Demande d'activation envoyee."); })
+                    .catch(function (error) { core.showMessage("Demande impossible. " + (error.message || "")); });
+            }
         });
     }
 
@@ -45,7 +63,7 @@
         const title = context.label || "Ajouter";
         ui.openModal({
             title: title,
-            message: "Renseignez un libelle pour creer un brouillon local.",
+            message: "Renseignez un libelle pour creer l'element dans votre espace.",
             input: true,
             placeholder: "Libelle",
             confirmText: "Creer",
@@ -53,8 +71,7 @@
                 const name = value || "Nouvel element";
                 api.request("draft.create", { name: name, page: location.pathname })
                     .then(function () {
-                        core.writeJSON(core.APP_PREFIX + ".draft." + Date.now(), { name: name, page: location.pathname });
-                        core.showMessage(name + " cree en brouillon.");
+                        core.showMessage(name + " cree.");
                     })
                     .catch(function (error) { core.showMessage("Creation impossible. " + (error.message || "")); });
             }
@@ -64,7 +81,7 @@
     function editOrConfigure(context) {
         ui.openModal({
             title: context.label || "Modifier",
-            message: "Cette action ouvre une edition locale de demonstration.",
+            message: "Saisissez la nouvelle valeur a enregistrer.",
             input: true,
             placeholder: "Nouvelle valeur",
             confirmText: "Enregistrer",
@@ -113,11 +130,11 @@
     function runProcessAction(context) {
         const messages = {
             loading: "Preparation...",
-            success: "Demande lancee. Le traitement sera finalise des que l'API sera connectee."
+            success: "Demande traitee."
         };
         if (context.element.matches(".refresh-btn")) {
             messages.loading = "Actualisation...";
-            messages.success = "Donnees locales actualisees.";
+            messages.success = "Donnees actualisees.";
         } else if (context.element.matches(".continue-btn")) {
             messages.loading = "Ouverture...";
             messages.success = "Progression mise a jour.";
@@ -169,9 +186,12 @@
             const provider = core.normalize(context.element.id || context.label || "social").replace("btn", "") || "social";
             ui.openModal({
                 title: "Connexion " + provider,
-                message: "La connexion sociale demande une verification OAuth cote serveur avant d'etre activee.",
-                confirmText: "Compris"
-            });
+            message: "Vous allez etre redirige vers le fournisseur OAuth configure.",
+            confirmText: "Continuer",
+            onConfirm: function () {
+                window.location.assign(api.baseURL() + "/api/auth/oauth/" + encodeURIComponent(provider) + "/start");
+            }
+        });
         },
         legal: openLegalModal,
         pagination: handlePagination,

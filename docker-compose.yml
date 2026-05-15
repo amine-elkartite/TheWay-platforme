@@ -1,0 +1,47 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: theway
+      MYSQL_USER: theway
+      MYSQL_PASSWORD: theway_dev_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ptheway_dev_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      APP_BASE_URL: http://localhost:3001
+      CLIENT_BASE_URL: http://localhost:3001
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: theway
+      DB_PASSWORD: theway_dev_password
+      DB_NAME: theway
+      COOKIE_SECRET: local-cookie-secret-change-me-32-chars
+      CSRF_SECRET: local-csrf-secret-change-me-32-chars
+      CORS_ORIGIN: http://localhost:3001,http://127.0.0.1:3001
+      STORAGE_DRIVER: local
+      LOCAL_UPLOAD_DIR: storage/uploads
+      LOG_LEVEL: info
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./storage:/app/storage
+    command: sh -c "npm run migrate && npm run seed && npm start"
+
+volumes:
+  mysql-data:

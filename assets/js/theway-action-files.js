@@ -5,27 +5,19 @@
     const core = app.core;
     if (!core) return;
 
-    function createDownload(name, content, type) {
-        const blob = new Blob([content], { type: type || "text/plain;charset=utf-8" });
-        const objectURL = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = objectURL;
-        link.download = name;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(objectURL);
-    }
-
     function downloadFor(button, options) {
-        const downloadKind = button.dataset.twDownload || button.dataset.twTarget || "export";
-        const fileName = downloadKind === "invoice"
-            ? "theway-document.pdf"
-            : downloadKind === "cv"
-                ? "theway-cv.txt"
-                : "theway-export.txt";
-        createDownload(fileName, "Document genere depuis THEWAY\\nDate: " + new Date().toISOString() + "\\n", "text/plain;charset=utf-8");
-        if (!options || !options.silent) core.showMessage("Telechargement prepare.");
+        if (app.api && typeof app.api.download === "function") {
+            app.api.download("file.export", {
+                kind: button.dataset.twDownload || button.dataset.twTarget || "export",
+                page: location.pathname
+            }).then(function (result) {
+                downloadBlob(result.blob, result.filename);
+            }).catch(function (error) {
+                core.showMessage("Telechargement impossible. " + (error.message || ""));
+            });
+            return;
+        }
+        if (!options || !options.silent) core.showMessage("Telechargement indisponible hors connexion API.");
     }
 
     function downloadBlob(blob, fileName) {
@@ -52,25 +44,14 @@
                 page: location.pathname,
                 kind: button.dataset.twUpload || button.dataset.twTarget || "file"
             };
-            const saveLocalMeta = function (serverFile) {
-                core.writeJSON(core.APP_PREFIX + ".lastUpload", {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    at: new Date().toISOString(),
-                    serverFile: serverFile || null
-                });
-            };
-
             if (!app.api || typeof app.api.upload !== "function") {
-                saveLocalMeta(null);
-                core.showMessage(file.name + " selectionne.");
+                core.showMessage("Upload indisponible hors connexion API.");
                 return;
             }
 
             const task = function () {
                 return app.api.upload("file.upload", file, payload).then(function (result) {
-                    saveLocalMeta(result.file || null);
+                    document.dispatchEvent(new CustomEvent("theway:file-uploaded", { detail: result.data || result }));
                 });
             };
 

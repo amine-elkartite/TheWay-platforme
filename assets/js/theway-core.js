@@ -3,7 +3,7 @@
 
     const app = window.TheWay || (window.TheWay = {});
     const APP_PREFIX = "theway";
-    const DEFAULT_API_BASE = "http://localhost:3001";
+    const DEFAULT_API_BASE = "";
     const storage = window.sessionStorage;
 
     const context = {
@@ -15,20 +15,8 @@
         isPublic: location.pathname.includes("/public/")
     };
 
-    const defaultUser = {
-        fullName: "Amine ELKARTITE",
-        email: "aminezth022@gmail.com",
-        phone: "+212 712 345 678",
-        location: "Taza, Maroc",
-        jobTitle: "Developpeur Full Stack",
-        role: "Candidat"
-    };
-
-    const adminUser = {
-        fullName: "Admin TheWay",
-        email: "admin@theway.local",
-        role: "Administrateur"
-    };
+    const defaultUser = null;
+    const adminUser = null;
 
     function ready(callback) {
         if (document.readyState === "loading") {
@@ -74,7 +62,7 @@
     }
 
     function apiBase() {
-        const configured = window.THEWAY_API_BASE || storageValue("theway_api_base") || DEFAULT_API_BASE;
+        const configured = window.THEWAY_API_BASE || storageValue("theway_api_base") || (window.location.protocol === "file:" ? "http://localhost:3001" : DEFAULT_API_BASE);
         return String(configured).replace(/\/$/, "");
     }
 
@@ -131,7 +119,7 @@
     function getCurrentUser() {
         const current = readJSON(APP_PREFIX + ".currentUser", null);
         if (current) return current;
-        return context.isAdminArea ? adminUser : defaultUser;
+        return null;
     }
 
     function rememberSessionUser(user) {

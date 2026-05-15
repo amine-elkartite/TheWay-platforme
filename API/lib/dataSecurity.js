@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+const { hashPassword } = require('./passwords');
 
 function encryptionKey() {
     if (!process.env.JWT_SECRET) {
@@ -40,10 +40,6 @@ function decryptText(raw) {
 
 function randomId() {
     return Date.now() + '-' + crypto.randomBytes(4).toString('hex');
-}
-
-function hashPassword(password) {
-    return bcrypt.hash(password, 10);
 }
 
 module.exports = {

@@ -4,14 +4,7 @@
     const DEFAULT_API_BASE = "http://localhost:3001";
 
     function getToken() {
-        const keys = ["theway_token", "token", "authToken"];
-        for (const key of keys) {
-            try {
-                const value = localStorage.getItem(key) || sessionStorage.getItem(key);
-                if (value) return value;
-            } catch (error) {}
-        }
-        return "";
+        return "session";
     }
 
     function clearToken() {
@@ -66,7 +59,24 @@
         }
     }
 
-    async function parseResponse(response) {
+    let csrfToken = "";
+    let sessionLoaded = false;
+
+    async function ensureSession() {
+        if (sessionLoaded) return;
+        sessionLoaded = true;
+        try {
+            const response = await fetch(endpointUrl("/api/auth/session"), { credentials: "include" });
+            const payload = await parseResponse(response, true);
+            const data = payload.data || payload;
+            csrfToken = data.csrfToken || "";
+        } catch (error) {
+            sessionLoaded = false;
+            throw error;
+        }
+    }
+
+    async function parseResponse(response, skipRedirect) {
         const text = await response.text();
         let payload = {};
         if (text) {
@@ -77,7 +87,7 @@
             }
         }
 
-        if (response.status === 401) {
+        if (response.status === 401 && !skipRedirect) {
             redirectLogin();
             throw new Error((payload && (payload.error || payload.message)) || "Session expiree.");
         }
@@ -97,15 +107,16 @@
     function headers(json) {
         const result = {};
         if (json) result["Content-Type"] = "application/json";
-        const token = getToken();
-        if (token) result.Authorization = "Bearer " + token;
+        if (csrfToken) result["X-CSRF-Token"] = csrfToken;
         return result;
     }
 
     async function request(method, endpoint, data, isUpload) {
+        if (!["GET", "HEAD", "OPTIONS"].includes(method)) await ensureSession();
         const options = {
             method,
-            headers: headers(!isUpload && data !== undefined)
+            headers: headers(!isUpload && data !== undefined),
+            credentials: "include"
         };
         if (data !== undefined) {
             options.body = isUpload ? data : JSON.stringify(data || {});

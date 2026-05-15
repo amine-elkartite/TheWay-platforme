@@ -17,9 +17,11 @@
     const state = {
         summary: null,
         opportunities: [],
+        matches: [],
         skills: [],
         users: [],
         profile: null,
+        session: null,
         loading: false
     };
 
@@ -142,11 +144,11 @@
             map.set(core.normalize(name), {
                 id: map.size + 1,
                 name: name,
-                email: "contact@" + core.normalize(name).replace(/[^a-z0-9]+/g, "").slice(0, 22) + ".local",
-                sector: categoryFromText(opportunity.title + " " + opportunity.description),
-                location: opportunity.location || "Maroc",
+                email: opportunity.company_email || "",
+                sector: opportunity.sector || "",
+                location: opportunity.location || "",
                 activeOffers: 0,
-                source: opportunity.source || "Database"
+                source: opportunity.source || ""
             });
         });
         opportunities.forEach(function (opportunity) {
@@ -156,15 +158,6 @@
         return Array.from(map.values());
     }
 
-    function categoryFromText(text) {
-        const value = core.normalize(text);
-        if (/(react|node|java|python|develop|devops|cloud|data|it|informatique)/.test(value)) return "Tech";
-        if (/(rh|recrut|formation|paie)/.test(value)) return "RH";
-        if (/(finance|audit|banque|compt)/.test(value)) return "Finance";
-        if (/(marketing|commercial|vente|crm)/.test(value)) return "Business";
-        return "General";
-    }
-
     function statusClass(value) {
         const key = core.normalize(value);
         if (key.includes("attente") || key.includes("pending")) return "pending";
@@ -172,14 +165,25 @@
         return "active";
     }
 
-    function priorityFor(index) {
-        if (index < 8) return ["Tres eleve", "priority-high"];
-        if (index < 18) return ["Eleve", "priority-high"];
+    function matchFor(opportunity) {
+        const id = String(opportunity && (opportunity.id || opportunity.opportunity_id || ""));
+        return state.matches.find(function (match) {
+            return String(match.opportunity_id || match.opportunityId || "") === id;
+        }) || null;
+    }
+
+    function priorityForScore(score) {
+        if (score === null || score === undefined) return ["Analyse requise", "priority-medium"];
+        if (score >= 85) return ["Tres eleve", "priority-high"];
+        if (score >= 70) return ["Eleve", "priority-high"];
         return ["Moyen", "priority-medium"];
     }
 
-    function scoreFor(index) {
-        return Math.max(64, 94 - (index % 12) * 3);
+    function scoreFor(opportunity) {
+        const match = matchFor(opportunity);
+        if (!match) return null;
+        const value = Number(match.score);
+        return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : null;
     }
 
     function cardProgressOffset(score) {
@@ -187,8 +191,9 @@
     }
 
     function createOpportunityCard(opportunity, index) {
-        const score = scoreFor(index);
-        const priority = priorityFor(index);
+        const score = scoreFor(opportunity);
+        const hasScore = score !== null && score !== undefined;
+        const priority = priorityForScore(score);
         const skills = normalizeList(opportunity.skills).slice(0, 4);
         const card = document.createElement("div");
         card.className = "opportunity-card animate-in";
@@ -198,10 +203,10 @@
             '<div class="opp-logo" style="background:#1a1a2e;">' + escapeHTML(firstLetter(opportunity.company || opportunity.title)) + '</div>',
             '<div class="opp-details">',
             '<div class="opp-header"><h4>' + escapeHTML(opportunity.title) + '</h4><span class="company-name">' + escapeHTML(opportunity.company || opportunity.source || "Entreprise") + '</span></div>',
-            '<div class="opp-meta"><span>' + escapeHTML(opportunity.location || "Maroc") + '</span><span>•</span><span>' + escapeHTML(opportunity.source || "Database") + '</span><span>•</span><span>CDI</span></div>',
+            '<div class="opp-meta"><span>' + escapeHTML(opportunity.location || "Non renseigne") + '</span><span>•</span><span>' + escapeHTML(opportunity.source || "Source importee") + '</span><span>•</span><span>' + escapeHTML(opportunity.contract_type || "Non renseigne") + '</span></div>',
             '<div class="opp-tags">' + skills.map(function (skill) { return '<span class="opp-tag">' + escapeHTML(skill) + '</span>'; }).join("") + '</div>',
             '</div>',
-            '<div class="opp-match"><div class="match-circle"><svg viewBox="0 0 48 48"><circle class="circle-bg" cx="24" cy="24" r="20"/><circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="' + cardProgressOffset(score) + '"/></svg><span class="match-percent">' + score + '%</span></div><span class="match-label">Match</span></div>',
+            '<div class="opp-match"><div class="match-circle"><svg viewBox="0 0 48 48"><circle class="circle-bg" cx="24" cy="24" r="20"/><circle class="circle-progress" cx="24" cy="24" r="20" stroke="#22c55e" stroke-dasharray="125.66" stroke-dashoffset="' + cardProgressOffset(hasScore ? score : 0) + '"/></svg><span class="match-percent">' + (hasScore ? score + "%" : "IA") + '</span></div><span class="match-label">Match</span></div>',
             '<span class="opp-priority ' + priority[1] + '">' + priority[0] + '</span>',
             '<button class="opp-bookmark" type="button" data-tw-action="bookmark" aria-label="Enregistrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>'
         ].join("");
@@ -292,17 +297,28 @@
     }
 
     function hydrateDashboardMatches() {
-        if (!pathIncludes("/dashboard.html") || !state.opportunities.length) return;
+        if (!pathIncludes("/dashboard.html")) return;
         const cards = Array.from(document.querySelectorAll(".content-card"));
         const card = cards.find(function (item) {
             return core.normalize(item.textContent).includes("opportunites qui matchent");
         });
         if (!card) return;
-        card.querySelectorAll(".match-item").forEach(function (item) { item.remove(); });
-        state.opportunities.slice(0, 3).forEach(function (opportunity, index) {
+        card.querySelectorAll(".match-item, .tw-empty-matches").forEach(function (item) { item.remove(); });
+        if (!state.matches.length) {
+            const empty = document.createElement("div");
+            empty.className = "tw-empty-matches";
+            empty.style.cssText = "padding:14px;color:#64748b;font-size:13px";
+            empty.textContent = "Lancez une analyse IA pour afficher vos opportunites matchées.";
+            card.appendChild(empty);
+            return;
+        }
+        state.matches.slice(0, 3).forEach(function (match) {
+            const opportunity = state.opportunities.find(function (item) {
+                return String(item.id) === String(match.opportunity_id || match.opportunityId);
+            }) || match;
             const item = document.createElement("div");
             item.className = "match-item";
-            item.innerHTML = '<div class="match-logo" style="background:#1a1a2e;">' + escapeHTML(firstLetter(opportunity.company || opportunity.title)) + '</div><div class="match-info"><div class="match-title">' + escapeHTML(opportunity.title) + '</div><div class="match-company">' + escapeHTML((opportunity.company || "Entreprise") + " · " + (opportunity.location || "Maroc")) + '</div></div><span class="match-score">' + scoreFor(index) + '% Match</span>';
+            item.innerHTML = '<div class="match-logo" style="background:#1a1a2e;">' + escapeHTML(firstLetter(opportunity.company || opportunity.title)) + '</div><div class="match-info"><div class="match-title">' + escapeHTML(opportunity.title) + '</div><div class="match-company">' + escapeHTML((opportunity.company || "Entreprise") + " · " + (opportunity.location || "Non renseigne")) + '</div></div><span class="match-score">' + escapeHTML(match.score) + '% Match</span>';
             item.addEventListener("click", function () {
                 core.writeJSON(core.APP_PREFIX + ".selectedOpportunity", opportunity);
                 core.goTo(core.userPanelPath("opportunity-details.html"));
@@ -318,11 +334,11 @@
             '<td><input type="radio" name="offer" class="radio-btn" ' + (index === 0 ? "checked" : "") + '></td>',
             '<td><div class="offer-cell"><div class="offer-icon" style="background:#1a1a2e;color:#fff">' + escapeHTML(firstLetter(opportunity.title)) + '</div><div><div class="oname">' + escapeHTML(opportunity.title) + '</div><div class="oref">Ref. ' + escapeHTML(String(opportunity.uid || opportunity.id || index).slice(0, 10)) + '</div></div></div></td>',
             '<td><div class="company-cell"><div class="company-mini-logo acme">' + escapeHTML(firstLetter(opportunity.company)) + '</div><span class="cname">' + escapeHTML(opportunity.company || "Entreprise") + '</span></div></td>',
-            '<td><span class="location-badge"><i class="bx bx-map-pin"></i> ' + escapeHTML(opportunity.location || "Maroc") + '</span></td>',
-            '<td><span class="contract-badge cdi">CDI</span></td>',
-            '<td><span class="status-badge active">Actif</span></td>',
-            '<td style="font-weight:600">' + (18 + index * 3) + '</td>',
-            '<td style="color:var(--text-light)">Database</td>',
+            '<td><span class="location-badge"><i class="bx bx-map-pin"></i> ' + escapeHTML(opportunity.location || "Non renseigne") + '</span></td>',
+            '<td><span class="contract-badge cdi">' + escapeHTML(opportunity.contract_type || "Non renseigne") + '</span></td>',
+            '<td><span class="status-badge active">Importee</span></td>',
+            '<td style="font-weight:600">' + formatNumber(opportunity.applications_count || 0) + '</td>',
+            '<td style="color:var(--text-light)">' + escapeHTML(opportunity.source || "Import") + '</td>',
             '<td><button class="table-action"><i class="bx bx-dots-vertical-rounded"></i></button></td>'
         ].join("");
         row.addEventListener("click", function () { selectLiveOffer(opportunity, row); });
@@ -343,10 +359,10 @@
         if (desc) desc.textContent = cleanText(opportunity.description, "Aucune description disponible.");
         setInfoRows({
             Entreprise: opportunity.company || "N/A",
-            Localisation: opportunity.location || "Maroc",
-            Contrat: "CDI",
-            "Mode de travail": opportunity.source || "Database",
-            "Date de publication": "Database"
+            Localisation: opportunity.location || "Non renseigne",
+            Contrat: opportunity.contract_type || "Non renseigne",
+            "Mode de travail": opportunity.source || "Import",
+            "Date de publication": formatDate(opportunity.created_at)
         });
     }
 
@@ -380,7 +396,7 @@
         const tbody = document.getElementById("tableBody");
         if (!tbody) return;
         tbody.innerHTML = companies.map(function (company, index) {
-            return '<tr data-id="' + company.id + '"><td><input type="radio" name="company" class="radio-btn" ' + (index === 0 ? "checked" : "") + '></td><td><div class="company-cell"><div class="company-logo acme">' + escapeHTML(firstLetter(company.name)) + '</div><div><div class="cname">' + escapeHTML(company.name) + '</div><div class="cemail">' + escapeHTML(company.email) + '</div></div></div></td><td><span class="sector-badge"><i class="bx bx-laptop"></i> ' + escapeHTML(company.sector) + '</span></td><td style="color:var(--text-secondary)">Database</td><td><span class="plan-badge pro">Pro</span></td><td><span class="status-badge active">Actif</span></td><td><span class="location-badge"><i class="bx bx-map-pin"></i> ' + escapeHTML(company.location) + '</span></td><td style="color:var(--text-light)">' + company.activeOffers + ' offres</td><td><button class="table-action"><i class="bx bx-dots-vertical-rounded"></i></button></td></tr>';
+            return '<tr data-id="' + company.id + '"><td><input type="radio" name="company" class="radio-btn" ' + (index === 0 ? "checked" : "") + '></td><td><div class="company-cell"><div class="company-logo acme">' + escapeHTML(firstLetter(company.name)) + '</div><div><div class="cname">' + escapeHTML(company.name) + '</div><div class="cemail">' + escapeHTML(company.email || "Non renseigne") + '</div></div></div></td><td><span class="sector-badge"><i class="bx bx-laptop"></i> ' + escapeHTML(company.sector || "Non renseigne") + '</span></td><td style="color:var(--text-secondary)">' + escapeHTML(company.source || "Import") + '</td><td><span class="plan-badge pro">Non renseigne</span></td><td><span class="status-badge active">Actif</span></td><td><span class="location-badge"><i class="bx bx-map-pin"></i> ' + escapeHTML(company.location || "Non renseigne") + '</span></td><td style="color:var(--text-light)">' + company.activeOffers + ' offres</td><td><button class="table-action"><i class="bx bx-dots-vertical-rounded"></i></button></td></tr>';
         }).join("");
     }
 
@@ -452,11 +468,11 @@
         if (!tbody) return;
         tbody.textContent = "";
         state.skills.slice(0, 80).forEach(function (skill, index) {
-            const trend = Number(skill.trend || 10);
             const demand = Number(skill.demand || 0);
+            const priority = demand >= 80 ? "Elevee" : demand >= 25 ? "Moyenne" : "Faible";
             const row = document.createElement("tr");
             row.dataset.id = skill.id || skill.id_skill || index;
-            row.innerHTML = '<td><input type="radio" name="skill" class="radio-btn" ' + (index === 0 ? "checked" : "") + '></td><td><div class="skill-cell"><div class="skill-icon" style="background:#eef2ff;color:#3730a3">' + escapeHTML(skillLabel(skill).slice(0, 2).toUpperCase()) + '</div><span class="sname">' + escapeHTML(skillLabel(skill)) + '</span></div></td><td><span class="cat-badge dev">' + escapeHTML(skillCategory(skill)) + '</span></td><td><div class="trend-cell"><span class="trend-value">+ ' + trend + '%</span></div></td><td style="font-weight:600">' + formatNumber(skill.users || demand) + '</td><td style="color:var(--text-secondary)">' + formatNumber(demand) + '</td><td><span class="priority-badge high">' + escapeHTML(skill.priority || "Moyenne") + '</span></td><td><span class="status-badge active">' + escapeHTML(skill.status || "Active") + '</span></td><td><button class="table-action"><i class="bx bx-dots-vertical-rounded"></i></button></td>';
+            row.innerHTML = '<td><input type="radio" name="skill" class="radio-btn" ' + (index === 0 ? "checked" : "") + '></td><td><div class="skill-cell"><div class="skill-icon" style="background:#eef2ff;color:#3730a3">' + escapeHTML(skillLabel(skill).slice(0, 2).toUpperCase()) + '</div><span class="sname">' + escapeHTML(skillLabel(skill)) + '</span></div></td><td><span class="cat-badge dev">' + escapeHTML(skillCategory(skill)) + '</span></td><td><div class="trend-cell"><span class="trend-value">N/A</span></div></td><td style="font-weight:600">' + formatNumber(skill.users || 0) + '</td><td style="color:var(--text-secondary)">' + formatNumber(demand) + '</td><td><span class="priority-badge high">' + escapeHTML(priority) + '</span></td><td><span class="status-badge active">Active</span></td><td><button class="table-action"><i class="bx bx-dots-vertical-rounded"></i></button></td>';
             row.addEventListener("click", function () { selectLiveSkill(skill, row); });
             row.querySelectorAll("button, input").forEach(function (control) {
                 control.addEventListener("click", function (event) { event.stopPropagation(); });
@@ -522,19 +538,24 @@
     function loadPanelData() {
         if (state.loading) return;
         state.loading = true;
-        const hasToken = Boolean(core.storageValue("theway_token"));
-        Promise.all([
+        api.session().catch(function () { return null; }).then(function (session) {
+            state.session = session;
+            const authenticated = Boolean(session && session.user);
+            return Promise.all([
             optionalGet("api/panel/summary"),
             optionalGet("api/opportunities"),
             optionalGet("api/panel/skills"),
-            hasToken ? optionalGet("api/panel/users") : Promise.resolve(null),
-            hasToken ? optionalGet("api/profile") : Promise.resolve(null)
-        ]).then(function (results) {
+            authenticated ? optionalGet("api/panel/users") : Promise.resolve(null),
+            authenticated ? optionalGet("api/profile") : Promise.resolve(null),
+            authenticated ? optionalGet("api/matching") : Promise.resolve(null)
+            ]);
+        }).then(function (results) {
             state.summary = results[0];
             state.opportunities = results[1] && Array.isArray(results[1].opportunities) ? results[1].opportunities : [];
             state.skills = results[2] && Array.isArray(results[2].skills) ? results[2].skills : [];
             state.users = results[3] && Array.isArray(results[3].users) ? results[3].users : [];
             state.profile = results[4];
+            state.matches = results[5] && Array.isArray(results[5].matches) ? results[5].matches : [];
             hydrateAll();
         }).finally(function () {
             state.loading = false;

@@ -1,0 +1,11 @@
+.git
+node_modules
+API/node_modules
+.venv
+coverage
+test-results
+playwright-report
+storage
+assets/uploads/files/*.enc
+.env
+API/.env

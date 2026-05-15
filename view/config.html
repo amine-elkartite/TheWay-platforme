@@ -1,9 +1,6 @@
 <!-- TheWay API Configuration -->
 <script>
-    // Set API Base URL for the frontend
-    window.THEWAY_API_BASE = 'http://localhost:3001';
-    
-    // Store configuration in session storage
+    window.THEWAY_API_BASE = window.location.protocol === 'file:' ? 'http://localhost:3001' : window.location.origin;
     if (window.sessionStorage) {
         window.sessionStorage.setItem('theway_api_base', window.THEWAY_API_BASE);
     }

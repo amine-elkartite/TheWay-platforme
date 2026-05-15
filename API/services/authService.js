@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { deliverRecoveryToken } = require('../lib/recoveryDelivery');
+const { hashPassword, verifyPassword } = require('../lib/passwords');
 
 async function registerUser(deps, data) {
     const { nom, prenom, email, password, telephone, localisation } = data;
@@ -9,7 +9,7 @@ async function registerUser(deps, data) {
     }
     try {
         await assertEmailAvailable(deps.getConnection, email);
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await hashPassword(password);
         return await createDatabaseUser(deps, {
             nom,
             prenom,
@@ -20,7 +20,7 @@ async function registerUser(deps, data) {
         });
     } catch (error) {
         if (deps.fallbackStore.isDatabaseUnavailable(error)) {
-            const passwordHash = await bcrypt.hash(password, 10);
+            const passwordHash = await hashPassword(password);
             const fallbackUser = await deps.fallbackStore.createUser({ nom, prenom, email, passwordHash, telephone, localisation });
             return {
                 ok: true,
@@ -49,7 +49,7 @@ async function loginUser(deps, data) {
             if (users.length === 0) throw httpError(401, 'Identifiants invalides');
 
             const user = users[0];
-            const validPassword = await bcrypt.compare(password, user.password);
+            const validPassword = await verifyPassword(user.password, password);
             if (!validPassword) throw httpError(401, 'Identifiants invalides');
 
             return {
@@ -70,7 +70,7 @@ async function loginUser(deps, data) {
             const fallbackUser = await deps.fallbackStore.findUserByEmail(email);
             if (!fallbackUser) throw httpError(401, 'Identifiants invalides');
 
-            const validPassword = await bcrypt.compare(password, fallbackUser.password);
+            const validPassword = await verifyPassword(fallbackUser.password, password);
             if (!validPassword) throw httpError(401, 'Identifiants invalides');
 
             return {

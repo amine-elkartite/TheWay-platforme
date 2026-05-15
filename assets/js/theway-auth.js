@@ -19,6 +19,7 @@
         return fetch(apiBase() + path, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify(payload || {})
         }).then(function (response) {
             return response.json().catch(function () {
@@ -67,10 +68,8 @@
     }
 
     function persistAuth(data, remember) {
-        if (!data || !data.token) throw new Error("Token absent dans la reponse API.");
-        writeStorage("theway_token", data.token, remember);
-        writeStorage("theway_token_time", String(Date.now()), remember);
-        const user = normalizeUser(data.user || {});
+        const responseData = data.data || data || {};
+        const user = normalizeUser(responseData.user || data.user || {});
         writeStorage("theway_user", JSON.stringify(user), remember);
         core.rememberSessionUser(user);
         return user;
@@ -82,7 +81,7 @@
     }
 
     function getToken() {
-        return storageValue("theway_token");
+        return storageValue("theway_user") ? "session" : "";
     }
 
     function clearToken() {
@@ -91,9 +90,13 @@
     }
 
     function logout() {
-        clearToken();
-        removeStorage("theway_user");
-        core.writeJSON(core.CURRENT_USER_KEY, null);
+        return request("/api/auth/logout", {}).catch(function () {
+            return null;
+        }).finally(function () {
+            clearToken();
+            removeStorage("theway_user");
+            core.writeJSON(core.CURRENT_USER_KEY, null);
+        });
     }
 
     function currentUser() {
@@ -161,7 +164,7 @@
     }
 
     function login(email, password, remember) {
-        return request("/auth/login", {
+        return request("/api/auth/login", {
             email: email,
             password: password
         }).then(function (data) {
@@ -170,7 +173,7 @@
     }
 
     function register(nom, prenom, email, password, telephone, localisation, remember) {
-        return request("/auth/register", {
+        return request("/api/auth/register", {
             nom: nom,
             prenom: prenom,
             email: email,
@@ -183,16 +186,12 @@
     }
 
     function socialLogin(provider, idToken, remember) {
-        return request("/auth-social", {
-            provider: provider,
-            idToken: idToken
-        }).then(function (data) {
-            return persistAuth(data, remember);
-        });
+        window.location.assign(apiBase() + "/api/auth/oauth/" + encodeURIComponent(provider) + "/start");
+        return Promise.resolve();
     }
 
     function recoverPassword(email) {
-        return request("/auth-password-recovery", { email: email });
+        return request("/api/auth/password-reset/request", { email: email });
     }
 
     function submitLogin(event, form) {
@@ -297,17 +296,7 @@
         event.stopImmediatePropagation();
 
         const provider = providerFromButton(button);
-        const openModal = app.actionUI && app.actionUI.openModal;
-        if (!openModal) {
-            core.showMessage("Module de connexion indisponible.");
-            return;
-        }
-
-        openModal({
-            title: "Connexion " + provider,
-            message: "La connexion sociale demande une verification OAuth cote serveur avant d'etre activee.",
-            confirmText: "Compris"
-        });
+        socialLogin(provider, null, true);
     }
 
     function openRecovery(event) {

@@ -6,17 +6,18 @@
     if (!core) return;
 
     const actionEndpoints = {
-        "auth.passwordRecovery": "auth-password-recovery",
+        "auth.passwordRecovery": "api/auth/password-reset/request",
         "auth.social": "auth-social",
         "draft.create": "draft-create",
         "entity.update": "entity-update",
         "entity.delete": "entity-delete",
-        "file.upload": "file-upload",
+        "file.upload": "api/cv",
         "file.export": "file-export",
         "integration.connect": "integration-connect",
         "integration.disconnect": "integration-disconnect",
         "integration.update": "integration-update",
         "opportunity.bookmark": "opportunity-bookmark",
+        "billing.upgradeRequest": "api/billing/upgrade-request",
         "process.run": "process-run"
     };
 
@@ -26,10 +27,6 @@
 
     function resolveBaseURL() {
         return core.apiBase();
-    }
-
-    function authToken() {
-        return core.storageValue("theway_token");
     }
 
     function clearAuthToken() {
@@ -42,11 +39,42 @@
         } catch (error) {}
     }
 
-    function authHeaders(json) {
+    let sessionPromise = null;
+    let csrfToken = "";
+
+    function session() {
+        if (!sessionPromise) {
+            sessionPromise = fetch(resolveBaseURL() + "/api/auth/session", {
+                credentials: "include"
+            }).then(parseJSON).then(function (payload) {
+                const data = payload.data || payload;
+                csrfToken = data.csrfToken || payload.csrfToken || "";
+                if (data.user) core.rememberSessionUser(normalizeUser(data.user));
+                return data;
+            }).catch(function (error) {
+                sessionPromise = null;
+                throw error;
+            });
+        }
+        return sessionPromise;
+    }
+
+    function normalizeUser(user) {
+        const safeUser = user || {};
+        return {
+            id: safeUser.id || safeUser.id_user || null,
+            fullName: safeUser.fullName || [safeUser.prenom, safeUser.nom].filter(Boolean).join(" ") || safeUser.email || "",
+            email: safeUser.email || "",
+            phone: safeUser.telephone || "",
+            location: safeUser.localisation || "",
+            role: safeUser.role || "user"
+        };
+    }
+
+    function authHeaders(json, csrf) {
         const headers = {};
         if (json) headers["Content-Type"] = "application/json";
-        const token = authToken();
-        if (token) headers.Authorization = "Bearer " + token;
+        if (csrfToken && csrf) headers["X-CSRF-Token"] = csrfToken;
         return headers;
     }
 
@@ -96,11 +124,14 @@
             return Promise.reject(new Error("Action API invalide."));
         }
 
-        return fetch(resolveBaseURL() + "/" + endpoint, {
+        return session().catch(function () { return null; }).then(function () {
+            return fetch(resolveBaseURL() + "/" + endpoint, {
             method: "POST",
-            headers: authHeaders(true),
+            headers: authHeaders(true, true),
+            credentials: "include",
             body: JSON.stringify(payload || {})
-        }).then(parseJSON);
+            }).then(parseJSON);
+        });
     }
 
     function get(path) {
@@ -110,7 +141,8 @@
         }
         return fetch(resolveBaseURL() + "/" + cleanPath, {
             method: "GET",
-            headers: authHeaders(false)
+            headers: authHeaders(false, false),
+            credentials: "include"
         }).then(parseJSON);
     }
 
@@ -126,11 +158,14 @@
             body.append(key, payload[key]);
         });
 
-        return fetch(resolveBaseURL() + "/" + endpoint, {
+        return session().catch(function () { return null; }).then(function () {
+            return fetch(resolveBaseURL() + "/" + endpoint, {
             method: "POST",
-            headers: authHeaders(false),
+            headers: authHeaders(false, true),
+            credentials: "include",
             body: body
-        }).then(parseJSON);
+            }).then(parseJSON);
+        });
     }
 
     function download(action, payload) {
@@ -139,15 +174,19 @@
             return Promise.reject(new Error("Export API invalide."));
         }
 
-        return fetch(resolveBaseURL() + "/" + endpoint, {
+        return session().catch(function () { return null; }).then(function () {
+            return fetch(resolveBaseURL() + "/" + endpoint, {
             method: "POST",
-            headers: authHeaders(true),
+            headers: authHeaders(true, true),
+            credentials: "include",
             body: JSON.stringify(payload || {})
-        }).then(parseBlob);
+            }).then(parseBlob);
+        });
     }
 
     app.api = {
         baseURL: resolveBaseURL,
+        session: session,
         request: request,
         get: get,
         upload: upload,

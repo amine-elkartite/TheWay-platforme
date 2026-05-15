@@ -6,10 +6,6 @@
   <title>TheWay - Trouvez votre voie professionnelle</title>
   <link rel="icon" href="../../assets/images/icon.png" type="image/png">
   <link rel="stylesheet" href="../../assets/css/design-system.css">
-  <script>
-    // API Configuration - set backend URL
-    window.THEWAY_API_BASE = 'http://localhost:3001';
-  </script>
   <style>
 
     * {
@@ -1525,17 +1521,16 @@
                     </div>
 
                     <div class="mini-stats">
-                      <div class="mini-card"><small>Offres disponibles</small><strong>1,248</strong></div>
-                      <div class="mini-card"><small>Correspondance</small><strong>86%</strong></div>
-                      <div class="mini-card"><small>Candidatures</small><strong>23</strong></div>
-                      <div class="mini-card"><small>Entretiens</small><strong>5</strong></div>
+                      <div class="mini-card"><small>Offres disponibles</small><strong data-public-stat="opportunities">...</strong></div>
+                      <div class="mini-card"><small>Correspondance</small><strong data-public-stat="matches">IA</strong></div>
+                      <div class="mini-card"><small>Candidatures</small><strong data-public-stat="applications">...</strong></div>
+                      <div class="mini-card"><small>Entretiens</small><strong data-public-stat="interviews">...</strong></div>
                     </div>
 
                     <div class="preview-panels">
                       <div class="offer-card">
                         <span class="panel-title">Offres recommandées</span>
-                        <div class="mini-offer"><strong>Développeur Full Stack</strong><span>90%</span></div>
-                        <div class="mini-offer"><strong>Data Analyst</strong><span>82%</span></div>
+                        <div class="mini-offer" data-public-mini-offer><strong>Chargement...</strong><span>IA</span></div>
                       </div>
                       <div class="map-card">
                         <span class="panel-title">Offres près de vous</span>
@@ -1623,22 +1618,22 @@
                   <path d="M9 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-linecap="round"/>
                   <path d="M4 7h16v12H4V7zM4 12h16" stroke="currentColor" stroke-linejoin="round"/>
                 </svg>
-                <strong>10K+</strong>
+                <strong data-public-stat="opportunities">...</strong>
                 <span>Offres disponibles</span>
               </div>
               <div class="stat">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM16 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2.5 21a5.5 5.5 0 0 1 11 0M10.5 21a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-linecap="round"/>
                 </svg>
-                <strong>5K+</strong>
+                <strong data-public-stat="users">...</strong>
                 <span>Utilisateurs actifs</span>
               </div>
               <div class="stat">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <strong>85%</strong>
-                <span>Taux de réussite</span>
+                <strong data-public-stat="applications">...</strong>
+                <span>Candidatures suivies</span>
               </div>
             </div>
           </div>
@@ -1688,9 +1683,9 @@
                   <span class="pin" style="left:73%; top:70%;">&nbsp;</span>
                 </div>
                 <div class="nearby-card">
-                  <span>90%</span>
-                  <strong>Développeur Full Stack</strong>
-                  <small>Paris, France</small>
+                  <span data-public-nearby-score>IA</span>
+                  <strong data-public-nearby-title>Chargement...</strong>
+                  <small data-public-nearby-location>...</small>
                 </div>
               </div>
             </div>
@@ -1721,23 +1716,18 @@
             <button class="search-btn" type="submit">Search</button>
           </form>
 
-          <article class="job-card" data-title="Développeur Full Stack" data-city="Paris">
-            <div class="company-logo">ACME</div>
+          <article class="job-card" data-public-job-card>
+            <div class="company-logo">...</div>
             <div class="job-info">
-              <h3>Développeur Full Stack</h3>
-              <p>ACME Corporation<br>Paris, France&nbsp;&nbsp;•&nbsp;&nbsp;CDI&nbsp;&nbsp;•&nbsp;&nbsp;Télétravail partiel</p>
-              <div class="tags">
-                <span class="tag">React</span>
-                <span class="tag">Node.js</span>
-                <span class="tag">TypeScript</span>
-                <span class="tag">PostgreSQL</span>
-              </div>
+              <h3>Chargement des offres...</h3>
+              <p>Connexion au catalogue THEWAY</p>
+              <div class="tags"></div>
             </div>
             <div class="match">
-              <strong>90% Match</strong>
-              <span>Publié il y a 2 jours</span>
+              <strong>IA</strong>
+              <span>Source</span>
             </div>
-            <button class="job-arrow" type="button" aria-label="Voir l'offre Développeur Full Stack">
+            <button class="job-arrow" type="button" aria-label="Voir l'offre">
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
                 <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -1772,7 +1762,7 @@
     const searchForm = document.querySelector(".search-form");
     const jobInput = document.querySelector("#jobInput");
     const cityInput = document.querySelector("#cityInput");
-    const jobCard = document.querySelector(".job-card");
+    const jobCard = document.querySelector("[data-public-job-card]");
     const toast = document.querySelector(".toast");
     let toastTimer;
 
@@ -1797,23 +1787,94 @@
       });
     });
 
+    const state = { opportunities: [], selected: null };
+
+    function apiBase() {
+      if (window.THEWAY_API_BASE) return String(window.THEWAY_API_BASE).replace(/\/$/, "");
+      if (window.location.protocol === "file:") return "http://localhost:3001";
+      return "";
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString("fr-FR");
+    }
+
+    function setText(selector, value) {
+      document.querySelectorAll(selector).forEach((node) => { node.textContent = value; });
+    }
+
+    function renderOpportunity(opportunity) {
+      state.selected = opportunity || null;
+      if (!opportunity) {
+        jobCard.style.display = "none";
+        showToast("Aucune offre disponible pour le moment.");
+        return;
+      }
+      jobCard.style.display = "grid";
+      jobCard.dataset.id = opportunity.id || "";
+      jobCard.dataset.title = opportunity.title || "";
+      jobCard.dataset.city = opportunity.location || "";
+      jobCard.querySelector(".company-logo").textContent = (opportunity.company || opportunity.title || "TW").slice(0, 4).toUpperCase();
+      jobCard.querySelector("h3").textContent = opportunity.title || "Offre THEWAY";
+      jobCard.querySelector("p").innerHTML = escapeHTML(opportunity.company || "Entreprise") + "<br>" + escapeHTML(opportunity.location || "Non renseigne") + "&nbsp;&nbsp;•&nbsp;&nbsp;" + escapeHTML(opportunity.source || "Source importee");
+      const tags = jobCard.querySelector(".tags");
+      tags.innerHTML = (opportunity.skills || []).slice(0, 4).map((skill) => '<span class="tag">' + escapeHTML(skill) + '</span>').join("");
+      jobCard.querySelector(".match strong").textContent = opportunity.score ? opportunity.score + "% Match" : "Analyse IA";
+      jobCard.querySelector(".match span").textContent = opportunity.created_at ? new Date(opportunity.created_at).toLocaleDateString("fr-FR") : (opportunity.source || "Source");
+      const nearbyTitle = document.querySelector("[data-public-nearby-title]");
+      const nearbyLocation = document.querySelector("[data-public-nearby-location]");
+      if (nearbyTitle) nearbyTitle.textContent = opportunity.title || "Offre THEWAY";
+      if (nearbyLocation) nearbyLocation.textContent = opportunity.location || "Non renseigne";
+      document.querySelectorAll("[data-public-mini-offer]").forEach((mini) => {
+        mini.querySelector("strong").textContent = opportunity.title || "Offre THEWAY";
+        mini.querySelector("span").textContent = opportunity.score ? opportunity.score + "%" : "IA";
+      });
+    }
+
+    function loadPublicData(params) {
+      const query = new URLSearchParams(params || {});
+      query.set("limit", "6");
+      return fetch(apiBase() + "/api/opportunities?" + query.toString(), { credentials: "include" })
+        .then((response) => response.json().then((payload) => {
+          if (!response.ok || payload.ok === false) throw new Error(payload.message || "Catalogue indisponible");
+          const data = payload.data || payload;
+          state.opportunities = data.opportunities || [];
+          renderOpportunity(state.opportunities[0]);
+          const pagination = data.pagination || {};
+          setText('[data-public-stat="opportunities"]', formatNumber(pagination.total || state.opportunities.length));
+          return fetch(apiBase() + "/api/panel/summary", { credentials: "include" });
+        }))
+        .then((response) => response.json())
+        .then((payload) => {
+          const summary = (payload.data && payload.data.summary) || payload.summary || {};
+          setText('[data-public-stat="users"]', formatNumber(summary.users || 0));
+          setText('[data-public-stat="applications"]', formatNumber(summary.applications || 0));
+          setText('[data-public-stat="interviews"]', "N/A");
+        })
+        .catch((error) => {
+          jobCard.querySelector("h3").textContent = "Catalogue indisponible";
+          jobCard.querySelector("p").textContent = error.message || "Impossible de charger les offres.";
+        });
+    }
+
     searchForm.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const jobQuery = jobInput.value.trim().toLowerCase();
-      const cityQuery = cityInput.value.trim().toLowerCase();
-      const title = jobCard.dataset.title.toLowerCase();
-      const city = jobCard.dataset.city.toLowerCase();
-      const matchesJob = !jobQuery || title.includes(jobQuery) || "react node.js typescript postgresql".includes(jobQuery);
-      const matchesCity = !cityQuery || city.includes(cityQuery);
-
-      jobCard.style.display = matchesJob && matchesCity ? "grid" : "none";
-      showToast(matchesJob && matchesCity ? "Une offre correspond à votre recherche." : "Aucune offre affichée pour cette recherche.");
+      loadPublicData({ search: jobInput.value.trim(), location: cityInput.value.trim() })
+        .then(() => showToast(state.opportunities.length ? "Offres chargees depuis THEWAY." : "Aucune offre pour cette recherche."));
     });
 
     document.querySelector(".job-arrow").addEventListener("click", () => {
-      showToast("Ouverture de l'offre Développeur Full Stack.");
+      if (!state.selected) return;
+      sessionStorage.setItem("theway.selectedOpportunity", JSON.stringify(state.selected));
+      window.location.assign("../pannel/opportunity-details.html");
     });
+
+    loadPublicData();
   </script>
     <script src="../../assets/js/theway-dynamic.js"></script>
 </body>
